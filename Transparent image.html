@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Transparent Image</title>
   <style>
-  	.menu-box {
+    .menu-box {
       background: rgba(0, 0, 0, 0.4);
       padding: 20px;
       border-radius: 15px;
@@ -14,32 +14,20 @@
       display: inline-block;
       text-align: center;
     }
-  	#bg-video {
+    #bg-video {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       z-index: -1;
     }
-  	@font-face {
+    @font-face {
       font-family: 'BebasNeue';
       src: url('./BebasNeue-Regular.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    .footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #9aa9c9;
-      font-family: 'BebasNeue', sans-serif;
     }
     @font-face {
       font-family: 'Sequel100Black';
       src: url('./Sequel100Black-76.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
     }
     h1 {
       font-weight: 800;
@@ -49,27 +37,22 @@
       line-height: 1.2;
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
     }
-    :root {
-      --bg: #000;
-      --fg: #fff;
-      --blue: rgb(255, 96, 38);
-      --gray: #777;
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #ffffff;
+      font-family: 'BebasNeue', sans-serif;
     }
+    :root { --bg:#000; --fg:#fff; --blue:rgb(255,96,38); --gray:#777; }
     body {
-      margin:0;
-      background:var(--bg);
-      color:var(--fg);
-      font-family:sans-serif;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
+      margin:0; background:var(--bg); color:var(--fg);
+      font-family:sans-serif; display:flex;
+      justify-content:center; align-items:center; height:100vh;
     }
-    .app { width:min(400px,90vw); text-align:center; position: relative; z-index: 1; }
+    .app { width:min(400px,90vw); text-align:center; position:relative; z-index:1; }
     label { font-weight:600; }
     input[type="file"]{
-      width:100%;
-      padding:10px;
+      width:100%; padding:10px;
       border:1px dashed rgba(255,255,255,.3);
       border-radius:10px;
       background:rgba(255,255,255,.05);
@@ -77,80 +60,50 @@
     }
     .row { margin:15px 0; display:flex; flex-direction:column; align-items:center; }
     .slider{
-      -webkit-appearance:none;
-      appearance:none;
-      width:100%;
-      height:10px;
-      border-radius:999px;
+      -webkit-appearance:none; appearance:none;
+      width:100%; height:10px; border-radius:999px;
       background:linear-gradient(90deg,var(--blue) 50%,var(--gray) 50%);
-      outline:none;
-      box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);
+      outline:none; box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);
       transition:background 0.3s ease;
     }
     .slider::-webkit-slider-thumb{
-      -webkit-appearance:none;
-      appearance:none;
-      width:20px;
-      height:20px;
-      border-radius:50%;
-      background:#fff;
-      border:none;
+      -webkit-appearance:none; appearance:none;
+      width:20px; height:20px; border-radius:50%;
+      background:#fff; border:none;
       box-shadow:0 2px 6px rgba(0,0,0,0.4);
-      cursor:pointer;
-      transition:transform 0.2s ease;
+      cursor:pointer; transition:transform 0.2s ease;
     }
     .slider::-webkit-slider-thumb:hover{ transform:scale(1.1); }
     .percent-control{ display:flex; align-items:center; gap:4px; margin-bottom:8px; }
     .percent-control input[type="number"] {
-      width:50px;
-      text-align:center;
-      padding:4px;
-      -moz-appearance: textfield;
+      width:50px; text-align:center; padding:4px; -moz-appearance:textfield;
     }
     .percent-control input[type="number"]::-webkit-inner-spin-button,
-    .percent-control input[type="number"]::-webkit-outer-spin-button {
-      margin: 0;
-    }
-    button{ 
-      padding:10px 20px; 
-      border-radius:8px; 
-      border:0; 
-      font-weight:700; 
-      color:#fff; 
-      background:var(--blue); 
-      cursor:pointer; 
-      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+    .percent-control input[type="number"]::-webkit-outer-spin-button { margin:0; }
+    button{
+      padding:10px 20px; border-radius:8px; border:0;
+      font-weight:700; color:#fff; background:var(--blue);
+      cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.4);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    button:hover{
-      transform:scale(1.05);
-      box-shadow:0 6px 14px rgba(0,0,0,0.5);
-    }
-    button:active{
-      transform:scale(0.97);
-      box-shadow:0 2px 6px rgba(0,0,0,0.4);
-    }
+    button:hover{ transform:scale(1.05); box-shadow:0 6px 14px rgba(0,0,0,0.5); }
+    button:active{ transform:scale(0.97); box-shadow:0 2px 6px rgba(0,0,0,0.4); }
     .msg-stack{ min-height:24px; margin-top:8px; transition:opacity 1s ease; }
-    .footer{ margin-top:20px; font-size:12px; color:#ffffff; }
     .progress-text{ color:#fff; font-weight:600; margin-top:15px; }
     .hidden{ display:none; }
     .video-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 0;
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.4); z-index:0;
     }
   </style>
 </head>
 <body>
-	<video autoplay muted loop playsinline id="bg-video">
-  	<source src="background.mp4" type="video/mp4">
-	</video>
-	<audio id="bg-music" src="Transparent_image.mp3" loop></audio>
-	<div class="video-overlay"></div>
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="background.mp4" type="video/mp4">
+  </video>
+  <audio id="bg-music" src="Transparent_image.mp3" loop autoplay></audio>
+  <div class="video-overlay"></div>
 
   <div class="app">
     <h1>Transparent Image</h1>
@@ -178,9 +131,8 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-
   <script>
-    // === kode asli transparansi tetap, tidak diubah ===
+    // === kode transparansi tetap ===
     const fileEl = document.getElementById('file');
     const rangeEl = document.getElementById('range');
     const valEl = document.getElementById('val');
@@ -207,7 +159,10 @@
     };
     applySliderBg();
     rangeEl.addEventListener('input', () => { valEl.value = rangeEl.value; applySliderBg(); });
-    valEl.addEventListener('input', () => { const c=Math.max(0,Math.min(100,Number(valEl.value||0))); valEl.value=c; rangeEl.value=c; applySliderBg(); });
+    valEl.addEventListener('input', () => {
+      const c=Math.max(0,Math.min(100,Number(valEl.value||0)));
+      valEl.value=c; rangeEl.value=c; applySliderBg();
+    });
 
     const fadeOutMsg = (el, delay=1200) => {
       setTimeout(()=>{ el.style.opacity = 0; }, delay);
@@ -228,7 +183,8 @@
     });
 
     function drawTransparent(img, alphaFactor){
-      const w = img.naturalWidth || img.width; const h = img.naturalHeight || img.height;
+      const w = img.naturalWidth || img.width;
+      const h = img.naturalHeight || img.height;
       canvas.width=w; canvas.height=h; ctx.clearRect(0,0,w,h);
       ctx.globalAlpha = alphaFactor; ctx.drawImage(img,0,0,w,h); ctx.globalAlpha = 1;
     }
@@ -257,12 +213,12 @@
 
     startBtn.addEventListener('click', async () => {
       if (!filesSelected.length){
-        uploadMsg.style.opacity = 1; 
+        uploadMsg.style.opacity = 1;
         const userLang = navigator.language || navigator.userLanguage;
         let msgText = "Masukkan file terlebih dahulu.";
-        if (userLang.startsWith('en')) { msgText = "Please insert a file first."; }
-        uploadMsg.textContent = msgText; 
-        fadeOutMsg(uploadMsg, 1200); 
+        if (userLang.startsWith('en')) msgText = "Please insert a file first.";
+        uploadMsg.textContent = msgText;
+        fadeOutMsg(uploadMsg, 1200);
         return;
       }
 
@@ -316,27 +272,24 @@
           }
         }
       } catch(e){
-        uploadMsg.style.opacity = 1; uploadMsg.textContent = 'Terjadi kesalahan saat memproses.'; fadeOutMsg(uploadMsg, 1500);
+        uploadMsg.style.opacity = 1;
+        uploadMsg.textContent = 'Terjadi kesalahan saat memproses.';
+        fadeOutMsg(uploadMsg, 1500);
         console.error(e);
       }
     });
+
+    // === kontrol musik ===
+    const music = document.getElementById('bg-music');
+    const audioEnabled = localStorage.getItem("audioEnabled") === "true";
+    const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
+    music.volume = isNaN(audioVolume) ? 1 : audioVolume;
+
+    if (audioEnabled) {
+      music.play().catch(err => console.log("Music blocked:", err));
+    } else {
+      music.pause();
+    }
   </script>
-
-<!-- Transparent image.html -->
-<script>
-const music = document.getElementById('bg-music');
-const audioEnabled = localStorage.getItem("audioEnabled") === "true";
-const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
-
-music.volume = isNaN(audioVolume) ? 1 : audioVolume;
-
-const shouldPlay = sessionStorage.getItem("nowPlaying");
-// terima 'play' (baru) atau nama file (lama) sebagai pemicu
-if (audioEnabled && (shouldPlay === "play" || shouldPlay === "Transparent_image.mp3")) {
-  music.currentTime = 0;
-  music.play().catch(err => console.log("Music blocked:", err));
-}
-sessionStorage.removeItem("nowPlaying");
-</script>
 </body>
 </html>
