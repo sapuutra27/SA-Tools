@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>transparent Image</title>
+  <style>
+  	.menu-box {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: 15px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: inline-block;
+      text-align: center;
+    }
+  	#bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+  	@font-face {
+      font-family: 'BebasNeue';
+      src: url('./BebasNeue-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #9aa9c9;
+      font-family: 'BebasNeue', sans-serif;
+    }
+    @font-face {
+      font-family: 'Sequel100Black';
+      src: url('./Sequel100Black-76.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    h1 {
+      font-weight: 800;
+      margin-bottom: 20px;
+      font-family: 'Sequel100Black', sans-serif;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --blue: rgb(255, 96, 38);
+      --gray: #777;
+    }
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:sans-serif;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
+    .app { width:min(400px,90vw); text-align:center; position: relative; z-index: 1; }
+    label { font-weight:600; }
+    input[type="file"]{
+      width:100%;
+      padding:10px;
+      border:1px dashed rgba(255,255,255,.3);
+      border-radius:10px;
+      background:rgba(255,255,255,.05);
+      color:var(--fg);
+    }
+    .row { margin:15px 0; display:flex; flex-direction:column; align-items:center; }
+    .slider{
+      -webkit-appearance:none;
+      appearance:none;
+      width:100%;
+      height:10px;
+      border-radius:999px;
+      background:linear-gradient(90deg,var(--blue) 50%,var(--gray) 50%);
+      outline:none;
+      box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);
+      transition:background 0.3s ease;
+    }
+    .slider::-webkit-slider-thumb{
+      -webkit-appearance:none;
+      appearance:none;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:#fff;
+      border:none;
+      box-shadow:0 2px 6px rgba(0,0,0,0.4);
+      cursor:pointer;
+      transition:transform 0.2s ease;
+    }
+    .slider::-webkit-slider-thumb:hover{ transform:scale(1.1); }
+    .percent-control{ display:flex; align-items:center; gap:4px; margin-bottom:8px; }
+    .percent-control input[type="number"] {
+      width:50px;
+      text-align:center;
+      padding:4px;
+      -moz-appearance: textfield;
+    }
+    .percent-control input[type="number"]::-webkit-inner-spin-button,
+    .percent-control input[type="number"]::-webkit-outer-spin-button {
+      margin: 0;
+    }
+    button{ 
+      padding:10px 20px; 
+      border-radius:8px; 
+      border:0; 
+      font-weight:700; 
+      color:#fff; 
+      background:var(--blue); 
+      cursor:pointer; 
+      box-shadow:0 4px 10px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    button:hover{
+      transform:scale(1.05);
+      box-shadow:0 6px 14px rgba(0,0,0,0.5);
+    }
+    button:active{
+      transform:scale(0.97);
+      box-shadow:0 2px 6px rgba(0,0,0,0.4);
+    }
+    .msg-stack{ min-height:24px; margin-top:8px; transition:opacity 1s ease; }
+    .footer{ margin-top:20px; font-size:12px; color:#ffffff; }
+    .progress-text{ color:#fff; font-weight:600; margin-top:15px; }
+    .hidden{ display:none; }
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+	<video autoplay muted loop playsinline id="bg-video">
+  	<source src="background.mp4" type="video/mp4">
+	</video>
+	<audio id="bg-music" src="transparent_image.mp3" loop></audio>
+	<div class="video-overlay"></div>
+
+  <div class="app">
+    <h1>transparent Image</h1>
+    <div class="row">
+      <input id="file" type="file" multiple accept="image/*,.zip" />
+      <div class="msg-stack" id="uploadMsg"></div>
+    </div>
+
+    <div class="row">
+      <div class="percent-control">
+        <label for="val">Adjust Transparent</label>
+        <input type="number" id="val" value="50" min="0" max="100">%
+      </div>
+      <input id="range" class="slider" type="range" min="0" max="100" step="1" value="50" />
+    </div>
+
+    <div class="row">
+      <button id="start">START</button>
+      <div class="progress-text hidden" id="processProgress">Processing... 0%</div>
+      <div class="msg-stack" id="processMsg"></div>
+    </div>
+
+    <div class="footer">- TwentySeven -</div>
+    <canvas id="canvas" hidden></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+  <script>
+    // === kode asli transparansi tetap, tidak diubah ===
+    const fileEl = document.getElementById('file');
+    const rangeEl = document.getElementById('range');
+    const valEl = document.getElementById('val');
+    const startBtn = document.getElementById('start');
+    const uploadMsg = document.getElementById('uploadMsg');
+    const processProgress = document.getElementById('processProgress');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let filesSelected = [];
+
+    const IMAGE_EXTS = ['.png','.jpg','.jpeg','.webp'];
+    const isImageName = (name) => IMAGE_EXTS.some(ext => name.toLowerCase().endsWith(ext));
+    const mimeFromName = (name) => {
+      const n = name.toLowerCase();
+      if(n.endsWith('.png')) return 'image/png';
+      if(n.endsWith('.jpg')||n.endsWith('.jpeg')) return 'image/jpeg';
+      if(n.endsWith('.webp')) return 'image/webp';
+      return 'image/png';
+    };
+
+    const applySliderBg = () => {
+      const v = Number(rangeEl.value);
+      rangeEl.style.background = `linear-gradient(90deg, var(--blue) ${v}%, var(--gray) ${v}%)`;
+    };
+    applySliderBg();
+    rangeEl.addEventListener('input', () => { valEl.value = rangeEl.value; applySliderBg(); });
+    valEl.addEventListener('input', () => { const c=Math.max(0,Math.min(100,Number(valEl.value||0))); valEl.value=c; rangeEl.value=c; applySliderBg(); });
+
+    const fadeOutMsg = (el, delay=1200) => {
+      setTimeout(()=>{ el.style.opacity = 0; }, delay);
+      setTimeout(()=>{ el.textContent=''; el.style.opacity=1; }, delay+800);
+    };
+
+    fileEl.addEventListener('change', () => {
+      filesSelected = Array.from(fileEl.files || []);
+      if (!filesSelected.length) return;
+      uploadMsg.style.opacity = 1;
+      uploadMsg.textContent = 'Please wait... 0%';
+      let p = 0; const itv = setInterval(()=>{ p=Math.min(99,p+1); uploadMsg.textContent=`Please wait... ${p}%`; }, 25);
+      setTimeout(()=>{
+        clearInterval(itv);
+        uploadMsg.textContent = 'Upload Successful';
+        fadeOutMsg(uploadMsg, 1200);
+      }, 1200);
+    });
+
+    function drawTransparent(img, alphaFactor){
+      const w = img.naturalWidth || img.width; const h = img.naturalHeight || img.height;
+      canvas.width=w; canvas.height=h; ctx.clearRect(0,0,w,h);
+      ctx.globalAlpha = alphaFactor; ctx.drawImage(img,0,0,w,h); ctx.globalAlpha = 1;
+    }
+    function loadImageFromBlob(blob){
+      return new Promise((resolve,reject)=>{
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = ()=>{ URL.revokeObjectURL(url); resolve(img); };
+        img.onerror = (e)=>{ URL.revokeObjectURL(url); reject(e); };
+        img.src = url;
+      });
+    }
+    async function processImageBlobKeepName(blob, name, alphaFactor){
+      const img = await loadImageFromBlob(blob);
+      drawTransparent(img, alphaFactor);
+      const mime = mimeFromName(name);
+      const outBlob = await new Promise(res => canvas.toBlob(res, mime));
+      return new File([outBlob], name, { type: mime });
+    }
+    function triggerDownload(file){
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a'); a.href=url; a.download=file.name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    startBtn.addEventListener('click', async () => {
+      if (!filesSelected.length){
+        uploadMsg.style.opacity = 1; 
+        const userLang = navigator.language || navigator.userLanguage;
+        let msgText = "Masukkan file terlebih dahulu.";
+        if (userLang.startsWith('en')) { msgText = "Please insert a file first."; }
+        uploadMsg.textContent = msgText; 
+        fadeOutMsg(uploadMsg, 1200); 
+        return;
+      }
+
+      const onlyOne = filesSelected.length === 1;
+      const first = filesSelected[0];
+      const isZip = onlyOne && /\.zip$/i.test(first.name);
+
+      processProgress.classList.remove('hidden');
+      processProgress.textContent = 'Processing... 0%';
+      const alphaFactor = 1 - (Number(rangeEl.value)/100);
+
+      try{
+        if (isZip){
+          const origZipName = first.name;
+          const buf = await first.arrayBuffer();
+          const zip = await JSZip.loadAsync(buf);
+          const outZip = new JSZip();
+          const entries = Object.keys(zip.files);
+          let done = 0; const total = entries.length || 1;
+          for (const path of entries){
+            const entry = zip.files[path];
+            if (entry.dir){ outZip.folder(path); done++; processProgress.textContent = `Processing... ${Math.round(done/total*100)}%`; continue; }
+            const isImg = isImageName(path);
+            const blob = await entry.async('blob');
+            if (isImg){
+              try{
+                const processed = await processImageBlobKeepName(blob, path, alphaFactor);
+                outZip.file(path, processed);
+              }catch(err){ outZip.file(path, blob); }
+            } else { outZip.file(path, blob); }
+            done++; processProgress.textContent = `Processing... ${Math.round(done/total*100)}%`;
+          }
+          const outBlob = await outZip.generateAsync({type:'blob'});
+          const outFile = new File([outBlob], origZipName, {type:'application/zip'});
+          triggerDownload(outFile);
+          processProgress.textContent = 'Processing... 100%';
+        } else {
+          const imageFiles = filesSelected.filter(f => /^image\//.test(f.type) || isImageName(f.name));
+          const total = imageFiles.length;
+          if (!total){ processProgress.textContent = 'Tidak ada gambar untuk diproses.'; return; }
+          let done = 0;
+          for (const f of imageFiles){
+            const blob = await f.arrayBuffer().then(b=>new Blob([b],{type:f.type||mimeFromName(f.name)}));
+            try{
+              const processed = await processImageBlobKeepName(blob, f.name, alphaFactor);
+              triggerDownload(processed);
+            }catch(err){
+              triggerDownload(new File([blob], f.name, {type:f.type||mimeFromName(f.name)}));
+            }
+            done++; processProgress.textContent = `Processing... ${Math.round(done/total*100)}%`;
+          }
+        }
+      } catch(e){
+        uploadMsg.style.opacity = 1; uploadMsg.textContent = 'Terjadi kesalahan saat memproses.'; fadeOutMsg(uploadMsg, 1500);
+        console.error(e);
+      }
+    });
+  </script>
+
+  <script>
+  const music = document.getElementById('bg-music');
+const audioEnabled = localStorage.getItem("audioEnabled") === "true";
+const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
+
+music.volume = isNaN(audioVolume) ? 1 : audioVolume;
+
+// cek apakah harus langsung play (dipicu dari klik di index.html)
+const shouldPlay = localStorage.getItem("playMusic") === "true";
+
+if (audioEnabled && shouldPlay) {
+  music.currentTime = 0;
+  music.play().catch(err => console.log("Music blocked:", err));
+} else {
+  music.pause();
+}
+
+// reset flag supaya tidak auto main kalau reload manual
+localStorage.removeItem("playMusic");
+</script>
+</body>
+</html>
