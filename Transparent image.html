@@ -329,15 +329,13 @@ const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
 
 music.volume = isNaN(audioVolume) ? 1 : audioVolume;
 
-// cek apakah harus langsung play (dipicu dari klik di index.html)
 const shouldPlay = sessionStorage.getItem("nowPlaying");
-
-if (audioEnabled && shouldPlay) {
+if (audioEnabled && shouldPlay === "play") {
   music.currentTime = 0;
   music.play().catch(err => console.log("Music blocked:", err));
 }
 
-// reset flag supaya tidak auto main kalau reload manual
+// reset flag
 sessionStorage.removeItem("nowPlaying");
 </script>
 </body>
