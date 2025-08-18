@@ -279,25 +279,27 @@
 
     // === Transparan Image (fix autoplay) ===
     function openTransparanImage() {
-      const audioEnabled = localStorage.getItem("audioEnabled") === "true";
-      const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
+  const audioEnabled = localStorage.getItem("audioEnabled") === "true";
+  const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
 
-      if (audioEnabled) {
-        try {
-          const selectSound = new Audio("select.mp3");
-          selectSound.volume = isNaN(audioVolume) ? 1 : audioVolume;
-          selectSound.play().catch(err => console.log("Select blocked:", err));
+  if (audioEnabled) {
+    try {
+      // Play musik Transparent_image.mp3 LANGSUNG saat klik
+      const bgMusic = new Audio("Transparent_image.mp3");
+      bgMusic.volume = isNaN(audioVolume) ? 1 : audioVolume;
+      bgMusic.loop = true;
+      bgMusic.play().catch(err => console.log("Music blocked:", err));
 
-          // start musik langsung biar lolos autoplay
-          const bgMusic = new Audio("Transparent_image.mp3");
-          bgMusic.volume = isNaN(audioVolume) ? 1 : audioVolume;
-          bgMusic.loop = true;
-          bgMusic.play().catch(err => console.log("Music blocked:", err));
-        } catch (e) { console.log("Error playing sound:", e); }
-      }
-      sessionStorage.setItem("nowPlaying", "playing");
-      window.location.href = "Transparent image.html";
+      // Simpan supaya tidak GC (musiknya lanjut meski pindah halaman)
+      window._bgMusic = bgMusic;
+    } catch (e) {
+      console.log("Error:", e);
     }
+  }
+
+  // Redirect ke halaman Transparent image
+  window.location.href = "Transparent image.html";
+}
 
     // === Active State ===
     document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(item => {
