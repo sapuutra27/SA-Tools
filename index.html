@@ -326,43 +326,44 @@
     }
 
     function openCrashlog() {
-  const audioEnabled = localStorage.getItem("audioEnabled") === "true";
-  const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
+      const audioEnabled = localStorage.getItem("audioEnabled") === "true";
+      const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
 
-  localStorage.setItem("playMusic", "true");
+      localStorage.setItem("playMusic", "true");
 
-  if (audioEnabled) {
-    const selectSound = new Audio("select.mp3");
-    selectSound.volume = isNaN(audioVolume) ? 1 : audioVolume;
-    selectSound.play().catch(err => console.log("Select sound blocked:", err));
+      if (audioEnabled) {
+        const selectSound = new Audio("select.mp3");
+        selectSound.volume = isNaN(audioVolume) ? 1 : audioVolume;
+        selectSound.play().catch(err => console.log("Select sound blocked:", err));
 
-    selectSound.onended = () => {
-      window.location.href = "crashlog.html";
-    };
-  } else {
-    window.location.href = "crashlog.html";
-  }
-}
-    <!-- index.html -->
-function openTransparanImage() {
-  const audioEnabled = localStorage.getItem("audioEnabled") === "true";
-  const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
+        selectSound.onended = () => {
+          window.location.href = "crashlog.html";
+        };
+      } else {
+        window.location.href = "crashlog.html";
+      }
+    }
 
-  if (audioEnabled) {
-    const selectSound = new Audio("select.mp3");
-    selectSound.volume = isNaN(audioVolume) ? 1 : audioVolume;
-    selectSound.play().catch(err => console.log("Select blocked:", err));
+    // === FIXED openTransparanImage ===
+    function openTransparanImage() {
+      const audioEnabled = localStorage.getItem("audioEnabled") === "true";
+      const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
 
-    selectSound.onended = () => {
-      sessionStorage.setItem("nowPlaying", "play"); // <-- ganti ke 'play'
-      setTimeout(() => {
-        window.location.href = "Transparent image.html";
-      }, 200);
-    };
-  } else {
-    window.location.href = "Transparent image.html";
-  }
-}
+      if (audioEnabled) {
+        try {
+          const selectSound = new Audio("select.mp3");
+          selectSound.volume = isNaN(audioVolume) ? 1 : audioVolume;
+          selectSound.currentTime = 0;
+          selectSound.play().catch(err => console.log("Select blocked:", err));
+        } catch (e) {
+          console.log("Error playing select sound:", e);
+        }
+      }
+
+      // langsung set flag & redirect
+      sessionStorage.setItem("nowPlaying", "play");
+      window.location.href = "Transparent image.html";
+    }
 
     document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(item => {
       item.addEventListener('click', () => {
