@@ -56,6 +56,7 @@ All audio is synced with **Options** (saved in `localStorage` for toggle and vol
 ---
 
 ## 📂 Structure
+index.html              # Main menu transparant image.html  # Transparent Image tool crashlog.html           # Crashlog reader tool select.mp3              # Menu select sound back.mp3                # Menu back sound transparant_image.mp3   # Transparent Image page music Crash_List - 2.00.txt   # Crashlist database (English) Crash_List - 2.00 ID.txt# Crashlist database (Indonesian) background.mp4          # Video background for main menu arrow.png               # UI asset (menu arrow) backX.png               # Multiple background images for styling *.ttf                   # Fonts (BebasNeue, Sequel, BankGothic, Beckett, etc.)
 
 ---
 
