@@ -322,7 +322,8 @@
     });
   </script>
 
-  <script>
+<!-- Transparent image.html -->
+<script>
 const music = document.getElementById('bg-music');
 const audioEnabled = localStorage.getItem("audioEnabled") === "true";
 const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
@@ -330,12 +331,11 @@ const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
 music.volume = isNaN(audioVolume) ? 1 : audioVolume;
 
 const shouldPlay = sessionStorage.getItem("nowPlaying");
-if (audioEnabled && shouldPlay === "play") {
+// terima 'play' (baru) atau nama file (lama) sebagai pemicu
+if (audioEnabled && (shouldPlay === "play" || shouldPlay === "Transparent_image.mp3")) {
   music.currentTime = 0;
   music.play().catch(err => console.log("Music blocked:", err));
 }
-
-// reset flag
 sessionStorage.removeItem("nowPlaying");
 </script>
 </body>
