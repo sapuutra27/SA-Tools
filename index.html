@@ -343,7 +343,8 @@
     window.location.href = "crashlog.html";
   }
 }
-    function openTransparanImage() {
+    <!-- index.html -->
+function openTransparanImage() {
   const audioEnabled = localStorage.getItem("audioEnabled") === "true";
   const audioVolume  = parseFloat(localStorage.getItem("audioVolume") || "1");
 
@@ -353,11 +354,11 @@
     selectSound.play().catch(err => console.log("Select blocked:", err));
 
     selectSound.onended = () => {
-  sessionStorage.setItem("nowPlaying", "Transparent_image.mp3");
-  setTimeout(() => {
-    window.location.href = "Transparent image.html";
-  }, 200); // kasih jeda 200ms biar gesture chain tetap kebaca
-};
+      sessionStorage.setItem("nowPlaying", "play"); // <-- ganti ke 'play'
+      setTimeout(() => {
+        window.location.href = "Transparent image.html";
+      }, 200);
+    };
   } else {
     window.location.href = "Transparent image.html";
   }
