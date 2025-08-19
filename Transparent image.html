@@ -138,6 +138,17 @@
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 </head>
 <body>
+	<!-- Global Music -->
+<audio id="musicAudio" autoplay loop>
+  <source src="Music.mp3" type="audio/mpeg">
+</audio>
+<script>
+  const musicAudio = document.getElementById("musicAudio");
+  // kalau ada error autoplay di browser, musik bakal start setelah user klik halaman
+  document.body.addEventListener("click", () => {
+    if (musicAudio.paused) musicAudio.play().catch(()=>{});
+  }, { once: true });
+</script>
   <!-- Background Video -->
   <video autoplay muted loop playsinline id="bgVideo">
     <source src="background.mp4" type="video/mp4">
