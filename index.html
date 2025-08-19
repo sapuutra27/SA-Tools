@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="id">
 <head>
   <meta charset="utf-8" />
@@ -12,145 +13,144 @@
     @font-face {
       font-family: 'bankgothic';
       src: url('./bankgothic-regular.ttf') format('truetype');
-    }
+    }:root {
+  --menu-color-default: rgb(120,145,190);
+  --menu-color-active: rgb(163,196,239);
+}
 
-    :root {
-      --menu-color-default: rgb(120,145,190);
-      --menu-color-active: rgb(163,196,239);
-    }
+body {
+  margin: 0;
+  background: #000;
+  min-height: 100vh;
+  font-family: 'bankgothic', sans-serif;
+  overflow: hidden;
+}
 
-    body {
-      margin: 0;
-      background: #000;
-      min-height: 100vh;
-      font-family: 'bankgothic', sans-serif;
-      overflow: hidden;
-    }
+#title {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-family: 'beckett', serif;
+  font-size: clamp(36px, 6vw, 60px);
+  color: var(--menu-color-active);
+  text-shadow: 2px 2px 4px #000;
+  white-space: nowrap;
+}
 
-    #title {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-family: 'beckett', serif;
-      font-size: clamp(36px, 6vw, 60px);
-      color: var(--menu-color-active);
-      text-shadow: 2px 2px 4px #000;
-      white-space: nowrap;
-    }
+#cornerLogo.back8 { position: absolute; top: 0; right: 0; height: 100px; }
+#cornerLogo.back3 { position: absolute; top: 0; right: 0; height: 200px; }
+#cornerLogo.back6 { position: absolute; top: 0; right: 0; height: 200px; }
 
-    #cornerLogo.back8 { position: absolute; top: 0; right: 0; height: 100px; }
-    #cornerLogo.back3 { position: absolute; top: 0; right: 0; height: 200px; }
-    #cornerLogo.back6 { position: absolute; top: 0; right: 0; height: 200px; }
+.menu {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 2.2em;
+  white-space: nowrap;
+  display: none;
+}
+.menu.active { display: block; }
 
-    .menu {
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: clamp(22px, 4vw, 32px);
-      font-weight: bold;
-      text-transform: uppercase;
-      line-height: 2.2em;
-      white-space: nowrap;
-      display: none;
-    }
-    .menu.active { display: block; }
+.menu-item {
+  position: relative;
+  cursor: pointer;
+  color: var(--menu-color-default);
+  transition: color 0.2s;
+  user-select: none;
+  text-align: center;
+  padding-left: 30px;
+}
+.menu-item.active { color: var(--menu-color-active); }
 
-    .menu-item {
-      position: relative;
-      cursor: pointer;
-      color: var(--menu-color-default);
-      transition: color 0.2s;
-      user-select: none;
-      text-align: center;
-      padding-left: 30px;
-    }
-    .menu-item.active { color: var(--menu-color-active); }
+#mainMenu .menu-item img.arrow {
+  display: none;
+  position: absolute;
+  left: -10px;
+  top: 85%;
+  transform: translateY(-50%);
+  height: 70px;
+}
+#mainMenu .menu-item.active img.arrow { display: inline-block; }
+#mainMenu .menu-item img.arrow.arrow-options { left: 20px; top: 90%; }
+#mainMenu .menu-item img.arrow.arrow-credits { left: 25px; top: 90%; }
 
-    #mainMenu .menu-item img.arrow {
-      display: none;
-      position: absolute;
-      left: -10px;
-      top: 85%;
-      transform: translateY(-50%);
-      height: 70px;
-    }
-    #mainMenu .menu-item.active img.arrow { display: inline-block; }
-    #mainMenu .menu-item img.arrow.arrow-options { left: 20px; top: 90%; }
-    #mainMenu .menu-item img.arrow.arrow-credits { left: 25px; top: 90%; }
+#toolsMenu {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 2.2em;
+}
+#toolsMenu .menu-item img.arrow {
+  display: none;
+  position: absolute;
+  left: -10px;
+  top: 90%;
+  transform: translateY(-50%);
+  height: 70px;
+}
+#toolsMenu .menu-item.active img.arrow { display: inline-block; }
 
-    #toolsMenu {
-      position: absolute;
-      top: 50%;
-      left: 40%;
-      transform: translate(-50%, -50%);
-      text-align: left;
-      font-size: clamp(20px, 3vw, 28px);
-      line-height: 2.2em;
-    }
-    #toolsMenu .menu-item img.arrow {
-      display: none;
-      position: absolute;
-      left: -10px;
-      top: 90%;
-      transform: translateY(-50%);
-      height: 70px;
-    }
-    #toolsMenu .menu-item.active img.arrow { display: inline-block; }
+#optionsMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 2.2em;
+}
+#optionsMenu .menu-item img.arrow {
+  display: none;
+  position: absolute;
+  left: -10px;
+  top: 90%;
+  transform: translateY(-50%);
+  height: 70px;
+}
+#optionsMenu .menu-item.active img.arrow { display: inline-block; }
 
-    #optionsMenu {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: left;
-      font-size: clamp(20px, 3vw, 28px);
-      line-height: 2.2em;
-    }
-    #optionsMenu .menu-item img.arrow {
-      display: none;
-      position: absolute;
-      left: -10px;
-      top: 90%;
-      transform: translateY(-50%);
-      height: 70px;
-    }
-    #optionsMenu .menu-item.active img.arrow { display: inline-block; }
+.option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 300px;
+  position: relative;
+}
+.toggle { cursor: pointer; color: var(--menu-color-default); }
+.toggle.active { color: var(--menu-color-active); }
 
-    .option-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      min-width: 300px;
-      position: relative;
-    }
-    .toggle { cursor: pointer; color: var(--menu-color-default); }
-    .toggle.active { color: var(--menu-color-active); }
+.volume-bar { display: flex; gap: 2px; cursor: pointer; }
+.volume-bar .level {
+  width: 12px;
+  height: 20px;
+  background: var(--menu-color-default);
+  transition: background 0.2s;
+}
+.volume-bar .level.active { background: var(--menu-color-active); }
 
-    .volume-bar { display: flex; gap: 2px; cursor: pointer; }
-    .volume-bar .level {
-      width: 12px;
-      height: 20px;
-      background: var(--menu-color-default);
-      transition: background 0.2s;
-    }
-    .volume-bar .level.active { background: var(--menu-color-active); }
+#toolsBack, #optionsBack {
+  position: absolute;
+  bottom: 100px;
+  right: 40px;
+  font-size: clamp(20px, 3vw, 28px);
+  cursor: pointer;
+  text-transform: uppercase;
+  color: var(--menu-color-default);
+  transition: color 0.2s;
+  display: none;
+  padding-left: 30px;
+}
+#toolsBack.active, #optionsBack.active { color: var(--menu-color-active); }
 
-    #toolsBack, #optionsBack {
-      position: absolute;
-      bottom: 100px;
-      right: 40px;
-      font-size: clamp(20px, 3vw, 28px);
-      cursor: pointer;
-      text-transform: uppercase;
-      color: var(--menu-color-default);
-      transition: color 0.2s;
-      display: none;
-      padding-left: 30px;
-    }
-    #toolsBack.active, #optionsBack.active { color: var(--menu-color-active); }
-    .back-arrow {
-  height: 70px;   /* samain ukurannya dengan arrow menu */
+.back-arrow {
+  height: 70px;
   position: absolute;
   left: -10px;
   top: -50%;
@@ -162,39 +162,24 @@
 #optionsBack.active .back-arrow {
   display: inline-block;
 }
+
   </style>
 </head>
 <body>
   <div id="title">Main Menu</div>
-  <img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />
-
-  <!-- Global Music -->
-  <audio id="musicAudio" loop>
+  <img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />  <!-- Global Music -->  <audio id="musicAudio" loop>
     <source src="Music.mp4" type="audio/mp4">
-  </audio>
-
-  <!-- Main Menu -->
-  <div id="mainMenu" class="menu active">
+  </audio>  <!-- Main Menu -->  <div id="mainMenu" class="menu active">
     <div class="menu-item" onclick="openTools()"><img src="arrow.png" class="arrow" alt=">"> Select Tools</div>
     <div class="menu-item" onclick="openOptions()"><img src="arrow.png" class="arrow arrow-options" alt=">"> Options</div>
     <div class="menu-item"><img src="arrow.png" class="arrow arrow-credits" alt=">"> Credits</div>
-  </div>
-
-  <!-- Tools Menu -->
-  <div id="toolsMenu" class="menu">
+  </div>  <!-- Tools Menu -->  <div id="toolsMenu" class="menu">
     <div class="menu-item" onclick="openTransparanImage()"><img src="arrow.png" class="arrow" alt=">"> Transparan Image</div>
     <div class="menu-item" onclick="openCrashlog()"><img src="arrow.png" class="arrow" alt=">"> Crashlog Reader</div>
   </div>
   <div id="toolsBack" onclick="backToMain()">
-  <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
-</div>
-
-<div id="optionsBack" onclick="backToMain()">
-  <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
-</div>
-
-  <!-- Options Menu -->
-  <div id="optionsMenu" class="menu">
+    <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
+  </div>  <!-- Options Menu -->  <div id="optionsMenu" class="menu">
     <div class="menu-item option-row" id="audioRow">
       <img src="arrow.png" class="arrow" alt=">">
       <span>Audio</span>
@@ -215,9 +200,9 @@
       </span>
     </div>
   </div>
-  <div id="optionsBack" onclick="backToMain()">Back</div>
-
-  <script>
+  <div id="optionsBack" onclick="backToMain()">
+    <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
+  </div>  <script>
     const menus = {
       main: document.getElementById('mainMenu'),
       tools: document.getElementById('toolsMenu'),
@@ -340,18 +325,9 @@
       });
       const volume = (index + 1) / levels.length;
       musicAudio.volume = volume;
-      function setVolumeFromIndex(index) {
-  levels.forEach((lvl, i) => {
-    lvl.classList.toggle("active", i <= index);
-  });
-
-  const volume = (index + 1) / levels.length;
-  musicAudio.volume = volume;
-
-  // Hanya highlight Volume Row
-  document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(el => el.classList.remove('active'));
-  volumeRow.classList.add('active');
-}
+      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(el => el.classList.remove('active'));
+      volumeRow.classList.add('active');
+    }
 
     // Default volume full
     setVolumeFromIndex(levels.length - 1);
@@ -379,6 +355,5 @@
 
     // Back disembunyikan dulu
     backToMain();
-  </script>
-</body>
+  </script></body>
 </html>
