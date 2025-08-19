@@ -302,22 +302,6 @@ body {
       });
     });
 
-    // Audio Toggle
-    audioRow.addEventListener("click", () => {
-      const isOn = (audioToggle.textContent === "On");
-      if (isOn) {
-        audioToggle.textContent = "Off";
-        musicAudio.pause();
-      } else {
-        audioToggle.textContent = "On";
-        musicAudio.play();
-      }
-      audioToggle.classList.toggle("active");
-      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(i => i.classList.remove('active'));
-      audioRow.classList.add('active');
-      playSelect();
-    });
-
     // Volume Bar
     function setVolumeFromIndex(index) {
       levels.forEach((lvl, i) => {
@@ -358,7 +342,7 @@ body {
   localStorage.setItem("audioVolume", musicAudio.volume);
 }
 
-// Update penyimpanan setiap kali toggle berubah
+// Audio Toggle
 audioRow.addEventListener("click", () => {
   const isOn = (audioToggle.textContent === "On");
   if (isOn) {
@@ -369,8 +353,11 @@ audioRow.addEventListener("click", () => {
     musicAudio.play();
   }
   audioToggle.classList.toggle("active");
-  saveAudioSettings();
-  ...
+  document.querySelectorAll('.menu-item, #toolsBack, #optionsBack')
+    .forEach(i => i.classList.remove('active'));
+  audioRow.classList.add('active');
+  playSelect();
+  saveAudioSettings(); // <-- simpan setting
 });
 
 // Update penyimpanan setiap kali volume berubah
@@ -378,10 +365,13 @@ function setVolumeFromIndex(index) {
   levels.forEach((lvl, i) => {
     lvl.classList.toggle("active", i <= index);
   });
+  
   const volume = (index + 1) / levels.length;
   musicAudio.volume = volume;
-  saveAudioSettings();
-  ...
+  document.querySelectorAll('.menu-item, #toolsBack, #optionsBack')
+    .forEach(el => el.classList.remove('active'));
+  volumeRow.classList.add('active');
+  saveAudioSettings(); // <-- simpan setting
 }
 
     // Back disembunyikan dulu
