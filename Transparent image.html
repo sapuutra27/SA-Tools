@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transparent Image</title>
+
+  <!-- Font -->
+  <style>
+    @font-face {
+      font-family: 'Sequel100Black';
+      src: url('./Sequel100Black-76.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'BebasNeue';
+      src: url('./BebasNeue-Regular.ttf') format('truetype');
+    }
+
+    :root{
+      --fg:#fff; 
+      --muted:#888;
+      --primary:#2563eb; 
+      --error:#ffffff;
+      --success:#4ade80;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; 
+      color:var(--fg);
+      min-height:100vh; 
+      display:flex; 
+      justify-content:center; 
+      align-items:center;
+      text-align:center; 
+      font-family: Arial, sans-serif;
+      overflow:hidden;
+    }
+    body, h1, .uploader, .row, #message, .credit {
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+    }
+
+    /* Background Video */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:min(92vw,520px);
+    }
+
+    h1{
+      margin:0;
+      font-family:'Sequel100Black',sans-serif;
+      font-size:1.7rem;
+    }
+
+    .uploader{
+      margin:0;
+      font-size:14px;
+      font-weight:bold;
+    }
+    .uploader input[type=file]{
+      margin-top:6px;
+      background:rgba(0,0,0,0.6);
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      padding:10px;
+      width:100%;
+    }
+
+    .row{
+      margin:0;
+      display:flex; 
+      align-items:center; 
+      gap:8px; 
+      justify-content:center;
+      font-size:14px;
+      font-weight:bold;
+    }
+    .opacity-box{
+      width:35px;
+      padding:4px;
+      text-align:center;
+      border:none;
+      border-radius:6px;
+      background:#fff;
+      color:#000;
+      font-weight:bold;
+    }
+
+    #message{ 
+      font-size:14px; 
+      display:none; 
+      opacity:0;
+      font-weight:bold;
+    }
+
+    button {
+      padding:10px 15px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      background:var(--primary);
+      color:#fff;
+      font-weight:700;
+      box-shadow:0 3px 8px rgba(0,0,0,.4);
+      transition:transform .2s ease, box-shadow .2s ease;
+      text-shadow:none;
+    }
+    button:hover{ transform:scale(1.05); box-shadow:0 6px 14px rgba(0,0,0,.5) }
+    button:active{ transform:scale(.97) }
+
+    .credit{
+      margin-top:12px;
+      font-size:15px;
+      font-family:'BebasNeue',sans-serif;
+      color:#fff;
+    }
+
+    .fadein{ animation:fadeIn .2s forwards }
+    .fadeout{ animation:fadeOut .8s forwards }
+    @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
+    @keyframes fadeOut{ from{opacity:1} to{opacity:0} }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+</head>
+<body>
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bgVideo">
+    <source src="background.mp4" type="video/mp4">
+  </video>
+
+  <div class="wrap">
+    <h1 id="title">Transparent Image</h1>
+
+    <div class="uploader">
+      <span id="labelUpload">Upload filenya disini</span><br>
+      <input id="fileInput" type="file" multiple accept=".png,.jpg,.jpeg,.zip" />
+    </div>
+
+    <div class="row">
+      <span id="labelAdjust">Sesuaikan opasitas</span>
+      <input id="opacityBox" class="opacity-box" type="number" value="100" min="0" max="100" inputmode="numeric">
+    </div>
+
+    <div id="message"></div>
+    <button id="startBtn">Start</button>
+
+    <div class="credit">- TWENTYSEVEN -</div>
+  </div>
+
+<script>
+(() => {
+  const texts = {
+    en: {
+      title: "Transparent Image",
+      upload: "Upload your file here",
+      adjust: "Adjust opacity",
+      start: "Start",
+      errorNoFile: "Please upload a file first!",
+      waiting: "Please wait..",
+      done: "Completed!",
+      notRecognized: "File not recognized (only PNG, JPG, or ZIP).",
+      errorProcess: "An error occurred while processing the file."
+    },
+    id: {
+      title: "Transparent Image",
+      upload: "Upload filenya disini",
+      adjust: "Sesuaikan opasitas",
+      start: "Mulai",
+      errorNoFile: "Harap upload file terlebih dahulu!",
+      waiting: "Harap tunggu..",
+      done: "Selesai!",
+      notRecognized: "File tidak dikenali (hanya PNG, JPG, atau ZIP).",
+      errorProcess: "Terjadi kesalahan saat memproses file."
+    }
+  };
+  const lang = navigator.language.startsWith("id") ? "id" : "en";
+
+  // set UI text
+  document.getElementById("title").textContent = texts[lang].title;
+  document.getElementById("labelUpload").textContent = texts[lang].upload;
+  document.getElementById("labelAdjust").textContent = texts[lang].adjust;
+  document.getElementById("startBtn").textContent = texts[lang].start;
+
+  const fileInput = document.getElementById('fileInput');
+  const opacityBox = document.getElementById('opacityBox');
+  const startBtn  = document.getElementById('startBtn');
+  const message   = document.getElementById('message');
+
+  const clampOpacity = () => {
+    let v = parseInt(opacityBox.value,10);
+    if (isNaN(v)) v = 0;
+    if (v < 0) v = 0;
+    if (v > 100) v = 100;
+    opacityBox.value = v;
+    return v;
+  };
+  opacityBox.addEventListener('input', clampOpacity);
+
+  const showTemp = (text, color = 'var(--error)') => {
+    message.textContent = text;
+    message.style.color = getComputedStyle(document.documentElement).getPropertyValue(color) || color;
+    message.style.display = 'block';
+    message.classList.remove('fadeout');
+    void message.offsetWidth;
+    message.classList.add('fadein');
+    setTimeout(() => {
+      message.classList.remove('fadein');
+      message.classList.add('fadeout');
+      setTimeout(() => { message.style.display = 'none'; }, 800);
+    }, 3000);
+  };
+
+  const showProgress = (text) => {
+    message.textContent = text;
+    message.style.color = '#fff';
+    message.style.display = 'block';
+    message.classList.remove('fadeout');
+    message.style.opacity = 1;
+  };
+
+  const downloadBlob = (blob, filename) => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+
+  const processImageBlob = async (blob, alpha01, outMime) => {
+    const bitmap = (window.createImageBitmap)
+      ? await createImageBitmap(blob)
+      : await new Promise((res, rej) => {
+          const img = new Image();
+          img.onload = () => res(img);
+          img.onerror = rej;
+          img.src = URL.createObjectURL(blob);
+        });
+    const canvas = document.createElement('canvas');
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    ctx.globalAlpha = alpha01;
+    ctx.drawImage(bitmap, 0, 0);
+    const type = outMime || 'image/png';
+    return await new Promise(res => canvas.toBlob(res, type));
+  };
+
+  const processManyImages = async (files, alpha01) => {
+    const zip = new JSZip();
+    let done = 0;
+    const total = files.length;
+    for (const f of files) {
+      const ext = (f.name.split('.').pop() || '').toLowerCase();
+      if (!['png','jpg','jpeg'].includes(ext)) continue;
+      const outMime = ext === 'png' ? 'image/png' : 'image/jpeg';
+      const processed = await processImageBlob(f, alpha01, outMime);
+      zip.file(f.name, processed);
+      done++;
+      showProgress(`${texts[lang].waiting} ${Math.floor(done/total*100)}%`);
+      await new Promise(r => setTimeout(r, 0));
+    }
+    const outBlob = await zip.generateAsync({type:'blob'});
+    downloadBlob(outBlob, 'images.zip');
+  };
+
+  const processZip = async (fileZip, alpha01) => {
+    const zip = await JSZip.loadAsync(fileZip);
+    const outZip = new JSZip();
+    const entries = Object.values(zip.files);
+    const targets = entries.filter(e => !e.dir && /\.(png|jpe?g)$/i.test(e.name));
+    const total = targets.length || 1;
+    let done = 0;
+    for (const entry of entries) {
+      if (entry.dir) { outZip.folder(entry.name); continue; }
+      if (!/\.(png|jpe?g)$/i.test(entry.name)) {
+        const buff = await entry.async('blob');
+        outZip.file(entry.name, buff);
+        continue;
+      }
+      const imgBlob = await entry.async('blob');
+      const ext = (entry.name.split('.').pop() || '').toLowerCase(); // FIX
+      const outMime = ext === 'png' ? 'image/png' : 'image/jpeg';
+      const processed = await processImageBlob(imgBlob, alpha01, outMime);
+      outZip.file(entry.name, processed);
+      done++;
+      showProgress(`${texts[lang].waiting} ${Math.floor(done/total*100)}%`);
+      await new Promise(r => setTimeout(r, 0));
+    }
+    const outBlob = await outZip.generateAsync({type:'blob'});
+    downloadBlob(outBlob, fileZip.name);
+  };
+
+  startBtn.addEventListener('click', async () => {
+    const files = Array.from(fileInput.files || []);
+    if (!files.length) { showTemp(texts[lang].errorNoFile); return; }
+    const a01 = clampOpacity() / 100;
+    try {
+      if (files.length === 1 && /\.zip$/i.test(files[0].name)) {
+        showProgress(`${texts[lang].waiting} 0%`);
+        await processZip(files[0], a01);
+        showTemp(texts[lang].done, 'var(--success)');
+        return;
+      }
+      const imageFiles = files.filter(f => /\.(png|jpe?g)$/i.test(f.name));
+      if (!imageFiles.length) { showTemp(texts[lang].notRecognized); return; }
+      if (imageFiles.length === 1) {
+        showProgress(`${texts[lang].waiting} 0%`);
+        const img = imageFiles[0];
+        const outMime = /\.png$/i.test(img.name) ? 'image/png' : 'image/jpeg';
+        const result = await processImageBlob(img, a01, outMime);
+        downloadBlob(result, img.name);
+        showTemp(texts[lang].done, 'var(--success)');
+      } else {
+        showProgress(`${texts[lang].waiting} 0%`);
+        await processManyImages(imageFiles, a01);
+        showTemp(texts[lang].done, 'var(--success)');
+      }
+    } catch (e) {
+      console.error(e);
+      showTemp(texts[lang].errorProcess);
+    }
+  });
+})();
+</script>
+</body>
+</html>

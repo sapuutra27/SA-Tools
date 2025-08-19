@@ -1,0 +1,545 @@
+<!doctype html>
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crashlog Reader</title>
+  <style>
+    #output, #backBtn, .footer-note {
+      opacity: 0;
+      display: none;
+      pointer-events: none;
+    }#output.show, #backBtn.show, .footer-note.show {
+  display: block;
+  animation: fadeIn 0.8s forwards;
+  pointer-events: auto;
+}
+
+#backBtn.show { display: inline-block; }
+
+#output.hide, #backBtn.hide, .footer-note.hide {
+  animation: fadeOut 0.8s forwards;
+  pointer-events: none;
+}
+
+@font-face {
+  font-family: 'BebasNeue';
+  src: url('./BebasNeue-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Sequel100Black';
+  src: url('./Sequel100Black-76.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-wrapper {
+  transform: translateY(0);
+  margin-top: -40px;   /* makin minus → makin naik */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+h1 {
+  font-size: 30px; 
+  margin-bottom: 10px; 
+  font-family: 'Sequel100Black', sans-serif;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
+
+label[for="fileInput"] {
+  margin-bottom: -10px;   
+  display: block;       
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
+
+.uploader input[type="file"] {
+  margin-top: 0px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+}
+
+.actions {
+  margin-top: 15px;
+}
+
+input[type="file"] {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 0;
+  font-weight: 700;
+  color: #fff;
+  background: #2563eb;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: Arial, sans-serif;
+}
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+}
+button:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+#output-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  transform: translateY(-80px);
+}
+
+#output {
+  background: #111;
+  padding: 15px;
+  border-radius: 12px;
+  width: 90vw;
+  max-width: 100vw;
+  max-height: 70vh;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  font-size: 14px;
+  line-height: 1.5;
+  pointer-events: none;
+  display: none;
+}
+#output.show {
+  opacity: 1;
+  pointer-events: auto;
+  display: block;
+}
+
+#backBtn {
+  margin-top: 12px;
+  background: #2563eb;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  display: none;
+  pointer-events: none;
+}
+#backBtn.show {
+  display: inline-block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.footer-note {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #888;
+  font-family: 'BebasNeue', sans-serif;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  display: none;
+  pointer-events: none;
+}
+.footer-note.show {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fadeout { animation: fadeOut 0.8s forwards; pointer-events: none; }
+.fadein  { animation: fadeIn  0.8s forwards; }
+@keyframes fadeOut { from {opacity: 1;} to {opacity: 0;} }
+@keyframes fadeIn  { from {opacity: 0;} to {opacity: 1;} }
+
+#fileError, #uploadWarning {
+  color: #ffffff;
+  margin-top: 10px;
+  font-size: 14px;
+  display: none;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+  font-weight: bold;
+}
+
+.highlight-error { color: rgb(255,36,36); font-weight: bold; }
+.highlight-problem { color: rgb(255,160,36); font-weight: bold; }
+.highlight-solution { color: rgb(168,255,5); font-weight: bold; }
+.highlight-note { color: rgb(214,214,214); font-style: italic; }
+
+.credit {
+  margin-top: 25px;
+  font-size: 15px;
+  color: #fff;
+  font-family: 'BebasNeue', sans-serif;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
+#bgVideo {
+
+position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; } </style>
+
+</head>
+<body>
+	<!-- Background Video -->
+<video autoplay muted loop playsinline id="bgVideo">
+  <source src="background1.mp4" type="video/mp4">
+</video>
+  <div class="container">
+    <div class="menu-wrapper">
+      <h1 id="title">Crashlog Reader</h1>
+      <div class="uploader" id="uploader">
+        <label for="fileInput">Upload file crashlog disini</label><br>
+        <input type="file" id="fileInput" accept=".txt">
+        <div id="fileError">File yang diupload tidak sesuai!</div>
+        <div id="uploadWarning">Harap upload file aml_crashlog.txt terlebih dahulu.</div>
+      </div>
+      <div class="actions" id="actions">
+        <button id="startBtn">Mulai</button>
+        <div class="credit">- TwentySeven -</div>
+      </div>
+    </div>
+    <div id="output-wrapper">
+      <div id="output"></div>
+      <div id="footerNote" class="footer-note">
+        Documented by ARM<br>15/07/2024
+      </div>
+      <button id="backBtn"></button>
+    </div>
+  </div>  <script>
+    let crashList = {};
+    let crashLogContent = "";
+    let currentTexts = {};
+
+    function showTempMessage(el){
+      el.style.display = 'block';
+      el.classList.remove('fadeout');
+      void el.offsetWidth;
+      setTimeout(()=>{
+        el.classList.add('fadeout');
+        setTimeout(()=>{el.style.display='none';},3000);
+      },3000);
+    }
+
+    async function loadCrashList(){
+      try {
+        const lang = navigator.language || navigator.userLanguage || '';
+        let fileName = lang.startsWith('id') ? 'Crash_List - 2.00 ID.txt' : 'Crash_List - 2.00.txt';
+        const res = await fetch(fileName);
+        const text = await res.text();
+        parseCrashList(text);
+      } catch(e){ console.error('Gagal load Crash_List:', e); }
+    }
+
+    function parseCrashList(text){
+      const normalized = text.replace(/\r\n/g, '\n');
+      const blockRegex = /(^\s*(?:Error:|Kesalahan:)[\s\S]*?)(?=^\s*(?:Error:|Kesalahan:)|\Z)/gm;
+      const blocks = normalized.match(blockRegex) || [];
+      blocks.forEach(block => {
+        const lines = block.replace(/\n+$/,'').split('\n');
+        const codeLine = lines.find(l => /0x[0-9A-Fa-f]+/.test(l)) || '';
+        const codes = (codeLine.match(/0x[0-9A-Fa-f]+/g) || []).map(c => c.trim());
+        codes.forEach(code => crashList[code] = lines);
+      });
+    }
+
+    function renderCrashLines(lines){
+      const out = document.getElementById('output');
+      const backBtn = document.getElementById('backBtn');
+      out.innerHTML = '';
+
+      let lineIndex = 0, currentTextNode = null;
+      let lastDetails = null;
+
+      function classifyAndBuild(line){
+        const container = document.createElement('div');
+        const m = line.match(/^[^:]+:/);
+
+        if(m){
+          const label = m[0];
+          const rest = line.slice(label.length).trim();
+          const labelLower = label.toLowerCase();
+
+          if(labelLower.includes('problem') || labelLower.includes('masalah')){
+            const details = document.createElement('details');
+            const summary = document.createElement('summary');
+            summary.textContent = label;
+            summary.className = 'highlight-problem';
+            details.appendChild(summary);
+
+            const content = document.createElement('div');
+            content.style.marginLeft = "12px";
+            content.textContent = rest;
+            details.appendChild(content);
+
+            lastDetails = details;
+            lastDetails.lastContent = content;
+            return {container: details};
+          }
+
+          if(labelLower.includes('solution') || labelLower.includes('solusi')){
+            const solDetails = document.createElement('details');
+            const solSummary = document.createElement('summary');
+            solSummary.textContent = label;
+            solSummary.className = 'highlight-solution';
+            solDetails.appendChild(solSummary);
+
+            const content = document.createElement('div');
+            content.style.marginLeft = "12px";
+            content.textContent = rest;
+            solDetails.appendChild(content);
+            solDetails.lastContent = content;
+
+            if(lastDetails){
+              lastDetails.appendChild(solDetails);
+            }
+
+            lastDetails = solDetails;
+            return {container: document.createDocumentFragment()};
+          }
+
+          if(labelLower.includes('error') || labelLower.includes('kesalahan')){
+            const spanLabel = document.createElement('span');
+            spanLabel.className = 'highlight-error';
+            spanLabel.textContent = label;
+
+            const spanCode = document.createElement('span');
+            spanCode.style.color = '#ffffff';
+            if(rest) spanCode.textContent = " " + rest;
+
+            container.appendChild(spanLabel);
+            container.appendChild(spanCode);
+
+            lastDetails = null;
+            return {container};
+          }
+
+          if(labelLower.includes('fyi') || labelLower.includes('note') || labelLower.includes('catatan')){
+            const note = document.createElement('div');
+            note.style.marginLeft = "12px";
+            note.textContent = label + " " + rest;
+
+            if(lastDetails){
+              lastDetails.appendChild(note);
+              return {container: document.createDocumentFragment()};
+            } else {
+              container.appendChild(note);
+              return {container};
+            }
+          }
+
+          const span = document.createElement('span');
+          span.textContent = label;
+          container.appendChild(span);
+          currentTextNode = document.createTextNode(rest);
+          container.appendChild(currentTextNode);
+          return {container};
+        }
+
+        if(lastDetails && line.trim() !== ""){
+          if(lastDetails.lastContent){
+            lastDetails.lastContent.textContent += " " + line.trim();
+          } else {
+            const extra = document.createElement('div');
+            extra.style.marginLeft = "12px";
+            extra.textContent = line.trim();
+            lastDetails.appendChild(extra);
+            lastDetails.lastContent = extra;
+          }
+          return {container: document.createDocumentFragment()};
+        }
+
+        currentTextNode = document.createTextNode(line);
+        container.appendChild(currentTextNode);
+        return {container};
+      }
+
+      function nextLine(){
+        if(lineIndex >= lines.length){
+          document.getElementById('footerNote').classList.add('show');
+          backBtn.textContent = currentTexts.backBtn;
+          backBtn.classList.add('show');
+          return;
+        }
+        const raw = lines[lineIndex];
+        const {container} = classifyAndBuild(raw);
+        out.appendChild(container);
+        lineIndex++;
+        nextLine();
+      }
+
+      nextLine();
+    }
+
+    function setUIText(lang){
+      let texts = {
+        uploadWarning: 'Harap upload file aml_crashlog.txt terlebih dahulu.',
+        uploadLabel:   'Upload file crashlog disini',
+        fileError:     'File yang diupload tidak sesuai!',
+        startBtn:      'Mulai',
+        backBtn:       'Kembali',
+        notFound:      'Tidak ditemukan kode crash yang cocok.'
+      };
+      if((lang||'').startsWith('en')){
+        texts = {
+          uploadWarning: 'Please upload aml_crashlog.txt first.',
+          uploadLabel:   'Upload crashlog file here',
+          fileError:     'The uploaded file is not valid!',
+          startBtn:      'Start',
+          backBtn:       'Back',
+          notFound:      'No matching crash code found.'
+        };
+      }
+      currentTexts = texts;
+      document.querySelector("label[for='fileInput']").textContent = texts.uploadLabel;
+      document.getElementById('fileError').textContent = texts.fileError;
+      document.getElementById('uploadWarning').textContent = texts.uploadWarning;
+      document.getElementById('startBtn').textContent = texts.startBtn;
+    }
+
+    document.getElementById('fileInput').addEventListener('change', function(e){
+      const file = e.target.files[0];
+      const fileError = document.getElementById('fileError');
+      const uploadWarning = document.getElementById('uploadWarning');
+      if(file){
+        if(file.name !== 'aml_crashlog.txt'){
+          showTempMessage(fileError);
+          crashLogContent = '';
+          uploadWarning.style.display = 'none';
+          return;
+        }
+        fileError.style.display = 'none';
+        uploadWarning.style.display = 'none';
+        const reader = new FileReader();
+        reader.onload = ev => { crashLogContent = ev.target.result; };
+        reader.readAsText(file);
+      }
+    });
+
+    document.getElementById('startBtn').addEventListener('click', ()=>{
+      const out = document.getElementById('output');
+      const uploadWarning = document.getElementById('uploadWarning');
+      const footer = document.getElementById('footerNote');
+      const title = document.getElementById('title');
+      const uploader = document.getElementById('uploader');
+      const actions = document.getElementById('actions');
+      const backBtn = document.getElementById('backBtn');
+      const fileInput = document.getElementById('fileInput');
+
+      out.classList.remove('show');
+      out.innerHTML = '';
+      footer.classList.remove('show');
+      backBtn.classList.remove('show');
+
+      const hasChosenFile = fileInput && fileInput.files && fileInput.files.length > 0;
+      const isRightName = hasChosenFile && fileInput.files[0].name === 'aml_crashlog.txt';
+      const hasContent = !!crashLogContent;
+
+      if (!hasChosenFile || !isRightName || !hasContent) {
+        showTempMessage(uploadWarning);
+        return;
+      }
+
+      title.classList.add('fadeout');
+      uploader.classList.add('fadeout');
+      actions.classList.add('fadeout');
+
+      setTimeout(()=>{
+        out.classList.add('show');
+
+        let found = false;
+        for (const code in crashList) {
+          if (crashLogContent.includes(code)) {
+            renderCrashLines(crashList[code]);
+            found = true;
+            break;
+          }
+        }
+
+        if (!found) {
+          out.textContent = currentTexts.notFound;
+          footer.classList.add('show');
+          backBtn.textContent = currentTexts.backBtn;
+          setTimeout(() => backBtn.classList.add('show'), 100);
+        }
+      }, 1000);
+    });
+
+    document.getElementById('backBtn').addEventListener('click', ()=>{
+      const out = document.getElementById('output');
+      const footer = document.getElementById('footerNote');
+      const title = document.getElementById('title');
+      const uploader = document.getElementById('uploader');
+      const actions = document.getElementById('actions');
+      const backBtn = document.getElementById('backBtn');
+      const fileInput = document.getElementById('fileInput');
+      const fileError = document.getElementById('fileError');
+      const uploadWarning = document.getElementById('uploadWarning');
+
+      out.classList.remove('show');
+      out.classList.add('hide');
+      backBtn.classList.remove('show');
+      backBtn.classList.add('hide');
+      footer.classList.remove('show');
+      footer.classList.add('hide');
+
+      setTimeout(()=>{
+        out.classList.remove('hide');
+        backBtn.classList.remove('hide');
+        footer.classList.remove('hide');
+      }, 800);
+
+      crashLogContent = '';
+      if (fileInput) fileInput.value = '';
+      if (fileError) fileError.style.display = 'none';
+      if (uploadWarning) uploadWarning.style.display = 'none';
+
+      setTimeout(()=>{
+        title.classList.remove('fadeout');
+        uploader.classList.remove('fadeout');
+        actions.classList.remove('fadeout');
+
+        title.classList.add('fadein');
+        uploader.classList.add('fadein');
+        actions.classList.add('fadein');
+
+        setTimeout(()=>{
+          title.classList.remove('fadein');
+          uploader.classList.remove('fadein');
+          actions.classList.remove('fadein');
+        }, 400);
+      }, 400);
+    });
+
+    setUIText(navigator.language || '');
+    loadCrashList();
+  </script>
+</body>
+</html>
