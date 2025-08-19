@@ -58,10 +58,10 @@ body {
 }
 
 h1 {
-  font-size: 30px; 
-  margin-bottom: 10px; 
+  font-size: 30px;
+  margin-bottom: 10px;
   font-family: 'Sequel100Black', sans-serif;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.8)
 }
 
 label[for="fileInput"] {
@@ -123,7 +123,7 @@ button:active {
 }
 
 #output {
-  background: #111;
+  background: rgba(0, 0, 0, 0.6); /* sama kayak uploader */
   padding: 15px;
   border-radius: 12px;
   width: 90vw;
@@ -162,13 +162,14 @@ button:active {
 .footer-note {
   margin-top: 6px;
   font-size: 14px;
-  color: #888;
+  color: #fff;
   font-family: 'BebasNeue', sans-serif;
   text-align: center;
   opacity: 0;
   transition: opacity 0.8s ease;
   display: none;
   pointer-events: none;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
 }
 .footer-note.show {
   display: block;
@@ -209,14 +210,31 @@ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover
 </head>
 <body>
 	<!-- Global Music -->
-<audio id="musicAudio" autoplay loop>
+<audio id="musicAudio" loop>
   <source src="Music.mp3" type="audio/mpeg">
 </audio>
 <script>
   const musicAudio = document.getElementById("musicAudio");
-  // kalau ada error autoplay di browser, musik bakal start setelah user klik halaman
+
+  // Ambil setting terakhir dari localStorage
+  const savedOn = localStorage.getItem("audioOn");
+  const savedVolume = parseFloat(localStorage.getItem("audioVolume"));
+
+  if (!isNaN(savedVolume)) {
+    musicAudio.volume = savedVolume;
+  }
+
+  if (savedOn === "On") {
+    musicAudio.play().catch(()=>{});
+  } else {
+    musicAudio.pause();
+  }
+
+  // kalau autoplay diblokir browser → play setelah klik
   document.body.addEventListener("click", () => {
-    if (musicAudio.paused) musicAudio.play().catch(()=>{});
+    if (savedOn === "On" && musicAudio.paused) {
+      musicAudio.play().catch(()=>{});
+    }
   }, { once: true });
 </script>
 	<!-- Background Video -->

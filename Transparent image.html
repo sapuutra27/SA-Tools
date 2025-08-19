@@ -139,14 +139,31 @@
 </head>
 <body>
 	<!-- Global Music -->
-<audio id="musicAudio" autoplay loop>
+<audio id="musicAudio" loop>
   <source src="Music.mp3" type="audio/mpeg">
 </audio>
 <script>
   const musicAudio = document.getElementById("musicAudio");
-  // kalau ada error autoplay di browser, musik bakal start setelah user klik halaman
+
+  // Ambil setting terakhir dari localStorage
+  const savedOn = localStorage.getItem("audioOn");
+  const savedVolume = parseFloat(localStorage.getItem("audioVolume"));
+
+  if (!isNaN(savedVolume)) {
+    musicAudio.volume = savedVolume;
+  }
+
+  if (savedOn === "On") {
+    musicAudio.play().catch(()=>{});
+  } else {
+    musicAudio.pause();
+  }
+
+  // kalau autoplay diblokir browser → play setelah klik
   document.body.addEventListener("click", () => {
-    if (musicAudio.paused) musicAudio.play().catch(()=>{});
+    if (savedOn === "On" && musicAudio.paused) {
+      musicAudio.play().catch(()=>{});
+    }
   }, { once: true });
 </script>
   <!-- Background Video -->

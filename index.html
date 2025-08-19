@@ -353,6 +353,37 @@ body {
     window.addEventListener("touchmove", e => { if (isDragging) updateVolumeFromEvent(e); });
     window.addEventListener("touchend", () => { isDragging = false; });
 
+    function saveAudioSettings() {
+  localStorage.setItem("audioOn", audioToggle.textContent);
+  localStorage.setItem("audioVolume", musicAudio.volume);
+}
+
+// Update penyimpanan setiap kali toggle berubah
+audioRow.addEventListener("click", () => {
+  const isOn = (audioToggle.textContent === "On");
+  if (isOn) {
+    audioToggle.textContent = "Off";
+    musicAudio.pause();
+  } else {
+    audioToggle.textContent = "On";
+    musicAudio.play();
+  }
+  audioToggle.classList.toggle("active");
+  saveAudioSettings();
+  ...
+});
+
+// Update penyimpanan setiap kali volume berubah
+function setVolumeFromIndex(index) {
+  levels.forEach((lvl, i) => {
+    lvl.classList.toggle("active", i <= index);
+  });
+  const volume = (index + 1) / levels.length;
+  musicAudio.volume = volume;
+  saveAudioSettings();
+  ...
+}
+
     // Back disembunyikan dulu
     backToMain();
   </script></body>
