@@ -630,7 +630,7 @@ Solusi 2: Tingkatkan Running Script di fastman92limitAdjuster_GTASA.ini
 Jangan kasih nilai terlalu besar atau bahkan pakai 99999.
 Cukup naikkan 100 sampai gamemu bisa load savegame.
 Pakai nilai terlalu besar itu percuma dan bisa merusak seluruh savegame.
-Download: fastman92limitAdjuster_GTASA.ini
+
 
 Error: 0x410F30
 Masalah: Terlalu banyak bangunan untuk dirender.

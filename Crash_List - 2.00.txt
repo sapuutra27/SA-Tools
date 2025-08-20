@@ -267,7 +267,7 @@ This can be caused by the fastman limit Adjuster or the collision itself.
 Note: This crash issue is mostly caused by excessive values in colmodels/size or limitations related to process collisions in fastman limit Adjuster.
 Solution: Try reconfiguring the limits to reasonable values.
 Use 99999 is bad for game processing to some extent and it is recommended not to use it as a limit value.
-Download: fastman92limitAdjuster_GTASA.ini
+
 
 Error: 0x2DD29C
 Problem: Process collision model
@@ -616,7 +616,7 @@ This crash was caused by reaching the Renderer limit.
 Solution: Increase the limit of Visible LOD pointers in FLA under the [RENDERER LIMITS] section
 Set 2 or 3 times the original value. 4000 should be enough.
 Again don't use 99999!
-Download: fastman92limitAdjuster_GTASA.ini
+
 
 Error: 0x410F30
 Problem: Too many Buildings to render.
@@ -624,7 +624,7 @@ This crash was caused by reaching the Renderer limit.
 Solution: Increase the limit of Visible entity pointers in FLA under the [RENDERER LIMITS] section
 Set 2 or 3 times the original value. 4000 should be enough.
 Again don't use 99999!
-Download: fastman92limitAdjuster_GTASA.ini
+
 
 Error: 0x4232C2
 Problem 1: Don't know if it's an ID for a vehicle/pedestrian.
@@ -749,7 +749,7 @@ Solution 2: Increase your Running Script in fastman92limitAdjuster_GTASA.ini.
 Don't give a larger value or even use 99999.
 Just increase it by 100 until your game can load the savegame.
 Using a larger value is pointless and can ruin your entire save game.
-Download: fastman92limitAdjuster_GTASA.ini
+
 
 Error: 0x4B8954
 Problem: The game can't get the ped id.
