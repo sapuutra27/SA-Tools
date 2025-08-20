@@ -7,7 +7,7 @@ Didokumentasikan oleh ARM
 HARAP BACA.
 
 Ehem: beberapa alamat crash masih belum (sepenuhnya) terdokumentasi.
-Teks di dalam/setelah simbol ini (||...||) adalah indikasi bahwa masalah dan solusi tertentu masih belum lengkap.
+Teks di dalam/setelah simbol ini (...) adalah indikasi bahwa masalah dan solusi tertentu masih belum lengkap.
 Ini berarti mungkin ada masalah lain '-'. namun masalah yang sudah diketahui telah didokumentasikan.
 
 Saya berusaha sebaik mungkin untuk mendokumentasikan semua masalah dan solusinya.
@@ -15,6 +15,28 @@ Oleh karena itu mungkin ada beberapa alamat crash dimana masalah/solusinya salah
 
 Terima kasih kepada Google Translate karena telah meningkatkan Englishu saya...
 
+
+
+Error: 0x6AACCA
+Masalah: Alamat ini sering muncul di log crash setelah keluar dari game.
+Tentang: Mungkin ada masalah dengan fungsi keluar game.
+atau ya sudah begitu adanya.
+Kalau tidak crash saat gameplay, abaikan saja
+
+Error: 0x372B0
+Masalah: Berhubungan dengan plugin ClassicFX
+Solusi: Nonaktifkan HeatHaze di ClassicFX
+
+Error: 0x32B604
+Masalah: Cleo leisurely cycling
+Solusi: Cleomod merusak sesuatu yang menyebabkan script ini crash, ini akan berjalan normal di versi 2.0.1.5
+
+Error: 0xA5B81A
+Masalah: Mungkin karena plugin Moving Moon..?
+Solusi: Coba update plugin Moving Moon, atau hapus pluginnya
+
+Error: 0x398B2
+Masalah: Jika kamu sudah mengubah suara - itulah alasannya
 
 Error: 0x32C49E
 Masalah: Batas script berjalan.
@@ -105,7 +127,7 @@ Solusi: Ini bisa diperbaiki dengan mengurangi jumlah poligon pada model mengguna
 
 Error: 0x1DE8F0
 Masalah: Memuat nilai carpipeline.
-||Butuh info lebih lanjut. NVM aku pikir crash ini karena salahku xD||
+Butuh info lebih lanjut. NVM aku pikir crash ini karena salahku xD
 
 Error: 0x1E47B6, 0x21AEFE
 Masalah: Memori tidak cukup untuk memuat player.img yang sudah dimodifikasi atau model terlalu berat.
@@ -130,7 +152,7 @@ Cara lain adalah menonaktifkan opsi RLE Compression di pengaturan TXDTool dan im
 
 Error: 0x1E7F9A
 Masalah: Memuat Texture Database Dictionary 
-||Mungkin sama seperti di bawah||
+Mungkin sama seperti di bawah
 
 Error: 0x1E908A 
 Masalah 1: Cache texdb hilang (gta3, gta_int, menu, mobile, txd atau player...).
@@ -153,7 +175,7 @@ Error: 0x221134
 Kemungkinan Masalah: Terkait dengan pengambilan mesh vertex dari sebuah model.
 Crash ini intinya berkaitan dengan model (.dff).
 Solusi: Hapus model jika itu add-on, ganti dengan model asli game (.dff) jika bukan add-on.
-||Butuh investigasi lebih lanjut||
+Butuh investigasi lebih lanjut
 
 Error: 0x222DB6, 0x2228CC
 Masalah: OpenGL/Default/Instance Render CallBack.
@@ -162,11 +184,11 @@ Kemungkinan Alasan: Model punya masalah dengan struktur entry list.
 Oleh karena itu, model tidak bisa diproses/render dengan benar atau model tidak cocok diproses oleh game.
 Kemungkinan Solusi: Instal ulang seluruh arsip .img yang sudah dimodifikasi dengan yang asli.
 Atau coba bangun ulang .img dengan cara ekspor semua model lalu impor kembali ke dalam .img bersih (tidak ada file di dalamnya) lalu rebuild (Rebuild dengan img baru bersih).
-||Crash ini sangat acak, karena itu sulit mengetahui model mana yang menyebabkannya, bisa jadi ada alasan lain kenapa model ini menyebabkan crash.||
+Crash ini sangat acak, karena itu sulit mengetahui model mana yang menyebabkannya, bisa jadi ada alasan lain kenapa model ini menyebabkan crash.
 
 Error: 0x25F0A4
 Masalah: Model pada cutscene hilang
-||Aku lupa menuliskan masalahnya xd||
+Aku lupa menuliskan masalahnya xd
 
 Error: 0x2670D4 
 Masalah 1: Model kendaraan (.dff) hilang atau nama kendaraan salah di file IDE.
@@ -184,7 +206,7 @@ Kamu mungkin tidak sengaja menghapus LOD game saat memodifikasi .img. Cukup cari
 
 Error: 0x26711E
 Masalah: File hilang
-||File apa yang hilang? Butuh observasi lebih lanjut.||
+File apa yang hilang? Butuh observasi lebih lanjut.
 
 Error: 0x26726A 
 Masalah: Beberapa file penting hilang, seperti mainV1.scm atau file .gxt di folder Text.
@@ -210,7 +232,7 @@ Error: 0x280F3A, 0x280F28
 Masalah: Terkait dengan file IPL.
 Seperti IPL biner tidak menemukan atau kehilangan id yang terhubung di IPL teks/non-biner.
 Solusi: Ganti dengan IPL asli atau hapus mod untuk memperbaiki masalah.
-||Ingin menulis cara memperbaikinya, tapi bakal agak ribet °-° jadi solusi cepatnya ya hapus/ganti dulu.||
+Ingin menulis cara memperbaikinya, tapi bakal agak ribet °-° jadi solusi cepatnya ya hapus/ganti dulu.
 
 Error: 0x2CA02A
 Masalah: Tekstur Vehiclegrunge256 hilang.
@@ -222,11 +244,11 @@ Masalah: Terkait dengan properti material model. (Bukan properti Tekstur, keduan
 Solusi: Crash ini terjadi secara acak, jadi sulit untuk mengetahui model mana yang menyebabkannya.
 Namun, crash ini disebabkan oleh objek yang propertinya tidak cocok/tidak didukung untuk versi Android.
 Atau hanya sesuatu yang berhubungan dengan Properti Material model.
-||Yang ini mungkin salah||
+Yang ini mungkin salah
 
 Error: 0x2D29A8
 Masalah: Request model.
-||Apa yang kamu butuhkan, masta? Butuh observasi lebih lanjut. mungkin sama seperti yang di bawah?||
+Apa yang kamu butuhkan, masta? Butuh observasi lebih lanjut. mungkin sama seperti yang di bawah?
 
 Error: 0x2D2AAE
 Masalah 1: Tidak bisa menemukan request model.
@@ -246,7 +268,7 @@ Atau kamu bisa instal plugin timecyc 24h.
 
 Error: 0x2D980C
 Masalah: player.img terlalu berat
-||Hmmm, cuma itu? Butuh observasi lebih lanjut.||
+Hmmm, cuma itu? Butuh observasi lebih lanjut.
 
 Error: 0x2DB49C
 Masalah: Terkait dengan proses model collision.
@@ -257,7 +279,7 @@ Menggunakan 99999 buruk untuk pemrosesan game pada titik tertentu dan tidak disa
 
 Error: 0x2DD29C
 Masalah: Memproses model collision
-||Butuh observasi lebih lanjut||
+Butuh observasi lebih lanjut
 
 Error: 0x2E172E
 Masalah: Mencapai batas maksimum ColModels.
@@ -276,7 +298,7 @@ Solusi: Instal model rumput ke folder models.
 
 Error: 0x301088
 Masalah: Tidak diketahui, terkait percakapan ped. Mod atau file apapun yang mengubah percakapan ped bisa jadi penyebab. Misalnya audio, ped add-on dengan konfigurasi tidak jelas, atau game tidak sanggup menangani fungsi percakapan karena terlalu banyak ped.
-||Butuh observasi lebih lanjut, mungkin salah||
+Butuh observasi lebih lanjut, mungkin salah
 
 Error: 0x32ACE4, 0x32ACB4, 0x32DA22
 Masalah: Menyentuh batas Running Script.
@@ -310,7 +332,7 @@ Solusi: Gunakan load game atau new game.
 Error: 0x345A3C
 Masalah: Disebabkan oleh script CLEO. Terkait dengan ped?
 
-||Kenapa aku repot-repot masukin ini di sini|| *sekarat
+Kenapa aku repot-repot masukin ini di sini *sekarat
 Error: 0x34773A
 
 Error: 0x349622
@@ -338,7 +360,7 @@ Bisa juga ada penyebab lain seperti script CLEO itu sendiri, savegame, atau scri
 
 Error: 0x3519BC
 Masalah: Disebabkan oleh script CLEO. Buruk atau konflik dengan script lain.
-||alamat ini yang paling sering dilaporkan||
+alamat ini yang paling sering dilaporkan
 
 Error: 0x35682A
 Masalah: main.scm. sesuatu terkait animasi/opcode?
@@ -347,7 +369,7 @@ Masalah: main.scm. sesuatu terkait animasi/opcode?
 
 Error: 0x360304
 Masalah: Mobil tidak mendukung penggunaan transfender
-||Butuh observasi lebih lanjut||
+Butuh observasi lebih lanjut
 
 Error: 0x36711A
 Masalah: Disebabkan oleh tekstur yang hilang pada partikel efek di file effect.fxp.
@@ -380,7 +402,7 @@ Jika kamu baru saja mengganti atau menambahkan mobil, coba ganti dengan model la
 Cara sederhana lain untuk memperbaikinya adalah mengganti semua dff modifikasi atau mengganti seluruh arsip img.
 Kemungkinan Masalah 2: Karena penggunaan flag id yang sembarangan pada ID model di file IDE.
 Kemungkinan Solusi 2: Ganti menggunakan file IDE asli.
-||Butuh observasi lebih lanjut||
+Butuh observasi lebih lanjut
 
 Error: 0x38509A
 Masalah: Set model col.
@@ -397,7 +419,7 @@ Masalah: Menggunakan ID di atas 20000 untuk mendefinisikan model.
 Solusi 1: Turunkan ID di bawah 19999. Tentu kamu harus menggunakan ID yang kosong (ID yang belum dipakai model lain).
 Solusi 2: Atur nilai FILE_TYPE_DFF pada bagian LIMITS ID di fastman92limitAdjuster_GTASA.ini di atas 20000, atau jika bingung, cukup masukkan 24000.
 Sekarang kamu bisa mendefinisikan model baru dengan ID 20000 sampai 23999.
-||Apakah ini sama dengan Error 0x3EB022 '-' ||
+Apakah ini sama dengan Error 0x3EB022 '-' 
 
 Error: 0x385FD0
 Masalah: Menyentuh batas Timed Objects.
@@ -421,12 +443,12 @@ Solusi: Tingkatkan limit "Ped Models" di fastman92limitAdjuster_GTASA.ini pada b
 
 Error: 0x38611A
 Masalah: Baris boat tidak terdefinisi di handling.cfg
-||Butuh waktu untuk observasi lebih lanjut||
+Butuh waktu untuk observasi lebih lanjut
 
 Error: 0x386156
 Masalah: Apakah ini model mobil?
 Tentang: Crash ini agak acak, seperti ketika kamu teleport ke suatu tempat lalu game belum siap untuk merender. Coba lagi, jika crash dan keluar alamat yang sama dari aktivitas yang sama, berarti terkait hal itu.
-||Masih butuh info dan observasi lebih||
+Masih butuh info dan observasi lebih
 
 Error: 0x3879EA
 Masalah 1: Menyentuh batas clump models.
@@ -440,7 +462,7 @@ Masalah 1: Jenis kendaraan salah pada beberapa baris kendaraan di vehicle.ide (a
 Solusi 1: Pada baris kendaraan yang crash, ubah tipe kendaraan sesuai tipe model (motor, mobil, kapal).
 Masalah 2: Mobil tidak punya roda terpasang (modeling/ekspor buruk).
 Solusi 2: Ganti dengan model lain atau coba perbaiki roda yang hilang menggunakan ZModeler, 3DSMax, atau software 3D lain yang bisa mengedit & ekspor model dff.
-||Hmm apakah ini sama dengan 0x56088A? aku ragu||
+Hmm apakah ini sama dengan 0x56088A? aku ragu
 
 Error: 0x389888 
 Masalah: Beberapa file di folder data rusak atau hilang. 
@@ -453,12 +475,12 @@ Ganti dengan .ifp lain atau coba cari animasi apa yang hilang lalu tambahkan kem
 
 Error: 0x38A61C
 Masalah: Anim blend hierarchy 
-||Masih butuh info lebih||
+Masih butuh info lebih
 
 Error: 0x38B870
 Masalah: Anim blend.
 Solusi:
-||Masih butuh info lebih||
+Masih butuh info lebih
 
 Error: 0x38DD0E
 Masalah: Senjata ini tidak bisa menggunakan animasi tersebut (tidak kompatibel).
@@ -488,11 +510,11 @@ Catatan: Stack Printing di aml_crashlog.txt bisa memberitahu nama model dan file
 Error: 0x3EB07C
 Masalah: Sebuah objek tidak bisa dipre-render.
 Kemungkinan ada objek yang memiliki efek 2dfx.
-||Masih butuh info lebih lanjut||
+Masih butuh info lebih lanjut
 
 Error: 0x3EB9FC
 Masalah: 
-||?butuh info lebih, aku lupa||
+?butuh info lebih, aku lupa
 
 Error: 0x3EBCF8 
 Masalah 1: Disebabkan arsip IMG hilang atau file .dff tidak punya collision.
@@ -508,7 +530,7 @@ Masalah 4: IPL biner tidak menemukan ID yang terhubung di IPL teks/non-biner ata
 Solusi 4: Instal mod secara bertahap sesuai readme. Coba instal di game bersih untuk memeriksa apakah mod berfungsi normal. Mungkin ada konflik dengan mod map lain yang memakai file IPL sama.
 Jika tidak tahu mod mana yang menyebabkan crash atau tidak tahu cara memperbaikinya, hapus game dan mulai ulang.
 Masalah 5: Menggunakan ID di atas 19999.
-Solusi 5: Untuk menggunakan ID di atas 20000 kamu perlu mengaktifkan ID LIMITS dan meningkatkan FILE_TYPE_DFF di fastman92LimitAdjuster_GTASA.ini.
+Solusi 5: Untuk menggunakan ID di atas 20000 kamu perlu mengaktifkan ID LIMITS dan meningkatkan FILE_TYPE_DFF di fastman92limitAdjuster_GTASA.ini
 Masalah 6: Menyentuh limit ID file TXD.
 Solusi 6: Tingkatkan limit FILE_TYPE_TXD di FLA.
 FYI: kamu bisa menambahkan hingga 1274 TXD baru. Itu sangat banyak dan sulit tercapai.
@@ -519,7 +541,7 @@ Solusi 7: Identifikasi bagian tuning mana yang memakai ID sama dengan model map 
 
 Error: 0x3EBF56
 Masalah: Terkait IPL. Bisa disebabkan savegame.
-||Butuh observasi lebih||
+Butuh observasi lebih
 
 Error: 0x3EBFD0
 Masalah: 
@@ -578,8 +600,8 @@ Solusi 4: Instal AML Limit Adjuster (AMLLA) lalu tingkatkan limit "Objects".
 Error: 0x408B7A
 Masalah: Nilai Matrices terlalu rendah.
 Solusi: Apa kamu mencoba mengaturnya lebih rendah dari nilai default? Kamu gila? Atur kembali ke default atau lebih tinggi, tolong.
-||Yang ini mungkin salah?
-lagian siapa juga yang mau menurunkan limit sampai di bawah default..||
+Yang ini mungkin salah?
+lagian siapa juga yang mau menurunkan limit sampai di bawah default..
 
 Error: 0x408C88
 Masalah: Menyentuh limit Matrices.
@@ -598,6 +620,18 @@ Solusi: Tingkatkan limit Visible LOD pointers di FLA pada bagian [RENDERER LIMIT
 Atur 2 atau 3 kali dari nilai asli. 4000 seharusnya cukup.
 Dan jangan pakai 99999!
 
+Error: 0x48CA9A
+Masalah 1: Savegame rusak karena misi terakhir yang kamu mainkan.
+Solusi 1: Ini masalah umum saat main gta sa story dengan mod (berhubungan dengan cleo atau file yang dimodifikasi).
+Hapus savegame dan mulai dengan savegame lain atau game baru.
+Masalah 2: Ukuran Running Script berbeda di Savegame.
+Solusi 2: Tingkatkan Running Script di fastman92limitAdjuster_GTASA.ini
+!!Catatan Solusi 2!!
+Jangan kasih nilai terlalu besar atau bahkan pakai 99999.
+Cukup naikkan 100 sampai gamemu bisa load savegame.
+Pakai nilai terlalu besar itu percuma dan bisa merusak seluruh savegame.
+Download: fastman92limitAdjuster_GTASA.ini
+
 Error: 0x410F30
 Masalah: Terlalu banyak bangunan untuk dirender.
 Crash ini disebabkan karena mencapai batas Renderer.
@@ -615,17 +649,17 @@ Solusi 2: Mulai new game atau load savegame lain.
 
 Error: 0x4232C4
 Masalah: Sebuah objek (entitas) terjebak di savegame?
-||Sama seperti di atas?||
+Sama seperti di atas?
 
 Error: 0x44305C 
 Masalah: Disebabkan oleh request radar section. Tidak terlalu tahu apa masalahnya. Mungkin terkait tekstur radar "radar00...radar143".
 Kemungkinan Solusi: Jika error ini muncul lagi, coba instal ulang tekstur radar kamu menggunakan uncompressed32bpp.
 Import wizard: uncheck camnorm dan texture rasterhash.
-||Bisa jadi salah||
+Bisa jadi salah
 
 Error: 0x443172 atau 0x44313E
 Masalah: Radar Stream.
-||Seperti tertulis, butuh observasi lebih||
+Seperti tertulis, butuh observasi lebih
 
 Error: 0x44EB06
 Masalah 1: Collision berat.
@@ -645,7 +679,7 @@ Kamu bisa pakai Vehicle Spawner CLEO untuk menemukan model dengan spawn satu per
 Error: 0x454F46
 Masalah: Model kendaraan buruk.
 Solusi: Ganti dengan model lain atau hapus jika add-on.
-||Cuma tebakan, akan diperbarui, tolong jangan dipakai-'||
+Cuma tebakan, akan diperbarui, tolong jangan dipakai-'
 
 Error: 0x4564C0
 Masalah: ID model tidak didefinisikan di manapun dalam game dan digunakan di procobj.dat atau model tidak punya collision yang dimuat.
@@ -745,7 +779,7 @@ Solusi: Periksa kembali nama model untuk semua bagian tuning (wheel_gn*, exh_* d
 Error: 0x4CF438
 Masalah: Give Delayed player weapon.
 Ini seperti sesuatu terjadi ketika kamu tiba-tiba mengganti senjata? Hmmm
-||Sepertinya bukan.? Butuh info lebih||
+Sepertinya bukan.? Butuh info lebih
 
 Error: 0x4D6A92
 Masalah: Terlalu banyak ped yang di-spawn.
@@ -764,7 +798,7 @@ Solusi: Tingkatkan limit FILE_TYPE_IFP pada fastman92limitAdjuster_GTASA.ini di 
 Error: 0x51E33A
 ...
 Solusi: Menggunakan F92 Limit Adjuster yang lebih baru, ini terjadi saat kamu memakai FLA lama seperti 6.0 dengan konfigurasi FLA terbaru.
-||Tidak mungkin mereka melakukan ini dengan benar.... juga bisa jadi salah||
+Tidak mungkin mereka melakukan ini dengan benar.... juga bisa jadi salah
 
 Error: 0x5946EC
 Masalah: Menyentuh limit pada water vertices.
@@ -786,11 +820,11 @@ Solusi: Perbarui JPatch jadul kamu, ini sudah diperbaiki.
 Error: 0x5A576A
 ...
 Game mencoba menghapus beberapa model yang tidak dipakai (mereka berada di luar pandangan kamera).
-||Butuh observasi lagi?||
+Butuh observasi lagi?
 
 Error: 0x6AACEC
 Masalah: Terkait dengan IDE(?)
-||Masih butuh info lagi||
+Masih butuh info lagi
 
 //OTHER MODULE//
 catatan: libc.so adalah library untuk bahasa C dalam pemrograman. jika... FLA dengan nilai "unlimited" (999999) atau terkait fungsi game.
@@ -816,7 +850,7 @@ Solusi: Periksa semua nama model bagian tuning (exh_*, bnt_*, wheel_* dll) dan p
 Error: 0x4CF438
 Masalah: Give Delayed player weapon.
 Sepertinya terjadi saat kamu mengganti senjata tiba-tiba? 
-||Belum jelas, butuh info lebih lanjut||
+Belum jelas, butuh info lebih lanjut
 
 Error: 0x4D6A92
 Masalah: Terlalu banyak ped yang spawn.
@@ -854,11 +888,11 @@ Solusi: Update JPatch lama, bug ini sudah diperbaiki.
 
 Error: 0x5A576A
 Masalah: Game mencoba menghapus model yang berada di luar pandangan kamera.
-||Butuh observasi lebih lanjut, detail kurang jelas||
+Butuh observasi lebih lanjut, detail kurang jelas
 
 Error: 0x6AACEC
 Masalah: Terkait dengan file IDE (?)
-||Masih butuh info lebih lanjut||
+Masih butuh info lebih lanjut
 
 //OTHER MODULE//
 Catatan: libc.so adalah library bahasa C di pemrograman.  
@@ -942,4 +976,4 @@ Error: "libplugin_fastman92limitAdjuster_ANDROID_ARM32.so" + 0x89390
 Tentang: fastman92 limit adjuster 6.5
 Masalah: Limit ID arsip col.
 Solusi: Update FLA ke versi terbaru.
-||Entahlah, jangan tanya aku||
+Entahlah, jangan tanya aku

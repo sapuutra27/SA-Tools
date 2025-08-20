@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Main Menu</title>
+  <title>SA-Tools</title>
   <style>
     @font-face {
       font-family: 'beckett';
@@ -163,27 +163,129 @@ body {
   display: inline-block;
 }
 
-  </style>
+  
+#cornerLogo.back2 { position: absolute; top: 0; right: 0; height: 200px; }
+
+#creditsMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 2.2em;
+}
+
+#creditsBack {
+  position: absolute;
+  bottom: 100px;
+  right: 40px;
+  font-size: clamp(20px, 3vw, 28px);
+  cursor: pointer;
+  text-transform: uppercase;
+  color: var(--menu-color-default);
+  transition: color 0.2s;
+  display: none;   /* <-- normalnya hidden */
+  padding-left: 30px;
+}
+#creditsBack.active { color: var(--menu-color-active); }
+#creditsBack.active .back-arrow { display: inline-block; }
+
+#creditsMenu {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(16px, 2.5vw, 22px);
+  color: #bbb;
+  overflow: hidden;
+}
+
+#creditsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: scrollUp 70s linear infinite;
+}
+
+.credit-line {
+  opacity: 1; /* default langsung kelihatan */
+  animation: fadeOutTop 25s linear forwards;
+}
+
+.credit-line:nth-child(1) { animation-delay: 20s; }
+.credit-line:nth-child(2) { animation-delay: 21s; }
+.credit-line:nth-child(3) { animation-delay: 22s; }
+.credit-line:nth-child(4) { animation-delay: 23s; }
+.credit-line:nth-child(5) { animation-delay: 24s; }
+
+@keyframes scrollUp {
+  from { transform: translateY(25%); }
+  to   { transform: translateY(-120%); }
+}
+
+@keyframes fadeOutTop {
+  0%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.credit-label {
+  color: #fff;          
+  font-weight: bold;    
+  margin-bottom: -5px;
+  font-family: Arial, sans-serif;
+  text-transform: none;
+}
+
+.credit-name {
+  color: #aaa;          
+  font-weight: bold;    
+  margin-bottom: -15px;
+  font-family: Arial, sans-serif;
+  text-transform: none;
+}
+.credits-section .credit-name:last-child {
+  margin-bottom: 0;
+}
+</style>
 </head>
 <body>
-  <div id="title">Main Menu</div>
-  <img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />  <!-- Global Music -->  <audio id="musicAudio" loop>
+	<!--Touch Cursor -->
+	<img id="touchCursor" src="Cursor.png" alt="cursor" style="
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  display: none;
+  z-index: 9999;
+">
+    <div id="title">Main Menu</div>
+	<img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />  <!-- Global Music -->  <audio id="musicAudio" loop>
     <source src="Music.mp4" type="audio/mp4">
-  </audio>  <!-- Main Menu -->  <div id="mainMenu" class="menu active">
+    </audio> <audio id="creditsAudio" loop>
+    <source src="Credits.mp3" type="audio/mp3">
+    </audio> 
+    <!-- Main Menu -->
+    <div id="mainMenu" class="menu active">
     <div class="menu-item" onclick="openTools()"><img src="arrow.png" class="arrow" alt=">"> Select Tools</div>
     <div class="menu-item" onclick="openOptions()"><img src="arrow.png" class="arrow arrow-options" alt=">"> Options</div>
-    <div class="menu-item"><img src="arrow.png" class="arrow arrow-credits" alt=">"> Credits</div>
-  </div>  <!-- Tools Menu -->  <div id="toolsMenu" class="menu">
+    <div class="menu-item" onclick="openCredits()">
+    <img src="arrow.png" class="arrow arrow-credits" alt=">"> Credits
+    </div>
+    </div>  
+    <!-- Tools Menu -->
+    <div id="toolsMenu" class="menu">
     <div class="menu-item" onclick="openTransparanImage()"><img src="arrow.png" class="arrow" alt=">"> Transparan Image</div>
     <div class="menu-item" onclick="openCrashlog()"><img src="arrow.png" class="arrow" alt=">"> Crashlog Reader</div>
-  </div>
-  <div id="toolsBack" onclick="backToMain()">
+    </div>
+    <div id="toolsBack" onclick="backToMain()">
     <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
-  </div>  <!-- Options Menu -->  <div id="optionsMenu" class="menu">
+    </div>  
+    <!-- Options Menu -->
+    <div id="optionsMenu" class="menu">
     <div class="menu-item option-row" id="audioRow">
-      <img src="arrow.png" class="arrow" alt=">">
-      <span>Audio</span>
-      <span class="toggle" id="audioToggle">On</span>
+     <img src="arrow.png" class="arrow" alt=">">
+    <span>Audio</span>
+    <span class="toggle" id="audioToggle">On</span>
     </div>
     <div class="menu-item option-row" id="volumeRow">
       <img src="arrow.png" class="arrow" alt=">">
@@ -201,29 +303,236 @@ body {
     </div>
   </div>
   <div id="optionsBack" onclick="backToMain()">
+  <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
+</div>
+
+<!-- Credits Menu -->
+<div id="creditsMenu" class="menu">
+  <div id="creditsWrapper">
+<div class="credits-section">
+  <div class="credit-label">Android Mod Loader</div>
+  <div class="credit-name">[=-KILL MAN-=] / RusJJ</div>
+</div>
+    
+<div class="credits-section">
+  <div class="credit-label">CrashList Documented</div>
+  <div class="credit-name">ARM</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Crashlist Translate</div>
+  <div class="credit-name">TWSVN</div>
+</div>
+    
+<div class="credits-section">
+  <div class="credit-label">Custom Script & Integration</div>
+  <div class="credit-name">TWSVN</div>
+</div>
+    
+<div class="credits-section">
+  <div class="credit-label">JavaScript & JSON Pioneer</div>
+  <div class="credit-name">Douglas Crockford</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Creator of jQuery</div>
+  <div class="credit-name">John Resig</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Front-end Evangelist</div>
+  <div class="credit-name">Paul Irish</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Open Source & Inclusivity Advocate</div>
+  <div class="credit-name">Coraline Ada Ehmke</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">HTML Standard Founder</div>
+  <div class="credit-name">Tim Berners-Lee</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">CSS Creator</div>
+  <div class="credit-name">Håkon Wium Lie</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Git Creator</div>
+  <div class="credit-name">Linus Torvalds</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Node.js Original Author</div>
+  <div class="credit-name">Ryan Dahl</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">npm Founder</div>
+  <div class="credit-name">Isaac Z. Schlueter</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">React.js Creator</div>
+  <div class="credit-name">Jordan Walke</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Vue.js Creator</div>
+  <div class="credit-name">Evan You</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Angular Lead</div>
+  <div class="credit-name">Misko Hevery</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">GitHub Founders</div>
+  <div class="credit-name">Chris Wanstrath / PJ Hyett / Tom Preston-Werner</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">JavaScript Creator</div>
+  <div class="credit-name">Brendan Eich</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Web Standards Organization</div>
+  <div class="credit-name">World Wide Web Consortium (W3C)</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Open Source Community</div>
+  <div class="credit-name">Millions of Contributors Worldwide</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Early Web Pioneer</div>
+  <div class="credit-name">Marc Andreessen</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Mozilla & Firefox Advocate</div>
+  <div class="credit-name">Mitchell Baker</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Creator of PHP</div>
+  <div class="credit-name">Rasmus Lerdorf</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Creator of Python</div>
+  <div class="credit-name">Guido van Rossum</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Special Thanks</div>
+  <div class="credit-name">OpenAI / ChatGPT</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Supporter</div>
+  <div class="credit-name">Reyy</div>
+</div>
+  </div>
+</div>
+<div id="creditsBack" onclick="backToMain()">
+  <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
+</div>
+	
     <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
   </div>  <script>
     const menus = {
       main: document.getElementById('mainMenu'),
       tools: document.getElementById('toolsMenu'),
-      options: document.getElementById('optionsMenu')
+      options: document.getElementById('optionsMenu'),
+      credits: document.getElementById('creditsMenu')
     };
 
+    const touchCursor = document.getElementById("touchCursor");
     const title = document.getElementById('title');
     const cornerLogo = document.getElementById('cornerLogo');
     const toolsBack = document.getElementById('toolsBack');
     const optionsBack = document.getElementById('optionsBack');
-
+    const creditsBack = document.getElementById('creditsBack');
+    const creditsAudio = document.getElementById("creditsAudio");
     const selectSound = new Audio("select.mp3");
     const backSound   = new Audio("back.mp3");
     function playSelect(){ try{ selectSound.currentTime=0; selectSound.play(); }catch(_){} }
     function playBack(){ try{ backSound.currentTime=0; backSound.play(); }catch(_){} }
+
+
+    // Cursor Touch
+    window.addEventListener("touchstart", e => {
+    const t = e.touches[0];
+    touchCursor.style.left = (t.clientX - 20) + "px"; // 20 = setengah ukuran biar center
+    touchCursor.style.top  = (t.clientY - 20) + "px";
+    touchCursor.style.display = "block";
+});
+
+    window.addEventListener("touchmove", e => {
+    const t = e.touches[0];
+    touchCursor.style.left = (t.clientX - 20) + "px";
+    touchCursor.style.top  = (t.clientY - 20) + "px";
+});
+
+window.addEventListener("touchend", () => {
+  touchCursor.style.display = "none";
+});
+
+let currentTarget = null;
+
+function getMenuItemAt(x, y) {
+  const items = document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack');
+  for (let item of items) {
+    const rect = item.getBoundingClientRect();
+    if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+      return item;
+    }
+  }
+  return null;
+}
+
+window.addEventListener("touchmove", e => {
+  const t = e.touches[0];
+  const x = t.clientX, y = t.clientY;
+
+  // pindahin cursor
+  touchCursor.style.left = (x - 20) + "px";
+  touchCursor.style.top  = (y - 20) + "px";
+
+  const target = getMenuItemAt(x, y);
+
+  if (target !== currentTarget) {
+    // reset highlight lama
+    if (currentTarget) currentTarget.classList.remove("active");
+    currentTarget = target;
+
+    if (currentTarget) {
+  currentTarget.classList.add("active");
+}
+  }
+});
+
+window.addEventListener("touchend", () => {
+  if (currentTarget) {
+  currentTarget.click();               // klik langsung
+  currentTarget.classList.remove("active");
+  currentTarget = null;
+}
+touchCursor.style.display = "none";
+});
 
     function openTools() {
       menus.main.classList.remove('active');
       menus.tools.classList.add('active');
       toolsBack.style.display = 'block';
       optionsBack.style.display = 'none';
+      creditsBack.style.display = 'none';
       title.textContent = "Tools";
       cornerLogo.src = "back3.png";
       cornerLogo.className = "back3";
@@ -245,22 +554,52 @@ body {
       playSelect();
     }
 
-    function backToMain() {
+    function openCredits() {
+      menus.main.classList.remove('active');
+      menus.credits.classList.add('active');
+      creditsBack.style.display = 'block';
+      toolsBack.style.display = 'none';
+      optionsBack.style.display = 'none';
+      title.textContent = "Credits";
+      cornerLogo.src = "back2.png";
+      cornerLogo.className = "back2";
+      document.querySelectorAll('.menu-item, #creditsBack').forEach(i => i.classList.remove('active'));
+      creditsBack.classList.add('active');
+      playSelect();
+
+  // stop musik utama, play musik credits (sinkron setting)
+   if (audioToggle.textContent === "On") {
+      musicAudio.pause();
+      creditsAudio.currentTime = 0;
+      creditsAudio.volume = musicAudio.volume; // sync volume
+      creditsAudio.play();
+     }
+    }
+
+   function backToMain() {
       menus.tools.classList.remove('active');
       menus.options.classList.remove('active');
+      menus.credits.classList.remove('active');
       menus.main.classList.add('active');
       toolsBack.style.display = 'none';
       optionsBack.style.display = 'none';
+      creditsBack.style.display = 'none';
       title.textContent = "Main Menu";
       cornerLogo.src = "back8.png";
       cornerLogo.className = "back8";
       const first = menus.main.querySelector('.menu-item');
       if (first) {
-        document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(i => i.classList.remove('active'));
-        first.classList.add('active');
-      }
-      playBack();
+      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(i => i.classList.remove('active'));
+      first.classList.add('active');
     }
+    playBack();
+
+    // stop musik credits, play musik utama (kalau audio On)
+    creditsAudio.pause();
+    if (audioToggle.textContent === "On") {
+    musicAudio.play();
+     }
+   }
 
     // Global Music Audio
     const musicAudio = document.getElementById("musicAudio");
@@ -272,8 +611,8 @@ body {
 
     function playMusic() {
       try {
-        if (audioToggle.textContent === "On") {
-          musicAudio.play();
+      if (audioToggle.textContent === "On") {
+      musicAudio.play();
         }
       } catch(e){}
     }
@@ -290,15 +629,15 @@ body {
       window.location.href = "Transparent image.html"; 
     }
 
-    document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(item => {
+    document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(item => {
       item.addEventListener('click', () => {
-        document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-        if (item.id === "toolsBack" || item.id === "optionsBack") {
-          playBack();
-        } else {
-          playSelect();
-        }
+      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      if (item.id === "toolsBack" || item.id === "optionsBack" || item.id === "creditsBack") {
+      playBack();
+    } else {
+      playSelect();
+    }
       });
     });
 
@@ -309,11 +648,11 @@ body {
       });
       const volume = (index + 1) / levels.length;
       musicAudio.volume = volume;
-      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(el => el.classList.remove('active'));
       volumeRow.classList.add('active');
     }
 
-    // Default volume full
+    // Default Volume Full
     setVolumeFromIndex(levels.length - 1);
 
     levels.forEach((lvl, i) => {
@@ -338,42 +677,41 @@ body {
     window.addEventListener("touchend", () => { isDragging = false; });
 
     function saveAudioSettings() {
-  localStorage.setItem("audioOn", audioToggle.textContent);
-  localStorage.setItem("audioVolume", musicAudio.volume);
-}
+    localStorage.setItem("audioOn", audioToggle.textContent);
+    localStorage.setItem("audioVolume", musicAudio.volume);
+    }
 
-// Audio Toggle
-audioRow.addEventListener("click", () => {
-  const isOn = (audioToggle.textContent === "On");
-  if (isOn) {
+    // Audio Toggle
+    audioRow.addEventListener("click", () => {
+    const isOn = (audioToggle.textContent === "On");
+    if (isOn) {
     audioToggle.textContent = "Off";
     musicAudio.pause();
-  } else {
-    audioToggle.textContent = "On";
-    musicAudio.play();
-  }
-  audioToggle.classList.toggle("active");
-  document.querySelectorAll('.menu-item, #toolsBack, #optionsBack')
+    } else {
+     audioToggle.textContent = "On";
+     musicAudio.play();
+    }
+     audioToggle.classList.toggle("active");
+     document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack')
     .forEach(i => i.classList.remove('active'));
-  audioRow.classList.add('active');
-  playSelect();
-  saveAudioSettings(); // <-- simpan setting
+     audioRow.classList.add('active');
+     playSelect();
+     saveAudioSettings(); // <-- simpan setting
 });
 
-// Update penyimpanan setiap kali volume berubah
-function setVolumeFromIndex(index) {
-  levels.forEach((lvl, i) => {
-    lvl.classList.toggle("active", i <= index);
-  });
+     // Update penyimpanan setiap kali volume berubah
+    function setVolumeFromIndex(index) {
+     levels.forEach((lvl, i) => {
+     lvl.classList.toggle("active", i <= index);
+});
   
-  const volume = (index + 1) / levels.length;
-  musicAudio.volume = volume;
-  document.querySelectorAll('.menu-item, #toolsBack, #optionsBack')
-    .forEach(el => el.classList.remove('active'));
-  volumeRow.classList.add('active');
-  saveAudioSettings(); // <-- simpan setting
-}
-
+    const volume = (index + 1) / levels.length;
+    musicAudio.volume = volume;
+    document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack')
+   .forEach(el => el.classList.remove('active'));
+    volumeRow.classList.add('active');
+    saveAudioSettings(); // <-- simpan setting
+    }
     // Back disembunyikan dulu
     backToMain();
   </script></body>

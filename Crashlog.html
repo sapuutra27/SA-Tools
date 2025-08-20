@@ -195,6 +195,22 @@ button:active {
 .highlight-problem { color: rgb(255,160,36); font-weight: bold; }
 .highlight-solution { color: rgb(168,255,5); font-weight: bold; }
 .highlight-note { color: rgb(214,214,214); font-style: italic; }
+.highlight-info { color: rgb(77, 208, 225); font-weight: bold; }
+.highlight-warning { color: rgb(250, 204, 21); font-weight: bold; }
+.highlight-generic { color: rgb(167, 139, 250); font-weight: bold; }
+
+.spoiler {
+  background-color: rgb(64,64,64);
+  color: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0 4px;
+}
+
+.spoiler.revealed {
+  color: inherit;
+}
 
 .credit {
   margin-top: 25px;
@@ -267,6 +283,19 @@ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover
     let crashLogContent = "";
     let currentTexts = {};
 
+     function parseSpoiler(text){
+  return text.replace(/\|\|(.*?)\|\|/g, (match, p1) => {
+    return `<span class="spoiler">${p1}</span>`;
+  });
+}
+
+// listener biar bisa diklik
+document.addEventListener('click', function(e){
+  if(e.target.classList.contains('spoiler')){
+    e.target.classList.toggle('revealed');
+  }
+});
+
     function showTempMessage(el){
       el.style.display = 'block';
       el.classList.remove('fadeout');
@@ -325,7 +354,7 @@ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover
 
             const content = document.createElement('div');
             content.style.marginLeft = "12px";
-            content.textContent = rest;
+            content.innerHTML = parseSpoiler(rest);
             details.appendChild(content);
 
             lastDetails = details;
@@ -342,7 +371,7 @@ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover
 
             const content = document.createElement('div');
             content.style.marginLeft = "12px";
-            content.textContent = rest;
+            content.innerHTML = parseSpoiler(rest);
             solDetails.appendChild(content);
             solDetails.lastContent = content;
 
@@ -384,12 +413,34 @@ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover
             }
           }
 
-          const span = document.createElement('span');
-          span.textContent = label;
-          container.appendChild(span);
-          currentTextNode = document.createTextNode(rest);
-          container.appendChild(currentTextNode);
-          return {container};
+          // === Fallback: label baru/umum, selalu terpisah dan bisa di-klik ===
+const genDetails = document.createElement('details');
+const genSummary = document.createElement('summary');
+genSummary.textContent = label;
+
+// styling sesuai jenis label umum
+if (/warning|peringatan/.test(labelLower)) {
+  genSummary.className = 'highlight-warning';
+} else if (/info|informasi|about|tentang/.test(labelLower)) {
+  genSummary.className = 'highlight-info';
+} else {
+  genSummary.className = 'highlight-generic';
+}
+
+genDetails.appendChild(genSummary);
+
+// isi konten (ngumpet dulu, muncul setelah klik)
+if (rest) {
+  const content = document.createElement('div');
+  content.style.marginLeft = "12px";
+  content.innerHTML = parseSpoiler(rest);
+  genDetails.appendChild(content);
+  genDetails.lastContent = content;
+}
+
+// selalu panel terpisah
+lastDetails = genDetails;
+return { container: genDetails };
         }
 
         if(lastDetails && line.trim() !== ""){
