@@ -7,6 +7,10 @@
   <title>SA-Tools</title>
   <style>
     @font-face {
+      font-family: 'bebasneue';
+      src: url('./BebasNeue-Regular.ttf') format('truetype');
+    }
+    @font-face {
       font-family: 'beckett';
       src: url('./beckett.ttf') format('truetype');
     }
@@ -45,7 +49,7 @@ body {
   position: absolute;
   top: 55%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateX(-11px);
   font-size: clamp(22px, 4vw, 32px);
   font-weight: bold;
   text-transform: uppercase;
@@ -63,6 +67,8 @@ body {
   user-select: none;
   text-align: center;
   padding-left: 30px;
+  line-height: 2.0em;   /* dari 2.2em jadi lebih rapat */
+  transform: translateY(-30px);
 }
 .menu-item.active { color: var(--menu-color-active); }
 
@@ -246,6 +252,26 @@ body {
 .credits-section .credit-name:last-child {
   margin-bottom: 0;
 }
+
+#footerBrand {
+  position: absolute;
+  bottom: 150px;       /* jarak dari bawah */
+  left: 50%;
+  transform: translateX(-45%);
+  font-family: 'bebasneue', sans-serif;
+  font-size: 10px;     /* ukuran kecil */
+  color: var(--menu-color-active);
+  text-shadow: 2px 2px 4px #000;
+  letter-spacing: 2px;
+
+  /* animasi RGB */
+  animation: rgbColor 5s linear infinite;
+}
+
+@keyframes rgbColor {
+  0%   { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
 </style>
 </head>
 <body>
@@ -258,6 +284,7 @@ body {
   display: none;
   z-index: 9999;
 ">
+	<div id="footerBrand">- TwentySeven -</div>
     <div id="title">Main Menu</div>
 	<img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />  <!-- Global Music -->  <audio id="musicAudio" loop>
     <source src="Music.mp4" type="audio/mp4">
@@ -465,6 +492,31 @@ body {
     function playSelect(){ try{ selectSound.currentTime=0; selectSound.play(); }catch(_){} }
     function playBack(){ try{ backSound.currentTime=0; backSound.play(); }catch(_){} }
 
+    let audioCtx;
+let touchBuffer = null;
+
+// Load sekali saat awal
+async function loadTouchSound() {
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const response = await fetch("touch.mp3");
+    const arrayBuffer = await response.arrayBuffer();
+    touchBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+  } catch (e) {
+    console.error("Gagal load touch.mp3", e);
+  }
+}
+
+function playTouch() {
+  if (!touchBuffer || !audioCtx) return;
+  const source = audioCtx.createBufferSource();
+  source.buffer = touchBuffer;
+  source.connect(audioCtx.destination);
+  source.start(0); // langsung play
+}
+
+// panggil sekali saat halaman siap
+loadTouchSound();
 
     // Cursor Touch
     window.addEventListener("touchstart", e => {
@@ -514,6 +566,7 @@ window.addEventListener("touchmove", e => {
 
     if (currentTarget) {
   currentTarget.classList.add("active");
+        playTouch();   // mainkan suara saat highlight baru
 }
   }
 });
