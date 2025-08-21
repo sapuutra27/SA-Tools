@@ -494,6 +494,8 @@ body {
 
     let audioCtx;
 let touchBuffer = null;
+let touchGain;
+let lastTouchTime = 0;
 
 // Load sekali saat awal
 async function loadTouchSound() {
@@ -502,17 +504,26 @@ async function loadTouchSound() {
     const response = await fetch("touch.mp3");
     const arrayBuffer = await response.arrayBuffer();
     touchBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-  } catch (e) {
+  
+    // Gain untuk kontrol volume highlight
+    touchGain = audioCtx.createGain();
+    touchGain.gain.value = 0.5; // atur sesuai kebutuhan (0.0 - 1.0)
+    touchGain.connect(audioCtx.destination);
+} catch (e) {
     console.error("Gagal load touch.mp3", e);
   }
 }
 
 function playTouch() {
-  if (!touchBuffer || !audioCtx) return;
+  if (!touchBuffer || !audioCtx || !touchGain) return;
+  const now = Date.now();
+  if (now - lastTouchTime < 80) return; // minimal jeda 80ms untuk hindari overlap
+  lastTouchTime = now;
+
   const source = audioCtx.createBufferSource();
   source.buffer = touchBuffer;
-  source.connect(audioCtx.destination);
-  source.start(0); // langsung play
+  source.connect(touchGain);
+  source.start(0);
 }
 
 // panggil sekali saat halaman siap
