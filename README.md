@@ -19,9 +19,7 @@ All audio is synced with **Options** (saved in `localStorage` for toggle and vol
 
 ### 1. Transparent Image
 - Feature to **upload single images or batch archives**:  
-  - `.zip`  
-  - `.rar`  
-  - `.7z`  
+  - `.zip`    
 - Can handle hundreds of images at once.  
 - The script extracts/reads archive contents and displays images with a **transparent layer effect**.  
 - Background music **`transparant_image.mp3`** automatically plays (synced with Options).  
