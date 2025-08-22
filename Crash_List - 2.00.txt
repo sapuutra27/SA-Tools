@@ -16,6 +16,12 @@ Therefore there may be some crash addresses where the problem/solution is incorr
 Thanks to Google Translate for improving my Englishu...
 
 
+
+Error: 0x2F681A
+Problem: script related to peds inside vehicles like planes or helicopters
+Solution: try deleting any script related to helicopters, if you’re using npc pilot aircraft fix from cheeseburger delete that
+Solution2: use helifix plugin if you want the helicopter to have a pilot, it fixes the missing pilot in news/police helicopters
+
 Error: 0x372B0
 Problem: related to classicfx plugin
 Solution: disable HeatHaze in ClassicFX

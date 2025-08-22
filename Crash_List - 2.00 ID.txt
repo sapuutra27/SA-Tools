@@ -17,11 +17,10 @@ Terima kasih kepada Google Translate karena telah meningkatkan Englishu saya...
 
 
 
-Error: 0x6AACCA
-Masalah: Alamat ini sering muncul di log crash setelah keluar dari game.
-Tentang: Mungkin ada masalah dengan fungsi keluar game.
-atau ya sudah begitu adanya.
-Kalau tidak crash saat gameplay, abaikan saja
+Error: 0x2F681A
+Masalah: Script yang berkaitan dengan ped yang berada di dalam kendaraan seperti pesawat atau helikopter
+Solusi: Coba hapus script yang berkaitan dengan helikopter, jika kamu memakai npc pilot aircraft fix dari cheeseburger hapus itu
+Solusi2: Gunakan plugin HeliFix jika kamu ingin helikopter itu ada pilotnya, itu memperbaiki pilot yang hilang di helikopter news/polisi
 
 Error: 0x372B0
 Masalah: Berhubungan dengan plugin ClassicFX
@@ -885,6 +884,12 @@ Solusi: Sama seperti di atas, buat alias atau impor tekstur dengan nama itu.
 Error: 0x5A3A5E
 Masalah: Register corona crash saat menyalakan sirine copbike.
 Solusi: Update JPatch lama, bug ini sudah diperbaiki.
+
+Error: 0x6AACCA
+Masalah: Alamat ini sering muncul di log crash setelah keluar dari game.
+Tentang: Mungkin ada masalah dengan fungsi keluar game.
+atau ya sudah begitu adanya.
+Kalau tidak crash saat gameplay, abaikan saja
 
 Error: 0x5A576A
 Masalah: Game mencoba menghapus model yang berada di luar pandangan kamera.
