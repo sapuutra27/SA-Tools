@@ -59,9 +59,8 @@ index.html              # Main menu transparant image.html  # Transparent Image 
 ---
 
 ## 👨‍💻 Credits
+- **Killman / RusJJ** → Android Mod Loader (AML).
+- **ARM** → Original Crashlist creator.
 - **TWSVN** → Main developer of this project.  
-- **ARM** → Original Crashlist creator.  
 - **TWSVN** → Crashlist Indonesian translation.  
-- **Killman / RusJJ** → Android Mod Loader (AML).  
-
 ---
