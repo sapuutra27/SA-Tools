@@ -909,7 +909,7 @@ Problem: FLA does not find the file of gtasa_vehicleAudioSettings.cfg in the dat
 Solution: Disable "Enable vehicle audio loader" in FLA config or Install the file(gtasa_vehicleAudioSettings.cfg) in to your game data folder. You can get this file from the FLA archive.
 
 Error: "libc.so" + Register (libGTASA.so + 0x1D15C5)
-Error: "libc.so" -> CallStack(ES2Texture::UploadMip(unsigned int, void const*)+352)
+Error2: "libc.so" -> CallStack(ES2Texture::UploadMip(unsigned int, void const*)+352)
 Problem: Too many textures using inappropriate sizes.
 This happens because the texture does not have a size power of 2.
 2x2, 4x4, 8x8, 16x16, 32x32....etc.
@@ -927,14 +927,14 @@ Do not use more than 20 letters in internal object names.
 In the aml_crashlog.txt, you can see the internal name of the model on the Stack Printing.
 
 Error: "libc.so" + Registers (libGTASA.so + 0x618B78), (libGTASA.so + 0x98F0F8), (libGTASA.so + 0x6E006C), (libGTASA.so + 0x9FC8FC)
-Error: "libc.so" -> Call Stack (CLoadingScreen::RenderSplash)
+Error2: "libc.so" -> Call Stack (CLoadingScreen::RenderSplash)
 Problem: Max loading screen in JPatch is more than mobilesc texture or mobilesc texture in menu.txt is less than default (7) or less than Max Loading Screen in JPatch.
 Solution: Set maxloadingscreen in JPatch equal to mobilesc texture in menu.txt or add more mobilesc textures.
 mobilesc textures count from 0.
 for example mobilesc10 = 11 maxloadingscreen in Jpatch.
 
 Error: "libc.so" + Registers (libGTASA.so + 0x1D2667)
-Error: "libc.so" -> Call Stack (SharedGPUResource::Construct()+296)
+Error2: "libc.so" -> Call Stack (SharedGPUResource::Construct()+296)
 Problem: Insane high poly or heavy model. game cannot render the model.
 Solution: Identify what models you have modded around that area or try to remember the mods you have installed, of course mods that modify dff files, replace those models with original game models or delete them if they are Add-on models (map mods).
 The models can be fixed by reducing the number of polygons using 3DSMax or Blender (3d modeling software). In the mobile version there are more limitations for rendering a high poly models than on the PC.
@@ -953,7 +953,7 @@ Problem 2: The count of ID Limit in total is over 32768
 Solution 2: In your fastman limit Adjuster config, lower the ID limits so that the total does not exceed 32768.
 
 Error: "libc.so" + Registers (libGTASA.so + 0x1E73DD)
-Error: "libc.so" -> Call Stack (RLEDecompress(unsigned char*, unsigned int, unsigned char const*, unsigned int, unsigned int)+66)
+Error2: "libc.so" -> Call Stack (RLEDecompress(unsigned char*, unsigned int, unsigned char const*, unsigned int, unsigned int)+66)
 Problem: Related to RLE Decompression.
 Possible Problems: Textures are too heavy, the game needs to process a lot of textures for 1 model (more likely to skin), importing textures with the RLE Compression option on, etc.
 Possible Solution: Re-import all textures with the TXD Tool with the RLE Compression option off. Or delete texture cache files.
@@ -961,7 +961,7 @@ You may be able to see the models or textures processed by the game in Stack Pri
 Try checking that out.
 
 Error: "libc.so" + Registers (libGTASA.so + 0x1E73F9)
-Error: "libc.so" -> Call Stack (RLEDecompress(unsigned char*, unsigned int, unsigned char const*, unsigned int, unsigned int)+94)
+Error2: "libc.so" -> Call Stack (RLEDecompress(unsigned char*, unsigned int, unsigned char const*, unsigned int, unsigned int)+94)
 Problem: RLE Decompression.
 Solution 1: Go to TXD Tool settings then uncheck the RLE Compression option.
 After disable RLE Compression, import your textures again.

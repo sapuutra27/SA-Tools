@@ -907,7 +907,7 @@ Masalah: FLA tidak menemukan file gtasa_vehicleAudioSettings.cfg di folder data.
 Solusi: Nonaktifkan "Enable vehicle audio loader" di konfigurasi FLA atau pasang file gtasa_vehicleAudioSettings.cfg ke folder data game kamu. File ini bisa kamu ambil dari arsip FLA.
 
 Error: "libc.so" + Register (libGTASA.so + 0x1D15C5)
-Error: "libc.so" -> CallStack (ES2Texture::UploadMip(unsigned int, void const*)+352)
+Error2: "libc.so" -> CallStack (ES2Texture::UploadMip(unsigned int, void const*)+352)
 Masalah: Terlalu banyak tekstur dengan ukuran tidak sesuai.
 Ini terjadi karena tekstur tidak punya ukuran kelipatan 2.
 Contoh ukuran valid: 2x2, 4x4, 8x8, 16x16, 32x32, dst.
@@ -925,14 +925,14 @@ Jangan gunakan lebih dari 20 huruf untuk nama internal objek.
 Di aml_crashlog.txt kamu bisa lihat nama internal model itu pada bagian Stack Printing.
 
 Error: "libc.so" + Registers (libGTASA.so + 0x618B78), (libGTASA.so + 0x98F0F8), (libGTASA.so + 0x6E006C), (libGTASA.so + 0x9FC8FC)
-Error: "libc.so" -> Call Stack (CLoadingScreen::RenderSplash)
+Error2: "libc.so" -> Call Stack (CLoadingScreen::RenderSplash)
 Masalah: Nilai Max loading screen di JPatch lebih besar dari jumlah tekstur mobilesc, atau jumlah tekstur mobilesc di menu.txt lebih kecil dari default (7) atau lebih kecil dari Max Loading Screen di JPatch.
 Solusi: Atur maxloadingscreen di JPatch sama dengan jumlah tekstur mobilesc di menu.txt atau tambahkan lebih banyak tekstur mobilesc.
 Perhitungan mobilesc dimulai dari 0.
 Contoh: mobilesc10 = 11 maxloadingscreen di JPatch.
 
 Error: "libc.so" + Registers (libGTASA.so + 0x1D2667)
-Error: "libc.so" -> Call Stack (SharedGPUResource::Construct()+296)
+Error2: "libc.so" -> Call Stack (SharedGPUResource::Construct()+296)
 Masalah: Model terlalu berat atau poly terlalu tinggi. Game tidak bisa merender model.
 Solusi: Identifikasi model apa yang sudah kamu mod di area itu, atau ingat mod apa yang kamu pasang yang mengubah file dff. Ganti model dengan model asli game atau hapus kalau itu add-on.
 Model bisa diperbaiki dengan mengurangi jumlah polygon di 3DSMax/Blender.
@@ -951,14 +951,14 @@ Masalah 2: Total ID Limit melebihi 32768.
 Solusi: Turunkan total ID limit di konfigurasi FLA agar tidak lebih dari 32768.
 
 Error: "libc.so" + Registers (libGTASA.so + 0x1E73DD)
-Error: "libc.so" -> Call Stack (RLEDecompress(...)+66)
+Error2: "libc.so" -> Call Stack (RLEDecompress(...)+66)
 Masalah: Terkait RLE Decompression.
 Kemungkinan: Tekstur terlalu berat, 1 model pakai terlalu banyak tekstur (biasanya skin), atau impor dengan opsi RLE Compression aktif.
 Solusi: Impor ulang semua tekstur di TXD Tool dengan RLE Compression nonaktif, atau hapus file cache tekstur.
 Coba lihat di aml_crashlog.txt bagian Stack Printing untuk tahu model/tekstur mana yang diproses.
 
 Error: "libc.so" + Registers (libGTASA.so + 0x1E73F9)
-Error: "libc.so" -> Call Stack (RLEDecompress(...)+94)
+Error2: "libc.so" -> Call Stack (RLEDecompress(...)+94)
 Masalah: RLE Decompression.
 Solusi 1: Buka TXD Tool, nonaktifkan opsi RLE Compression, lalu impor ulang semua tekstur.
 Kalau pakai modpack dengan texdb, hapus modpack itu dan minta author untuk reimport dengan RLE Compression nonaktif.
