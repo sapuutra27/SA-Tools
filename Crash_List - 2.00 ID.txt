@@ -94,6 +94,7 @@ Solusi: Pastikan aktor sudah didefinisikan dari game sebelum menyimpan koordinat
 
 Error: 0x34B022
 Masalah: Memuat file audio yang tidak ada dari AudioStream.
+Solusi: coba turunkan CLEOmod ke 2.0.1.6
 
 Error: 0x1AD682
 Masalah: File untuk Bahasa Jepang hilang di folder Textures.

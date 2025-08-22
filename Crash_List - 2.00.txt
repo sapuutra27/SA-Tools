@@ -94,6 +94,7 @@ Solution: Make sure that the actor is defined from the game then store it's coor
 
 Error: 0x34B022
 Problem: Loading a non-existent audio file from AudioStream
+Solution: Try downgrade CLEOmod to 2.0.1.6
 
 Error: 0x1AD682
 Problem: Missing files for Japanese Language in Textures folder.
