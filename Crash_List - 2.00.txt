@@ -16,6 +16,9 @@ Therefore there may be some crash addresses where the problem/solution is incorr
 Thanks to Google Translate for improving my Englishu...
 
 
+Error: 0x36CCB0
+Problem: regarding effects, such as when you install a mod effect that requires copying all data to models.fxp, make sure everything is pasted correctly and not cut off.s
+Solution: fix your effects
 
 Error: 0x2F681A
 Problem: script related to peds inside vehicles like planes or helicopters
