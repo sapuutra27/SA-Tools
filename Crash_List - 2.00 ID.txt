@@ -16,6 +16,9 @@ Oleh karena itu mungkin ada beberapa alamat crash dimana masalah/solusinya salah
 Terima kasih kepada Google Translate karena telah meningkatkan Englishu saya...
 
 
+Error: 0x36CCB0
+Masalah: terkait efek, misalnya saat Anda menginstal efek mod yang memerlukan penyalinan semua data ke models.fxp, pastikan semua data disalin dengan benar dan tidak terpotong.
+Solusi: perbaiki efek pandangan
 
 Error: 0x2F681A
 Masalah: Script yang berkaitan dengan ped yang berada di dalam kendaraan seperti pesawat atau helikopter
