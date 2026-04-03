@@ -317,7 +317,7 @@ body {
 	<div id="footerBrand">- TwentySeven -</div>
     <div id="title">Main Menu</div>
 	<img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />  <audio id="musicAudio" loop>
-    <source src="Music.mp4" type="audio/mp4">
+    <source src="Music.mp3" type="audio/mpeg">
     </audio> <audio id="creditsAudio" loop>
     <source src="Credits.mp3" type="audio/mp3">
     </audio> 
@@ -697,16 +697,17 @@ touchCursor.style.display = "none";
     }
 
     function openCrashlog() { 
-      playSelect(); 
-      playMusic();
-      window.location.href = "Crashlog.html"; 
-    }
+  playSelect(); 
+  saveAudioSettings(); // Tambahkan ini agar status "On" terbawa
+  setTimeout(() => { window.location.href = "Crashlog.html"; }, 100); 
+}
 
-    function openTransparanImage() { 
-      playSelect(); 
-      playMusic();
-      window.location.href = "Transparent image.html"; 
-    }
+function openTransparanImage() { 
+  playSelect(); 
+  saveAudioSettings(); // Tambahkan ini agar status "On" terbawa
+  setTimeout(() => { window.location.href = "Transparent image.html"; }, 100); 
+}
+
 
     document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(item => {
       item.addEventListener('click', () => {

@@ -229,30 +229,32 @@ position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover
 <audio id="musicAudio" loop>
   <source src="Music.mp3" type="audio/mpeg">
 </audio>
+
 <script>
   const musicAudio = document.getElementById("musicAudio");
 
-  // Ambil setting terakhir dari localStorage
-  const savedOn = localStorage.getItem("audioOn");
-  const savedVolume = parseFloat(localStorage.getItem("audioVolume"));
+  function loadAndPlay() {
+    const savedOn = localStorage.getItem("audioOn");
+    const savedVolume = parseFloat(localStorage.getItem("audioVolume"));
 
-  if (!isNaN(savedVolume)) {
-    musicAudio.volume = savedVolume;
+    if (!isNaN(savedVolume)) {
+      musicAudio.volume = savedVolume;
+    }
+
+    if (savedOn === "On") {
+      musicAudio.play().catch(() => {});
+    }
   }
 
-  if (savedOn === "On") {
-    musicAudio.play().catch(()=>{});
-  } else {
-    musicAudio.pause();
-  }
+  window.addEventListener("load", loadAndPlay);
 
-  // kalau autoplay diblokir browser → play setelah klik
   document.body.addEventListener("click", () => {
-    if (savedOn === "On" && musicAudio.paused) {
-      musicAudio.play().catch(()=>{});
+    if (localStorage.getItem("audioOn") === "On" && musicAudio.paused) {
+      musicAudio.play();
     }
   }, { once: true });
 </script>
+
 	<!-- Background Video -->
 <video autoplay muted loop playsinline id="bgVideo">
   <source src="background1.mp4" type="video/mp4">
