@@ -1,199 +1,831 @@
 <!doctype html>
+
 <html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SA Tools</title>
   <style>
-    @font-face { font-family: 'bebasneue'; src: url('./BebasNeue-Regular.ttf') format('truetype'); }
-    @font-face { font-family: 'beckett'; src: url('./beckett.ttf') format('truetype'); }
-    @font-face { font-family: 'bankgothic'; src: url('./bankgothic-regular.ttf') format('truetype'); }
-    
-    :root {
-      --menu-color-default: rgb(120,145,190);
-      --menu-color-active: rgb(163,196,239);
+    @font-face {
+      font-family: 'bebasneue';
+      src: url('./BebasNeue-Regular.ttf') format('truetype');
     }
-
-    body {
-      margin: 0;
-      background: #000;
-      min-height: 100vh;
-      font-family: 'bankgothic', sans-serif;
-      overflow: hidden;
+    @font-face {
+      font-family: 'beckett';
+      src: url('./beckett.ttf') format('truetype');
     }
+    @font-face {
+      font-family: 'bankgothic';
+      src: url('./bankgothic-regular.ttf') format('truetype');
+    }:root {
+  --menu-color-default: rgb(120,145,190);
+  --menu-color-active: rgb(163,196,239);
+}
 
-    /* Gaya untuk Loading Screen */
-    #initialLoader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      transition: opacity 1s ease;
-    }
-    .spinner {
-      width: 35px;
-      height: 35px;
-      border: 3px solid rgba(163, 196, 239, 0.2);
-      border-top-color: var(--menu-color-active);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-top: 20px;
-    }
-    #loadStatus {
-      font-size: 14px;
-      color: var(--menu-color-default);
-      margin-top: 10px;
-      letter-spacing: 1px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+body {
+  margin: 0;
+  background: #000;
+  min-height: 100vh;
+  font-family: 'bankgothic', sans-serif;
+  overflow: hidden;
+}
 
-    /* Struktur Menu Utama (Tetap sesuai file asli) */
-    #title { position: absolute; top: 20px; left: 20px; font-family: 'beckett', serif; font-size: clamp(36px, 6vw, 60px); color: var(--menu-color-active); text-shadow: 2px 2px 4px #000; white-space: nowrap; }
-    #cornerLogo { position: absolute; top: 0; right: 0; transition: opacity 0.3s ease; }
-    #cornerLogo.back8 { height: 100px; }
-    #cornerLogo.back3, #cornerLogo.back6, #cornerLogo.back2 { height: 200px; }
+/* Gaya untuk Loading Screen */
+#initialLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: opacity 1s ease;
+}
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(163, 196, 239, 0.3);
+  border-top-color: var(--menu-color-active);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-top: 15px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
-    .menu { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) translateX(-11px); font-size: clamp(22px, 4vw, 32px); font-weight: bold; text-transform: uppercase; line-height: 2.2em; white-space: nowrap; display: none; }
-    .menu.active { display: block; }
-    .menu-item { position: relative; cursor: pointer; color: var(--menu-color-default); transition: color 0.2s; user-select: none; text-align: center; padding-left: 30px; line-height: 2.0em; transform: translateY(-30px); }
-    .menu-item.active { color: var(--menu-color-active); }
-    
-    .menu-item img.arrow { display: none; position: absolute; left: -10px; top: 85%; transform: translateY(-50%); height: 70px; }
-    .menu-item.active img.arrow { display: inline-block; }
+#title {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-family: 'beckett', serif;
+  font-size: clamp(36px, 6vw, 60px);
+  color: var(--menu-color-active);
+  text-shadow: 2px 2px 4px #000;
+  white-space: nowrap;
+}
 
-    /* Area Tools & Options Position */
-    #toolsMenu { left: 40%; text-align: left; }
-    #optionsMenu, #creditsMenu { left: 50%; text-align: left; }
+#cornerLogo.back8 { position: absolute; top: 0; right: 0; height: 100px; }
+#cornerLogo.back3 { position: absolute; top: 0; right: 0; height: 200px; }
+#cornerLogo.back6 { position: absolute; top: 0; right: 0; height: 200px; }
 
-    .back-btn { position: absolute; bottom: 100px; right: 40px; font-size: 28px; cursor: pointer; color: var(--menu-color-default); display: none; padding-left: 30px; }
-    .back-btn.active { color: var(--menu-color-active); }
-    .back-btn.active .back-arrow { display: inline-block; }
-    .back-arrow { height: 70px; position: absolute; left: -10px; top: -50%; transform: translateY(10%); display: none; }
+.menu {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(-11px);
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 2.2em;
+  white-space: nowrap;
+  display: none;
+}
+.menu.active { display: block; }
 
-    #footerBrand { position: absolute; bottom: 150px; left: 50%; transform: translateX(-45%); font-family: 'bebasneue', sans-serif; font-size: 10px; color: var(--menu-color-active); letter-spacing: 2px; animation: rgbColor 5s linear infinite; }
-    @keyframes rgbColor { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-  </style>
+.menu-item {
+  position: relative;
+  cursor: pointer;
+  color: var(--menu-color-default);
+  transition: color 0.2s;
+  user-select: none;
+  text-align: center;
+  padding-left: 30px;
+  line-height: 2.0em;
+  transform: translateY(-30px);
+}
+.menu-item.active { color: var(--menu-color-active); }
+
+#mainMenu .menu-item img.arrow {
+  display: none;
+  position: absolute;
+  left: -10px;
+  top: 85%;
+  transform: translateY(-50%);
+  height: 70px;
+}
+#mainMenu .menu-item.active img.arrow { display: inline-block; }
+#mainMenu .menu-item img.arrow.arrow-options { left: 20px; top: 90%; }
+#mainMenu .menu-item img.arrow.arrow-credits { left: 25px; top: 90%; }
+
+#toolsMenu {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 2.2em;
+}
+#toolsMenu .menu-item img.arrow {
+  display: none;
+  position: absolute;
+  left: -10px;
+  top: 90%;
+  transform: translateY(-50%);
+  height: 70px;
+}
+#toolsMenu .menu-item.active img.arrow { display: inline-block; }
+
+#optionsMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 2.2em;
+}
+#optionsMenu .menu-item img.arrow {
+  display: none;
+  position: absolute;
+  left: -10px;
+  top: 90%;
+  transform: translateY(-50%);
+  height: 70px;
+}
+#optionsMenu .menu-item.active img.arrow { display: inline-block; }
+
+.option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 300px;
+  position: relative;
+}
+.toggle { cursor: pointer; color: var(--menu-color-default); }
+.toggle.active { color: var(--menu-color-active); }
+
+.volume-bar { display: flex; gap: 2px; cursor: pointer; }
+.volume-bar .level {
+  width: 12px;
+  height: 20px;
+  background: var(--menu-color-default);
+  transition: background 0.2s;
+}
+.volume-bar .level.active { background: var(--menu-color-active); }
+
+#toolsBack, #optionsBack {
+  position: absolute;
+  bottom: 100px;
+  right: 40px;
+  font-size: clamp(20px, 3vw, 28px);
+  cursor: pointer;
+  text-transform: uppercase;
+  color: var(--menu-color-default);
+  transition: color 0.2s;
+  display: none;
+  padding-left: 30px;
+}
+#toolsBack.active, #optionsBack.active { color: var(--menu-color-active); }
+
+.back-arrow {
+  height: 70px;
+  position: absolute;
+  left: -10px;
+  top: -50%;
+  transform: translateY(10%);
+  display: none;
+}
+
+#toolsBack.active .back-arrow,
+#optionsBack.active .back-arrow {
+  display: inline-block;
+}
+
+  
+#cornerLogo.back2 { position: absolute; top: 0; right: 0; height: 200px; }
+
+#creditsMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 2.2em;
+}
+
+#creditsBack {
+  position: absolute;
+  bottom: 100px;
+  right: 40px;
+  font-size: clamp(20px, 3vw, 28px);
+  cursor: pointer;
+  text-transform: uppercase;
+  color: var(--menu-color-default);
+  transition: color 0.2s;
+  display: none;
+  padding-left: 30px;
+}
+#creditsBack.active { color: var(--menu-color-active); }
+#creditsBack.active .back-arrow { display: inline-block; }
+
+#creditsMenu {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  font-size: clamp(16px, 2.5vw, 22px);
+  color: #bbb;
+  overflow: hidden;
+}
+
+#creditsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: scrollUp 70s linear infinite;
+}
+
+.credit-line {
+  opacity: 1;
+  animation: fadeOutTop 25s linear forwards;
+}
+
+.credit-line:nth-child(1) { animation-delay: 20s; }
+.credit-line:nth-child(2) { animation-delay: 21s; }
+.credit-line:nth-child(3) { animation-delay: 22s; }
+.credit-line:nth-child(4) { animation-delay: 23s; }
+.credit-line:nth-child(5) { animation-delay: 24s; }
+
+@keyframes scrollUp {
+  from { transform: translateY(25%); }
+  to   { transform: translateY(-120%); }
+}
+
+@keyframes fadeOutTop {
+  0%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.credit-label {
+  color: #fff;          
+  font-weight: bold;    
+  margin-bottom: -5px;
+  font-family: Arial, sans-serif;
+  text-transform: none;
+}
+
+.credit-name {
+  color: #aaa;          
+  font-weight: bold;    
+  margin-bottom: -15px;
+  font-family: Arial, sans-serif;
+  text-transform: none;
+}
+.credits-section .credit-name:last-child {
+  margin-bottom: 0;
+}
+
+#footerBrand {
+  position: absolute;
+  bottom: 150px;
+  left: 50%;
+  transform: translateX(-45%);
+  font-family: 'bebasneue', sans-serif;
+  font-size: 10px;
+  color: var(--menu-color-active);
+  text-shadow: 2px 2px 4px #000;
+  letter-spacing: 2px;
+  animation: rgbColor 5s linear infinite;
+}
+
+@keyframes rgbColor {
+  0%   { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+</style>
 </head>
 <body>
+    <div id="initialLoader">
+      <div style="font-size: 24px; color: var(--menu-color-active); font-family: 'bankgothic', sans-serif;">loading...</div>
+      <div class="spinner"></div>
+    </div>
 
-  <div id="initialLoader">
-    <div style="font-size: 24px; color: var(--menu-color-active); font-family: 'bankgothic', sans-serif;">loading...</div>
-    <div class="spinner"></div>
-    <div id="loadStatus">Mempersiapkan Aset...</div>
-  </div>
-
-  <img id="touchCursor" src="Cursor.png" style="position: absolute; width: 20px; height: 20px; pointer-events: none; display: none; z-index: 9999;">
-  <div id="footerBrand">- TwentySeven -</div>
-  <div id="title">Main Menu</div>
-  <img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />
-
-  <audio id="musicAudio" loop><source src="Music.mp4" type="audio/mp4"></audio>
-  <audio id="creditsAudio" loop><source src="Credits.mp3" type="audio/mp3"></audio>
-
-  <div id="mainMenu" class="menu active">
+	<img id="touchCursor" src="Cursor.png" alt="cursor" style="
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  display: none;
+  z-index: 9999;
+">
+	<div id="footerBrand">- TwentySeven -</div>
+    <div id="title">Main Menu</div>
+	<img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />  <audio id="musicAudio" loop>
+    <source src="Music.mp4" type="audio/mp4">
+    </audio> <audio id="creditsAudio" loop>
+    <source src="Credits.mp3" type="audio/mp3">
+    </audio> 
+    <div id="mainMenu" class="menu active">
     <div class="menu-item" onclick="openTools()"><img src="arrow.png" class="arrow" alt=">"> Select Tools</div>
-    <div class="menu-item" onclick="openOptions()"><img src="arrow.png" class="arrow" alt=">"> Options</div>
-    <div class="menu-item" onclick="openCredits()"><img src="arrow.png" class="arrow" alt=">"> Credits</div>
-  </div>
-
-  <div id="toolsMenu" class="menu">
-    <div class="menu-item" onclick="location.href='Transparent image.html'"><img src="arrow.png" class="arrow" alt=">"> Transparan Image</div>
-    <div class="menu-item" onclick="location.href='Crashlog.html'"><img src="arrow.png" class="arrow" alt=">"> Crashlog Reader</div>
-  </div>
-
-  <div id="universalBack" class="back-btn" onclick="backToMain()">
+    <div class="menu-item" onclick="openOptions()"><img src="arrow.png" class="arrow arrow-options" alt=">"> Options</div>
+    <div class="menu-item" onclick="openCredits()">
+    <img src="arrow.png" class="arrow arrow-credits" alt=">"> Credits
+    </div>
+    </div>  
+    <div id="toolsMenu" class="menu">
+    <div class="menu-item" onclick="openTransparanImage()"><img src="arrow.png" class="arrow" alt=">"> Transparan Image</div>
+    <div class="menu-item" onclick="openCrashlog()"><img src="arrow.png" class="arrow" alt=">"> Crashlog Reader</div>
+    </div>
+    <div id="toolsBack" onclick="backToMain()">
     <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
+    </div>  
+    <div id="optionsMenu" class="menu">
+    <div class="menu-item option-row" id="audioRow">
+     <img src="arrow.png" class="arrow" alt=">">
+    <span>Audio</span>
+    <span class="toggle" id="audioToggle">On</span>
+    </div>
+    <div class="menu-item option-row" id="volumeRow">
+      <img src="arrow.png" class="arrow" alt=">">
+      <span>Volume</span>
+      <span class="volume-bar" id="volumeBar">
+        <span class="level active"></span>
+        <span class="level"></span>
+        <span class="level"></span>
+        <span class="level"></span>
+        <span class="level"></span>
+        <span class="level"></span>
+        <span class="level"></span>
+        <span class="level"></span>
+      </span>
+    </div>
   </div>
+  <div id="optionsBack" onclick="backToMain()">
+  <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
+</div>
 
+<div id="creditsMenu" class="menu">
+  <div id="creditsWrapper">
+<div class="credits-section">
+  <div class="credit-label">Android Mod Loader</div>
+  <div class="credit-name">[=-KILL MAN-=] / RusJJ</div>
+</div>
+    
+<div class="credits-section">
+  <div class="credit-label">CrashList Documented</div>
+  <div class="credit-name">ARM</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Crashlist Translate</div>
+  <div class="credit-name">TWSVN</div>
+</div>
+    
+<div class="credits-section">
+  <div class="credit-label">Custom Script & Integration</div>
+  <div class="credit-name">TWSVN</div>
+</div>
+    
+<div class="credits-section">
+  <div class="credit-label">JavaScript & JSON Pioneer</div>
+  <div class="credit-name">Douglas Crockford</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Creator of jQuery</div>
+  <div class="credit-name">John Resig</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Front-end Evangelist</div>
+  <div class="credit-name">Paul Irish</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Open Source & Inclusivity Advocate</div>
+  <div class="credit-name">Coraline Ada Ehmke</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">HTML Standard Founder</div>
+  <div class="credit-name">Tim Berners-Lee</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">CSS Creator</div>
+  <div class="credit-name">Håkon Wium Lie</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Git Creator</div>
+  <div class="credit-name">Linus Torvalds</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Node.js Original Author</div>
+  <div class="credit-name">Ryan Dahl</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">npm Founder</div>
+  <div class="credit-name">Isaac Z. Schlueter</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">React.js Creator</div>
+  <div class="credit-name">Jordan Walke</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Vue.js Creator</div>
+  <div class="credit-name">Evan You</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Angular Lead</div>
+  <div class="credit-name">Misko Hevery</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">GitHub Founders</div>
+  <div class="credit-name">Chris Wanstrath / PJ Hyett / Tom Preston-Werner</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">JavaScript Creator</div>
+  <div class="credit-name">Brendan Eich</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Web Standards Organization</div>
+  <div class="credit-name">World Wide Web Consortium (W3C)</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Open Source Community</div>
+  <div class="credit-name">Millions of Contributors Worldwide</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Early Web Pioneer</div>
+  <div class="credit-name">Marc Andreessen</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Mozilla & Firefox Advocate</div>
+  <div class="credit-name">Mitchell Baker</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Creator of PHP</div>
+  <div class="credit-name">Rasmus Lerdorf</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Creator of Python</div>
+  <div class="credit-name">Guido van Rossum</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Special Thanks</div>
+  <div class="credit-name">OpenAI / ChatGPT</div>
+</div>
+
+<div class="credits-section">
+  <div class="credit-label">Supporter</div>
+  <div class="credit-name">Reyy</div>
+</div>
+  </div>
+</div>
+<div id="creditsBack" onclick="backToMain()">
+  <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
+</div>
+	
   <script>
-    const allAssets = [
-      "back8.png", "back3.png", "back6.png", "back2.png", 
-      "arrow.png", "Cursor.png"
-    ];
+    const menus = {
+      main: document.getElementById('mainMenu'),
+      tools: document.getElementById('toolsMenu'),
+      options: document.getElementById('optionsMenu'),
+      credits: document.getElementById('creditsMenu')
+    };
 
-    let loadedCount = 0;
-    const loader = document.getElementById('initialLoader');
-    const statusText = document.getElementById('loadStatus');
+    const touchCursor = document.getElementById("touchCursor");
+    const title = document.getElementById('title');
+    const cornerLogo = document.getElementById('cornerLogo');
+    const toolsBack = document.getElementById('toolsBack');
+    const optionsBack = document.getElementById('optionsBack');
+    const creditsBack = document.getElementById('creditsBack');
+    const creditsAudio = document.getElementById("creditsAudio");
+    const selectSound = new Audio("select.mp3");
+    const backSound   = new Audio("back.mp3");
+    function playSelect(){ try{ selectSound.currentTime=0; selectSound.play(); }catch(_){} }
+    function playBack(){ try{ backSound.currentTime=0; backSound.play(); }catch(_){} }
 
-    // 1. PRE-LOAD SEMUA GAMBAR
-    function preloadAll() {
-      allAssets.forEach(src => {
+    let audioCtx;
+let touchBuffer = null;
+let touchGain;
+let lastTouchTime = 0;
+
+// Load sekali saat awal
+async function loadTouchSound() {
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const response = await fetch("touch.mp3");
+    const arrayBuffer = await response.arrayBuffer();
+    touchBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+  
+    // Gain untuk kontrol volume highlight
+    touchGain = audioCtx.createGain();
+    touchGain.gain.value = 0.5;
+    touchGain.connect(audioCtx.destination);
+} catch (e) {
+    console.error("Gagal load touch.mp3", e);
+  }
+}
+
+function playTouch() {
+  if (!touchBuffer || !audioCtx || !touchGain) return;
+  const now = Date.now();
+  if (now - lastTouchTime < 80) return;
+  lastTouchTime = now;
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = touchBuffer;
+  source.connect(touchGain);
+  source.start(0);
+}
+
+// panggil sekali saat halaman siap
+loadTouchSound();
+
+    // Cursor Touch
+    window.addEventListener("touchstart", e => {
+    const t = e.touches[0];
+    touchCursor.style.left = (t.clientX - 20) + "px";
+    touchCursor.style.top  = (t.clientY - 20) + "px";
+    touchCursor.style.display = "block";
+});
+
+    window.addEventListener("touchmove", e => {
+    const t = e.touches[0];
+    touchCursor.style.left = (t.clientX - 20) + "px";
+    touchCursor.style.top  = (t.clientY - 20) + "px";
+});
+
+window.addEventListener("touchend", () => {
+  touchCursor.style.display = "none";
+});
+
+let currentTarget = null;
+
+function getMenuItemAt(x, y) {
+  const items = document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack');
+  for (let item of items) {
+    const rect = item.getBoundingClientRect();
+    if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+      return item;
+    }
+  }
+  return null;
+}
+
+window.addEventListener("touchmove", e => {
+  const t = e.touches[0];
+  const x = t.clientX, y = t.clientY;
+
+  touchCursor.style.left = (x - 20) + "px";
+  touchCursor.style.top  = (y - 20) + "px";
+
+  const target = getMenuItemAt(x, y);
+
+  if (target !== currentTarget) {
+    if (currentTarget) currentTarget.classList.remove("active");
+    currentTarget = target;
+
+    if (currentTarget) {
+  currentTarget.classList.add("active");
+        playTouch();
+}
+  }
+});
+
+window.addEventListener("touchend", () => {
+  if (currentTarget) {
+  currentTarget.click();
+  currentTarget.classList.remove("active");
+  currentTarget = null;
+}
+touchCursor.style.display = "none";
+});
+
+    function openTools() {
+      menus.main.classList.remove('active');
+      menus.tools.classList.add('active');
+      toolsBack.style.display = 'block';
+      optionsBack.style.display = 'none';
+      creditsBack.style.display = 'none';
+      title.textContent = "Tools";
+      cornerLogo.src = "back3.png";
+      cornerLogo.className = "back3";
+      document.querySelectorAll('.menu-item, #toolsBack').forEach(i => i.classList.remove('active'));
+      toolsBack.classList.add('active');
+      playSelect();
+    }
+
+    function openOptions() {
+      menus.main.classList.remove('active');
+      menus.options.classList.add('active');
+      optionsBack.style.display = 'block';
+      toolsBack.style.display = 'none';
+      title.textContent = "Options";
+      cornerLogo.src = "back6.png";
+      cornerLogo.className = "back6";
+      document.querySelectorAll('.menu-item, #optionsBack').forEach(i => i.classList.remove('active'));
+      optionsBack.classList.add('active');
+      playSelect();
+    }
+
+    function openCredits() {
+      menus.main.classList.remove('active');
+      menus.credits.classList.add('active');
+      creditsBack.style.display = 'block';
+      toolsBack.style.display = 'none';
+      optionsBack.style.display = 'none';
+      title.textContent = "Credits";
+      cornerLogo.src = "back2.png";
+      cornerLogo.className = "back2";
+      document.querySelectorAll('.menu-item, #creditsBack').forEach(i => i.classList.remove('active'));
+      creditsBack.classList.add('active');
+      playSelect();
+
+   if (audioToggle.textContent === "On") {
+      musicAudio.pause();
+      creditsAudio.currentTime = 0;
+      creditsAudio.volume = musicAudio.volume;
+      creditsAudio.play();
+     }
+    }
+
+   function backToMain() {
+      menus.tools.classList.remove('active');
+      menus.options.classList.remove('active');
+      menus.credits.classList.remove('active');
+      menus.main.classList.add('active');
+      toolsBack.style.display = 'none';
+      optionsBack.style.display = 'none';
+      creditsBack.style.display = 'none';
+      title.textContent = "Main Menu";
+      cornerLogo.src = "back8.png";
+      cornerLogo.className = "back8";
+      const first = menus.main.querySelector('.menu-item');
+      if (first) {
+      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(i => i.classList.remove('active'));
+      first.classList.add('active');
+    }
+    playBack();
+
+    creditsAudio.pause();
+    if (audioToggle.textContent === "On") {
+    musicAudio.play();
+     }
+   }
+
+    const musicAudio = document.getElementById("musicAudio");
+    const audioRow = document.getElementById("audioRow");
+    const audioToggle = document.getElementById("audioToggle");
+    const volumeRow = document.getElementById("volumeRow");
+    const volumeBar = document.getElementById("volumeBar");
+    const levels = [...volumeBar.querySelectorAll(".level")];
+
+    function playMusic() {
+      try {
+      if (audioToggle.textContent === "On") {
+      musicAudio.play();
+        }
+      } catch(e){}
+    }
+
+    function openCrashlog() { 
+      playSelect(); 
+      playMusic();
+      window.location.href = "Crashlog.html"; 
+    }
+
+    function openTransparanImage() { 
+      playSelect(); 
+      playMusic();
+      window.location.href = "Transparent image.html"; 
+    }
+
+    document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(item => {
+      item.addEventListener('click', () => {
+      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      if (item.id === "toolsBack" || item.id === "optionsBack" || item.id === "creditsBack") {
+      playBack();
+    } else {
+      playSelect();
+    }
+      });
+    });
+
+    function setVolumeFromIndex(index) {
+      levels.forEach((lvl, i) => {
+        lvl.classList.toggle("active", i <= index);
+      });
+      const volume = (index + 1) / levels.length;
+      musicAudio.volume = volume;
+      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack').forEach(el => el.classList.remove('active'));
+      volumeRow.classList.add('active');
+    }
+
+    setVolumeFromIndex(levels.length - 1);
+
+    levels.forEach((lvl, i) => {
+      lvl.addEventListener("click", () => setVolumeFromIndex(i));
+    });
+
+    let isDragging = false;
+    function updateVolumeFromEvent(e) {
+      const rect = volumeBar.getBoundingClientRect();
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      let index = Math.floor((x / rect.width) * levels.length);
+      index = Math.max(0, Math.min(index, levels.length - 1));
+      setVolumeFromIndex(index);
+    }
+
+    volumeBar.addEventListener("mousedown", e => { isDragging = true; playSelect(); updateVolumeFromEvent(e); });
+    window.addEventListener("mousemove", e => { if (isDragging) updateVolumeFromEvent(e); });
+    window.addEventListener("mouseup", () => { isDragging = false; });
+
+    volumeBar.addEventListener("touchstart", e => { isDragging = true; playSelect(); updateVolumeFromEvent(e); });
+    window.addEventListener("touchmove", e => { if (isDragging) updateVolumeFromEvent(e); });
+    window.addEventListener("touchend", () => { isDragging = false; });
+
+    function saveAudioSettings() {
+    localStorage.setItem("audioOn", audioToggle.textContent);
+    localStorage.setItem("audioVolume", musicAudio.volume);
+    }
+
+    audioRow.addEventListener("click", () => {
+    const isOn = (audioToggle.textContent === "On");
+    if (isOn) {
+    audioToggle.textContent = "Off";
+    musicAudio.pause();
+    } else {
+     audioToggle.textContent = "On";
+     musicAudio.play();
+    }
+     audioToggle.classList.toggle("active");
+     document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack')
+    .forEach(i => i.classList.remove('active'));
+     audioRow.classList.add('active');
+     playSelect();
+     saveAudioSettings();
+});
+
+    function setVolumeFromIndex(index) {
+     levels.forEach((lvl, i) => {
+     lvl.classList.toggle("active", i <= index);
+});
+  
+    const volume = (index + 1) / levels.length;
+    musicAudio.volume = volume;
+    document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack')
+   .forEach(el => el.classList.remove('active'));
+    volumeRow.classList.add('active');
+    saveAudioSettings();
+    }
+    
+    // SISTEM PRELOAD SEMUA ASSET (Mencegah Delay)
+    const imagesToPreload = ["back8.png", "back3.png", "back6.png", "back2.png", "arrow.png", "Cursor.png"];
+    let loadedImages = 0;
+    const loadStatus = document.getElementById('loadStatus');
+
+        function preloadAssets() {
+      imagesToPreload.forEach(src => {
         const img = new Image();
         img.src = src;
         img.onload = img.onerror = () => {
-          loadedCount++;
-          statusText.textContent = `Memuat: ${Math.floor((loadedCount / allAssets.length) * 100)}%`;
-          if (loadedCount === allAssets.length) {
-            finishLoading();
+          loadedImages++;
+          // Tulisan persentase sudah dihapus dari sini
+          if (loadedImages === imagesToPreload.length) {
+            startApp();
           }
         };
       });
     }
 
-    function finishLoading() {
+
+    function startApp() {
+      const loader = document.getElementById('initialLoader');
       setTimeout(() => {
         loader.style.opacity = '0';
         setTimeout(() => {
           loader.style.display = 'none';
-          // Mulai musik jika diizinkan browser
-          document.getElementById('musicAudio').play().catch(() => {});
+          backToMain(); // Inisialisasi menu utama
         }, 1000);
-      }, 1000);
+      }, 1000); // Jeda minimal 1 detik agar transisi smooth
     }
 
-    // 2. LOGIKA PERPINDAHAN MENU (DENGAN PERBAIKAN DELAY GAMBAR)
-    const title = document.getElementById('title');
-    const logo = document.getElementById('cornerLogo');
-    const backBtn = document.getElementById('universalBack');
+    // Jalankan preload saat window ready
+    window.addEventListener('load', preloadAssets);
 
-    function hideAllMenus() {
-      document.querySelectorAll('.menu').forEach(m => m.classList.remove('active'));
-    }
-
-    function openTools() {
-      hideAllMenus();
-      document.getElementById('toolsMenu').classList.add('active');
-      title.textContent = "Tools";
-      logo.src = "back3.png"; 
-      logo.className = "back3";
-      backBtn.style.display = "block";
-    }
-
-    function openOptions() {
-      hideAllMenus();
-      // Tambahkan logika menu options kamu di sini jika ada
-      title.textContent = "Options";
-      logo.src = "back6.png";
-      logo.className = "back6";
-      backBtn.style.display = "block";
-    }
-
-    function openCredits() {
-      hideAllMenus();
-      title.textContent = "Credits";
-      logo.src = "back2.png";
-      logo.className = "back2";
-      backBtn.style.display = "block";
-    }
-
-    function backToMain() {
-      hideAllMenus();
-      document.getElementById('mainMenu').classList.add('active');
-      title.textContent = "Main Menu";
-      logo.src = "back8.png";
-      logo.className = "back8";
-      backBtn.style.display = "none";
-    }
-
-    // Jalankan Preload
-    preloadAll();
-  </script>
-</body>
+  </script></body>
 </html>
