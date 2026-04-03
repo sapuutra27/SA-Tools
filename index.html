@@ -810,15 +810,21 @@ function openTransparanImage() {
 
 
     function startApp() {
-      const loader = document.getElementById('initialLoader');
-      setTimeout(() => {
-        loader.style.opacity = '0';
-        setTimeout(() => {
-          loader.style.display = 'none';
-          backToMain(); // Inisialisasi menu utama
-        }, 1000);
-      }, 1000); // Jeda minimal 1 detik agar transisi smooth
-    }
+  const loader = document.getElementById('initialLoader');
+  setTimeout(() => {
+    loader.style.opacity = '0';
+    setTimeout(() => {
+      loader.style.display = 'none';
+      backToMain(); // Ini akan memunculkan menu utama
+      
+      // JANGAN tambahkan musicAudio.play() di sini. 
+      // Biarkan kosong agar menu utama tetap sunyi.
+      
+      loadSettings(); // Tetap panggil ini agar volume tersimpan
+    }, 1000);
+  }, 500);
+}
+
 
     // Jalankan preload saat window ready
     window.addEventListener('load', preloadAssets);
