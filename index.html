@@ -690,8 +690,7 @@ touchCursor.style.display = "none";
     function playMusic() {
       try {
       if (audioToggle.textContent === "On") {
-      musicAudio.play();
-        }
+             }
       } catch(e){}
     }
 
@@ -765,7 +764,6 @@ function openTransparanImage() {
     musicAudio.pause();
     } else {
      audioToggle.textContent = "On";
-     musicAudio.play();
     }
      audioToggle.classList.toggle("active");
      document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack')
