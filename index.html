@@ -30,6 +30,34 @@ body {
   overflow: hidden;
 }
 
+/* Gaya untuk Loading Screen */
+#initialLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  transition: opacity 1s ease;
+}
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(163, 196, 239, 0.3);
+  border-top-color: var(--menu-color-active);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-top: 15px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 #title {
   position: absolute;
   top: 20px;
@@ -67,7 +95,7 @@ body {
   user-select: none;
   text-align: center;
   padding-left: 30px;
-  line-height: 2.0em;   /* dari 2.2em jadi lebih rapat */
+  line-height: 2.0em;
   transform: translateY(-30px);
 }
 .menu-item.active { color: var(--menu-color-active); }
@@ -191,7 +219,7 @@ body {
   text-transform: uppercase;
   color: var(--menu-color-default);
   transition: color 0.2s;
-  display: none;   /* <-- normalnya hidden */
+  display: none;
   padding-left: 30px;
 }
 #creditsBack.active { color: var(--menu-color-active); }
@@ -215,7 +243,7 @@ body {
 }
 
 .credit-line {
-  opacity: 1; /* default langsung kelihatan */
+  opacity: 1;
   animation: fadeOutTop 25s linear forwards;
 }
 
@@ -255,16 +283,14 @@ body {
 
 #footerBrand {
   position: absolute;
-  bottom: 150px;       /* jarak dari bawah */
+  bottom: 150px;
   left: 50%;
   transform: translateX(-45%);
   font-family: 'bebasneue', sans-serif;
-  font-size: 10px;     /* ukuran kecil */
+  font-size: 10px;
   color: var(--menu-color-active);
   text-shadow: 2px 2px 4px #000;
   letter-spacing: 2px;
-
-  /* animasi RGB */
   animation: rgbColor 5s linear infinite;
 }
 
@@ -275,7 +301,11 @@ body {
 </style>
 </head>
 <body>
-	<!--Touch Cursor -->
+    <div id="initialLoader">
+      <div style="font-size: 24px; color: var(--menu-color-active); font-family: 'bankgothic', sans-serif;">loading...</div>
+      <div class="spinner"></div>
+    </div>
+
 	<img id="touchCursor" src="Cursor.png" alt="cursor" style="
   position: absolute;
   width: 20px;
@@ -286,12 +316,11 @@ body {
 ">
 	<div id="footerBrand">- TwentySeven -</div>
     <div id="title">Main Menu</div>
-	<img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />  <!-- Global Music -->  <audio id="musicAudio" loop>
+	<img src="back8.png" id="cornerLogo" class="back8" alt="Logo" />  <audio id="musicAudio" loop>
     <source src="Music.mp4" type="audio/mp4">
     </audio> <audio id="creditsAudio" loop>
     <source src="Credits.mp3" type="audio/mp3">
     </audio> 
-    <!-- Main Menu -->
     <div id="mainMenu" class="menu active">
     <div class="menu-item" onclick="openTools()"><img src="arrow.png" class="arrow" alt=">"> Select Tools</div>
     <div class="menu-item" onclick="openOptions()"><img src="arrow.png" class="arrow arrow-options" alt=">"> Options</div>
@@ -299,7 +328,6 @@ body {
     <img src="arrow.png" class="arrow arrow-credits" alt=">"> Credits
     </div>
     </div>  
-    <!-- Tools Menu -->
     <div id="toolsMenu" class="menu">
     <div class="menu-item" onclick="openTransparanImage()"><img src="arrow.png" class="arrow" alt=">"> Transparan Image</div>
     <div class="menu-item" onclick="openCrashlog()"><img src="arrow.png" class="arrow" alt=">"> Crashlog Reader</div>
@@ -307,7 +335,6 @@ body {
     <div id="toolsBack" onclick="backToMain()">
     <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
     </div>  
-    <!-- Options Menu -->
     <div id="optionsMenu" class="menu">
     <div class="menu-item option-row" id="audioRow">
      <img src="arrow.png" class="arrow" alt=">">
@@ -333,7 +360,6 @@ body {
   <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
 </div>
 
-<!-- Credits Menu -->
 <div id="creditsMenu" class="menu">
   <div id="creditsWrapper">
 <div class="credits-section">
@@ -471,8 +497,7 @@ body {
   <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
 </div>
 	
-    <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
-  </div>  <script>
+  <script>
     const menus = {
       main: document.getElementById('mainMenu'),
       tools: document.getElementById('toolsMenu'),
@@ -507,7 +532,7 @@ async function loadTouchSound() {
   
     // Gain untuk kontrol volume highlight
     touchGain = audioCtx.createGain();
-    touchGain.gain.value = 0.5; // atur sesuai kebutuhan (0.0 - 1.0)
+    touchGain.gain.value = 0.5;
     touchGain.connect(audioCtx.destination);
 } catch (e) {
     console.error("Gagal load touch.mp3", e);
@@ -517,7 +542,7 @@ async function loadTouchSound() {
 function playTouch() {
   if (!touchBuffer || !audioCtx || !touchGain) return;
   const now = Date.now();
-  if (now - lastTouchTime < 80) return; // minimal jeda 80ms untuk hindari overlap
+  if (now - lastTouchTime < 80) return;
   lastTouchTime = now;
 
   const source = audioCtx.createBufferSource();
@@ -532,7 +557,7 @@ loadTouchSound();
     // Cursor Touch
     window.addEventListener("touchstart", e => {
     const t = e.touches[0];
-    touchCursor.style.left = (t.clientX - 20) + "px"; // 20 = setengah ukuran biar center
+    touchCursor.style.left = (t.clientX - 20) + "px";
     touchCursor.style.top  = (t.clientY - 20) + "px";
     touchCursor.style.display = "block";
 });
@@ -564,27 +589,25 @@ window.addEventListener("touchmove", e => {
   const t = e.touches[0];
   const x = t.clientX, y = t.clientY;
 
-  // pindahin cursor
   touchCursor.style.left = (x - 20) + "px";
   touchCursor.style.top  = (y - 20) + "px";
 
   const target = getMenuItemAt(x, y);
 
   if (target !== currentTarget) {
-    // reset highlight lama
     if (currentTarget) currentTarget.classList.remove("active");
     currentTarget = target;
 
     if (currentTarget) {
   currentTarget.classList.add("active");
-        playTouch();   // mainkan suara saat highlight baru
+        playTouch();
 }
   }
 });
 
 window.addEventListener("touchend", () => {
   if (currentTarget) {
-  currentTarget.click();               // klik langsung
+  currentTarget.click();
   currentTarget.classList.remove("active");
   currentTarget = null;
 }
@@ -631,11 +654,10 @@ touchCursor.style.display = "none";
       creditsBack.classList.add('active');
       playSelect();
 
-  // stop musik utama, play musik credits (sinkron setting)
    if (audioToggle.textContent === "On") {
       musicAudio.pause();
       creditsAudio.currentTime = 0;
-      creditsAudio.volume = musicAudio.volume; // sync volume
+      creditsAudio.volume = musicAudio.volume;
       creditsAudio.play();
      }
     }
@@ -658,14 +680,12 @@ touchCursor.style.display = "none";
     }
     playBack();
 
-    // stop musik credits, play musik utama (kalau audio On)
     creditsAudio.pause();
     if (audioToggle.textContent === "On") {
     musicAudio.play();
      }
    }
 
-    // Global Music Audio
     const musicAudio = document.getElementById("musicAudio");
     const audioRow = document.getElementById("audioRow");
     const audioToggle = document.getElementById("audioToggle");
@@ -705,7 +725,6 @@ touchCursor.style.display = "none";
       });
     });
 
-    // Volume Bar
     function setVolumeFromIndex(index) {
       levels.forEach((lvl, i) => {
         lvl.classList.toggle("active", i <= index);
@@ -716,7 +735,6 @@ touchCursor.style.display = "none";
       volumeRow.classList.add('active');
     }
 
-    // Default Volume Full
     setVolumeFromIndex(levels.length - 1);
 
     levels.forEach((lvl, i) => {
@@ -745,7 +763,6 @@ touchCursor.style.display = "none";
     localStorage.setItem("audioVolume", musicAudio.volume);
     }
 
-    // Audio Toggle
     audioRow.addEventListener("click", () => {
     const isOn = (audioToggle.textContent === "On");
     if (isOn) {
@@ -760,10 +777,9 @@ touchCursor.style.display = "none";
     .forEach(i => i.classList.remove('active'));
      audioRow.classList.add('active');
      playSelect();
-     saveAudioSettings(); // <-- simpan setting
+     saveAudioSettings();
 });
 
-     // Update penyimpanan setiap kali volume berubah
     function setVolumeFromIndex(index) {
      levels.forEach((lvl, i) => {
      lvl.classList.toggle("active", i <= index);
@@ -774,9 +790,20 @@ touchCursor.style.display = "none";
     document.querySelectorAll('.menu-item, #toolsBack, #optionsBack, #creditsBack')
    .forEach(el => el.classList.remove('active'));
     volumeRow.classList.add('active');
-    saveAudioSettings(); // <-- simpan setting
+    saveAudioSettings();
     }
-    // Back disembunyikan dulu
+    
+    // Logika Loading Screen
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('initialLoader');
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+        }, 1000);
+      }, 1500);
+    });
+
     backToMain();
   </script></body>
 </html>
