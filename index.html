@@ -331,6 +331,7 @@ body {
     <div id="toolsMenu" class="menu">
     <div class="menu-item" onclick="openTransparanImage()"><img src="arrow.png" class="arrow" alt=">"> Transparan Image</div>
     <div class="menu-item" onclick="openCrashlog()"><img src="arrow.png" class="arrow" alt=">"> Crashlog Reader</div>
+    <div class="menu-item" onclick="openWeaponIcon()"><img src="arrow.png" class="arrow" alt=">"> Weapon Icon Maker</div>
     </div>
     <div id="toolsBack" onclick="backToMain()">
     <img src="arrow.png" class="arrow back-arrow" alt=">"> Back
@@ -698,6 +699,12 @@ touchCursor.style.display = "none";
   playSelect(); 
   saveAudioSettings(); // Tambahkan ini agar status "On" terbawa
   setTimeout(() => { window.location.href = "Crashlog.html"; }, 100); 
+}
+
+function openWeaponIcon() { 
+  playSelect(); 
+  saveAudioSettings(); // status audio ikut terbawa
+  setTimeout(() => { window.location.href = "WeaponIcon.html"; }, 100); 
 }
 
 function openTransparanImage() { 
