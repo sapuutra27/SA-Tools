@@ -6,18 +6,18 @@
   <title>Weapon Icon Maker</title>
 
   <style>
-    /* ===== FONT (file sudah ada di repo) ===== */
-    @font-face { font-family: 'title';  src: url(beckett.ttf); }
+    /* ===== FONT (semua file sudah ada di repo) ===== */
+    @font-face { font-family: 'sequel'; src: url(Sequel100Black-76.ttf); }
     @font-face { font-family: 'menu';   src: url(bankgothic-regular.ttf); }
     @font-face { font-family: 'small';  src: url(BebasNeue-Regular.ttf); }
 
-    /* ===== WARNA ===== */
+    /* ===== WARNA & UKURAN ===== */
     :root {
       --blue: rgb(120, 145, 190);
       --light-blue: rgb(163, 196, 239);
-      --green: #8fb98f;
       --grey: #566285;
       --line: #2b3554;
+      --cw: min(74vw, 340px);   /* lebar kotak style, kolom upload, dan kotak proses */
     }
 
     * {
@@ -31,51 +31,72 @@
       background: #000;
       color: var(--blue);
       font-family: 'menu', Impact, sans-serif;
-      overflow: hidden;
     }
 
     body {
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
+      overflow-y: auto;
       padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
     }
 
-    /* ===== JUDUL ===== */
+    .page {
+      width: 100%;
+      margin: auto 0;
+      padding: 18px 0;
+    }
+
+    /* ===== JUDUL (gaya Transparent Image: putih + shadow) ===== */
     h1 {
-      font: 400 clamp(34px, 10vw, 52px)/1 'title', serif;
-      color: var(--light-blue);
-      margin: 22px 24px 0;
+      margin: 0 12px 26px;
+      text-align: center;
+      font: 400 clamp(18px, 5.6vw, 34px)/1.1 'sequel', Impact, sans-serif;
+      color: #fff;
+      text-shadow: 0 3px 5px rgba(0, 0, 0, 0.95), 0 0 22px rgba(163, 196, 239, 0.35);
     }
 
-    .by {
-      font: 400 14px 'small', sans-serif;
-      letter-spacing: 0.45em;
-      color: var(--green);
-      margin: 10px 24px 0;
+    /* tulisan TwentySeven di bawah kolom upload */
+    .brand {
+      margin: 22px 0 0;
+      text-align: center;
+      font: 400 24px 'small', sans-serif;
+      letter-spacing: 0.03em;
+      color: #fff;
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.95), 0 0 14px rgba(163, 196, 239, 0.3);
     }
 
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 0;
+    /* menu dan layar proses saling menimpa di tempat yang sama */
+    .zone {
+      display: grid;
     }
 
-    /* ===== KOTAK STYLE YANG BISA DIGESER ===== */
+    .zone > * { grid-area: 1 / 1; }
+
+    /* ===== MENU: KOTAK STYLE, TITIK, UPLOAD ===== */
+    .menu {
+      transition: opacity 0.55s;
+    }
+
     .track {
       display: flex;
       gap: 16px;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      padding: 0 11%;
       scrollbar-width: none;
     }
 
     .track::-webkit-scrollbar { display: none; }
 
+    /* ruang kosong di kiri-kanan supaya kotak pertama dan terakhir bisa tepat di tengah */
+    .track::before,
+    .track::after {
+      content: '';
+      flex: 0 0 calc((100% - var(--cw)) / 2 - 16px);
+    }
+
     .card {
-      flex: 0 0 78%;
+      flex: 0 0 var(--cw);
       scroll-snap-align: center;
       text-align: center;
       opacity: 0.35;
@@ -90,13 +111,12 @@
 
     .card b {
       display: block;
-      font: 400 clamp(18px, 5.4vw, 26px) 'menu', sans-serif;
-      margin-top: 14px;
+      font: 400 clamp(16px, 4.8vw, 22px) 'menu', sans-serif;
+      margin-top: 12px;
       letter-spacing: 0.04em;
     }
 
     .img {
-      position: relative;
       padding: 22px 10px 12px;
       border: 1px solid #1d2438;
       border-radius: 20px;
@@ -108,39 +128,11 @@
       width: 100%;
     }
 
-    /* gambar redup di bawah (siluet) */
-    .img .dim {
-      filter: brightness(0.18) grayscale(1);
-      opacity: 0;
-    }
-
-    /* gambar terang di atas, terbuka dari kiri ke kanan saat proses */
-    .img .lit {
-      position: absolute;
-      left: 10px;
-      right: 10px;
-      top: 22px;
-      clip-path: inset(0 0 0 0);
-    }
-
-    /* garis cahaya yang berjalan mengikuti progres */
-    .scan {
-      position: absolute;
-      top: 10px;
-      bottom: 10px;
-      left: 10px;
-      width: 2px;
-      background: var(--light-blue);
-      box-shadow: 0 0 14px 3px var(--blue);
-      opacity: 0;
-    }
-
-    /* ===== TITIK PENANDA & PETUNJUK ===== */
     .dots {
       display: flex;
       justify-content: center;
       gap: 7px;
-      margin: 16px 0 0;
+      margin: 14px 0 0;
     }
 
     .dots i {
@@ -158,37 +150,31 @@
 
     .hint {
       text-align: center;
-      font: 400 13px 'small', sans-serif;
+      font: 400 12px 'small', sans-serif;
       letter-spacing: 0.3em;
       color: var(--grey);
-      margin: 14px 0 0;
+      margin: 12px 0 0;
     }
-
-    /* ===== AREA BAWAH: KOLOM UPLOAD / STATUS PROSES (saling menimpa) ===== */
-    .low {
-      display: grid;
-      margin: 22px 24px 0;
-    }
-
-    .low > * { grid-area: 1 / 1; }
 
     .upload {
       display: block;
+      width: var(--cw);
+      margin: 16px auto 0;
+      padding: 10px 12px;
       text-align: center;
-      padding: 18px;
       border: 1px dashed var(--line);
-      border-radius: 14px;
+      border-radius: 12px;
       cursor: pointer;
-      font-size: 15px;
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     .upload small {
       display: block;
-      font: 400 13px 'small', sans-serif;
-      letter-spacing: 0.25em;
-      color: var(--green);
-      margin-top: 4px;
+      font: 400 12px 'small', sans-serif;
+      letter-spacing: 0.22em;
+      color: #8fb98f;
+      margin-top: 3px;
       word-break: break-all;
     }
 
@@ -199,119 +185,317 @@
       60% { transform: translateX(7px); }
     }
 
-    .status {
-      text-align: center;
+    /* ===== LAYAR PROSES (muncul di tempat kotak style tadi) ===== */
+    .stage {
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.8s 0.6s;
+      align-self: start;
     }
 
-    .status h2 {
-      margin: 0;
-      font: 400 clamp(20px, 6vw, 28px) 'menu', sans-serif;
-      letter-spacing: 0.12em;
+    .frame {
+      position: relative;
+      width: var(--cw);
+      height: calc(var(--cw) * 0.56);
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid #1d2438;
+      border-radius: 20px;
+      background: radial-gradient(circle at 50% 40%, #10151f, #05070b);
     }
 
-    .status p {
-      margin: 8px 0 0;
-      font: 400 14px 'small', sans-serif;
-      letter-spacing: 0.28em;
-      color: var(--grey);
-      min-height: 1.3em;
-      word-break: break-all;
-    }
-
-    .status button {
-      margin: 14px 8px 0;
-      font: 400 17px 'menu', sans-serif;
-      color: var(--blue);
-      background: none;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px 18px;
-    }
-
-    /* ===== TOMBOL BACK ===== */
-    .back {
-      align-self: flex-end;
-      margin: 10px 28px 22px;
-      font: 400 clamp(24px, 7vw, 34px) 'menu', sans-serif;
-      color: var(--blue);
-      text-decoration: none;
-    }
-
-    /* ===== KONDISI SAAT PROSES (class "busy" dipasang di body) ===== */
-    .busy .upload,
-    .busy .hint,
-    .busy .dots,
-    .busy .card:not(.sel) {
+    .frame > * {
+      position: absolute;
       opacity: 0;
-      pointer-events: none;
+    }
+
+    /* spinner di tengah kotak */
+    .spin {
+      top: 50%;
+      left: 50%;
+      width: 34px;
+      height: 34px;
+      margin: -17px 0 0 -17px;
+      border: 3px solid rgba(163, 196, 239, 0.22);
+      border-top-color: var(--light-blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      transition: opacity 0.35s;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* model .dff dalam bentuk polygon */
+    #wire {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.6s 0.2s;
+    }
+
+    /* hasil ikon */
+    #result {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 8% 5%;
       transition: opacity 0.6s;
     }
 
-    .busy .track { overflow: hidden; }
+    [data-phase="load"] .spin  { opacity: 1; }
+    [data-phase="poly"] #wire  { opacity: 1; }
+    [data-phase="done"] #result { opacity: 1; transition-delay: 0.35s; }
 
-    .busy .status {
+    #wire { transition: opacity 0.6s 0.2s; }
+    [data-phase="done"] #wire { transition-delay: 0s; }
+
+    .line {
+      margin: 16px 12px 0;
+      min-height: 1.2em;
+      text-align: center;
+      font: 400 14px 'small', sans-serif;
+      letter-spacing: 0.28em;
+      color: var(--grey);
+      word-break: break-word;
+    }
+
+    [data-phase="done"] .line { color: var(--blue); }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+      min-height: 42px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+
+    [data-phase="done"] .actions,
+    [data-phase="err"] .actions {
       opacity: 1;
       pointer-events: auto;
+      transition-delay: 0.7s;
     }
 
-    .busy .dim  { opacity: 1; }
-    .busy .scan { opacity: 0.9; }
+    .actions button {
+      font: 400 14px 'menu', sans-serif;
+      color: var(--blue);
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 14px;
+    }
 
-    .card.sel {
+    /* ===== PERGANTIAN MENU <-> PROSES ===== */
+    .busy .menu {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.5s, visibility 0s 0.5s;
+    }
+
+    .busy .stage {
+      visibility: visible;
+      pointer-events: auto;
       opacity: 1;
-      transform: scale(1.04);
+      transition: opacity 0.5s 0.45s;
     }
 
-    /* saat menunggu mesin Python dimuat: siluet berkedip pelan */
-    .wait .dim { animation: wait 1.2s infinite alternate; }
+    /* tombol AGAIN: layar proses fade out dulu, baru menu fade in */
+    .busy.leaving .stage {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s;
+    }
 
-    @keyframes wait {
-      to { opacity: 0.35; }
+    @media (prefers-reduced-motion: reduce) {
+      .spin { animation-duration: 2.4s; }
     }
   </style>
 </head>
 
-<body>
-  <h1>Weapon Icon Maker</h1>
-  <div class="by">- TWENTYSEVEN -</div>
+<body data-phase="idle">
+  <div class="page">
+    <h1>Weapon Icon Maker</h1>
 
-  <main>
-    <!-- kotak style diisi lewat JavaScript -->
-    <div class="track" id="track"></div>
-    <div class="dots" id="dotsBox"></div>
-    <div class="hint">SWIPE TO CHOOSE &middot; TAP TO BUILD</div>
+    <div class="zone">
+      <!-- MENU: kotak style diisi lewat JavaScript -->
+      <section class="menu" id="menu">
+        <div class="track" id="track"></div>
+        <div class="dots" id="dotsBox"></div>
+        <div class="hint">SWIPE TO CHOOSE &middot; TAP TO BUILD</div>
 
-    <div class="low">
-      <!-- kolom upload zip -->
-      <label class="upload" id="uploadBox">
-        UPLOAD WEAPON ZIP
-        <small id="fileName">.DFF + .TXD</small>
-        <input id="fileInput" type="file" accept=".zip" hidden>
-      </label>
+        <label class="upload" id="uploadBox">
+          UPLOAD WEAPON ZIP
+          <small id="fileName">.DFF + .TXD</small>
+          <input id="fileInput" type="file" accept=".zip" hidden>
+        </label>
+      </section>
 
-      <!-- teks proses (muncul saat konversi berjalan) -->
-      <div class="status">
-        <h2 id="statusTitle">LOADING ENGINE</h2>
-        <p id="statusInfo">&nbsp;</p>
-        <div id="actions"></div>
-      </div>
+      <!-- LAYAR PROSES -->
+      <section class="stage" id="stage">
+        <div class="frame" id="frame">
+          <div class="spin"></div>
+          <canvas id="wire"></canvas>
+          <img id="result" alt="">
+        </div>
+        <div class="line" id="statusLine"></div>
+        <div class="actions" id="actions"></div>
+      </section>
     </div>
-  </main>
+
+    <div class="brand">- TwentySeven -</div>
+  </div>
 
   <audio id="bgm" loop>
     <source src="Music.mp3" type="audio/mpeg">
   </audio>
 
-  <a class="back" id="backBtn" href="index.html">BACK</a>
+  <!-- ================================================================
+       KODE PYTHON (dijalankan di Web Worker lewat Pyodide)
+       ================================================================ -->
+  <script type="text/x-python" id="pyMain">
+import sys, os, zipfile, json, shutil, base64, js
+import numpy as np
+sys.path.insert(0, '/')
+import dff2icon as D
+
+# kualitas diatur dari halaman (lebar ikon dan supersample)
+D.SUPERSAMPLE = SS
+
+def post(**k):
+    js.postMessage(json.dumps(k))
+
+# siapkan folder kerja
+for d in ('/work', '/out'):
+    shutil.rmtree(d, ignore_errors=True)
+    os.makedirs(d)
+
+# ekstrak zip upload
+with zipfile.ZipFile('/in.zip') as z:
+    z.extractall('/work')
+
+# cari semua file .dff
+files = []
+for r, ds, fs in os.walk('/work'):
+    ds.sort()
+    for f in sorted(fs):
+        if f.lower().endswith('.dff'):
+            files.append(os.path.join(r, f))
+
+total = len(files)
+if not total:
+    raise Exception('No .dff file found in the zip')
+
+# kirim progres ke halaman setiap nilai progres berubah
+cur = {'i': 0, 'n': ''}
+
+class P(D.Progress):
+    @property
+    def frac(self):
+        return self.__dict__.get('_f')
+
+    @frac.setter
+    def frac(self, v):
+        self.__dict__['_f'] = v
+        if cur['n']:
+            try:
+                ov = self.overall()
+            except Exception:
+                return
+            post(t='p', i=cur['i'], n=total, name=cur['n'], stage=self.stage, p=(cur['i'] - 1 + ov) / total, f=ov)
+
+D.PROG = P()
+
+# bentuk polygon model (kerangka garis) untuk ditampilkan di layar proses
+def make_poly(f):
+    try:
+        parts = D.load_dff(f, False)
+        parts = D.drop_parts(parts, f)
+        h, v, _ = D.pick_axes(parts, '')
+        V = np.vstack([p['V'][:, [h, v]] for p in parts])
+        offs = np.cumsum([0] + [len(p['V']) for p in parts])
+        T = np.vstack([p['T'] + offs[i] for i, p in enumerate(parts)])
+        key = np.round(V / 1e-4).astype(np.int64)
+        _, first, inv = np.unique(key, axis=0, return_index=True, return_inverse=True)
+        inv = np.asarray(inv).ravel()
+        U = V[first]
+        t = inv[T]
+        e = np.vstack([t[:, [0, 1]], t[:, [1, 2]], t[:, [2, 0]]])
+        e = e[e[:, 0] != e[:, 1]]
+        e = np.unique(np.sort(e, 1), axis=0)
+        if len(e) > 14000:
+            e = e[np.linspace(0, len(e) - 1, 14000).astype(np.int64)]
+        mn, mx = U.min(0), U.max(0)
+        w = max(float(mx[0] - mn[0]), 1e-9)
+        hh = max(float(mx[1] - mn[1]), 1e-9)
+        x = (U[:, 0] - mn[0]) / w
+        y = (mx[1] - U[:, 1]) / hh
+        post(t='poly', aspect=w / hh,
+             x=[round(float(a), 4) for a in x],
+             y=[round(float(a), 4) for a in y],
+             e=e.ravel().astype(int).tolist())
+    except Exception:
+        pass
+
+# proses tiap file .dff
+used = set()
+ok = 0
+bad = []
+why = ''
+sent = False
+for i, f in enumerate(files, 1):
+    name = os.path.splitext(os.path.basename(f))[0]
+    o = os.path.join('/out', name + '.png')
+    k = 2
+    while o.lower() in used:
+        o = os.path.join('/out', '%s_%d.png' % (name, k))
+        k += 1
+    used.add(o.lower())
+    cur['i'] = i
+    cur['n'] = ''
+    make_poly(f)
+    cur['n'] = name
+    try:
+        D.make_icon(f, o, WIDTH, '', False, False, 208, True, 0.0, False, STYLE, False, False)
+        ok += 1
+        if not sent:
+            with open(o, 'rb') as fh:
+                post(t='prev', img='data:image/png;base64,' + base64.b64encode(fh.read()).decode())
+            sent = True
+    except MemoryError:
+        raise
+    except Exception as e:
+        bad.append(name)
+        if not why:
+            why = '%s: %s' % (name, e)
+    post(t='p', i=i, n=total, name=name, stage='menyimpan', p=i / total, f=1.0)
+
+# bungkus semua PNG jadi satu zip
+with zipfile.ZipFile('/out.zip', 'w', zipfile.ZIP_DEFLATED) as z:
+    for f in sorted(os.listdir('/out')):
+        z.write('/out/' + f, f)
+
+post(t='sum', ok=ok, bad=bad, why=why)
+  </script>
 
   <script>
     // ================================================================
     //  PENGATURAN
     // ================================================================
-    const WIDTH = 512; // lebar ikon hasil (script aslinya 1024, dikecilkan agar HP tidak kehabisan memori)
+
+    // Kualitas hasil. Urutan dicoba dari atas; kalau memori HP habis,
+    // otomatis turun ke baris berikutnya.
+    //   w  = lebar ikon (versi Termux = 1024)
+    //   ss = supersample (versi Termux = 6; 3 menghemat memori sebesar 4x)
+    const TIERS = [
+      { w: 1024, ss: 3 },
+      { w: 768,  ss: 3 },
+      { w: 512,  ss: 4 }
+    ];
 
     // [nama style di dff2icon, label yang ditampilkan]
     const STYLES = [
@@ -326,28 +510,21 @@
       ['pixel',    'PIXEL']
     ];
 
-    // nama tahap dari script Python -> tulisan di layar
-    const STAGE_NAMES = {
-      'memuat model':        'READING MODEL',
-      'membaca tekstur':     'READING TEXTURE',
-      'rasterisasi':         'RASTERIZING',
-      'pewarnaan dan garis': 'COLORING',
-      'menyimpan':           'SAVING'
-    };
-
     // ================================================================
     //  ELEMEN HALAMAN
     // ================================================================
-    const byId        = id => document.getElementById(id);
-    const track       = byId('track');
-    const dotsBox     = byId('dotsBox');
-    const uploadBox   = byId('uploadBox');
-    const fileInput   = byId('fileInput');
-    const fileName    = byId('fileName');
-    const statusTitle = byId('statusTitle');
-    const statusInfo  = byId('statusInfo');
-    const actions     = byId('actions');
-    const backBtn     = byId('backBtn');
+    const byId      = id => document.getElementById(id);
+    const track     = byId('track');
+    const dotsBox   = byId('dotsBox');
+    const uploadBox = byId('uploadBox');
+    const fileInput = byId('fileInput');
+    const fileName  = byId('fileName');
+    const frame     = byId('frame');
+    const wireCv    = byId('wire');
+    const resultImg = byId('result');
+    const statusLine = byId('statusLine');
+    const actions   = byId('actions');
+    const PY_SRC    = byId('pyMain').textContent;
 
     // ================================================================
     //  MUSIK LATAR (mengikuti pengaturan Audio dan Volume di menu Options)
@@ -392,17 +569,13 @@
     // ================================================================
     track.innerHTML = STYLES.map(style => `
       <div class="card">
-        <div class="img">
-          <img class="dim" src="wi_${style[0]}.png" alt="">
-          <img class="lit" src="wi_${style[0]}.png" alt="">
-          <i class="scan"></i>
-        </div>
+        <div class="img"><img src="wi_${style[0]}.png" alt=""></div>
         <b>${style[1]}</b>
       </div>`).join('');
 
     dotsBox.innerHTML = STYLES.map(() => '<i></i>').join('');
 
-    const cards = [...track.children];
+    const cards = [...track.querySelectorAll('.card')];
     const dots  = [...dotsBox.children];
 
     // ================================================================
@@ -411,14 +584,31 @@
     let currentIndex   = 0;     // kotak yang sedang di tengah
     let zipData        = null;  // isi zip yang diupload user
     let zipName        = '';
+    let fileLabel      = '';
+    let builtStyle     = '';
     let isBusy         = false; // true selama proses berjalan
+    let resetting      = false;
+    let phase          = 'idle'; // idle | load | poly | done | err
+    let tier           = 0;
     let worker         = null;
     let shownProgress  = 0;     // progres yang tampil di layar (dihaluskan)
     let targetProgress = 0;     // progres sebenarnya dari Python (0 sampai 1)
     let resultBuffer   = null;  // isi zip hasil
+    let prevSrc        = '';    // gambar ikon pertama (ditampilkan saat selesai)
     let isFinished     = false;
     let resultOk       = 0;
     let resultBad      = [];
+    let resultWhy      = '';
+    let wire           = null;  // data polygon yang sedang digambar
+
+    function setPhase(name) {
+      phase = name;
+      document.body.dataset.phase = name;
+    }
+
+    function setLine(text) {
+      statusLine.textContent = text;
+    }
 
     // cari kotak mana yang paling dekat ke tengah layar
     function updateActiveCard() {
@@ -446,12 +636,13 @@
     }, { passive: true });
 
     addEventListener('load', updateActiveCard);
+    addEventListener('resize', () => { if (!isBusy) updateActiveCard(); });
     updateActiveCard();
 
     // ketuk kotak di samping = geser ke tengah, ketuk kotak di tengah = mulai proses
     cards.forEach((card, i) => {
       card.onclick = () => {
-        if (isBusy) return;
+        if (isBusy || resetting) return;
         if (i !== currentIndex) {
           card.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
         } else {
@@ -468,7 +659,8 @@
       if (!file) return;
       zipData = await file.arrayBuffer();
       zipName = file.name;
-      fileName.textContent = file.name + ' \u00b7 ' + (file.size / 1048576).toFixed(1) + ' MB';
+      fileLabel = file.name + ' \u00b7 ' + (file.size / 1048576).toFixed(1) + ' MB';
+      fileName.textContent = fileLabel;
     };
 
     // kolom upload bergetar kalau user menekan kotak sebelum upload zip
@@ -477,163 +669,128 @@
       void uploadBox.offsetWidth; // paksa animasi mengulang
       uploadBox.classList.add('nudge');
       fileName.textContent = 'UPLOAD A ZIP FIRST';
+      setTimeout(() => { fileName.textContent = fileLabel || '.DFF + .TXD'; }, 1600);
     }
 
     // ================================================================
-    //  KODE WORKER (Python dijalankan di sini lewat Pyodide)
-    //  Disimpan sebagai teks lalu dijadikan Web Worker supaya layar tidak macet.
+    //  WORKER (Python dijalankan di sini lewat Pyodide)
+    //  Fungsi ini diubah jadi teks lalu dijalankan sebagai Web Worker
+    //  supaya layar tidak macet.
     // ================================================================
-    const WORKER_CODE = `
-importScripts('https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js');
+    function workerMain() {
+      importScripts('https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js');
 
-let py;
+      let py;
 
-// ---------- kode Python ----------
-const PY_CODE = \`
-import sys, os, zipfile, json, shutil, js
-sys.path.insert(0, '/')
-import dff2icon as D
+      onmessage = async (e) => {
+        const m = e.data;
+        try {
+          // pertama kali: muat Pyodide, numpy, scipy, dan dff2icon.py
+          if (!py) {
+            postMessage(JSON.stringify({ t: 'load' }));
+            py = await loadPyodide();
+            await py.loadPackage(['numpy', 'scipy']);
+            py.FS.writeFile('/dff2icon.py', await (await fetch(m.script)).text());
+          }
 
-def post(**k):
-    js.postMessage(json.dumps(k))
+          py.FS.writeFile('/in.zip', new Uint8Array(m.zip));
+          py.globals.set('STYLE', m.style);
+          py.globals.set('WIDTH', m.width);
+          py.globals.set('SS', m.ss);
 
-# siapkan folder kerja
-for d in ('/work', '/out'):
-    shutil.rmtree(d, ignore_errors=True)
-    os.makedirs(d)
+          await py.runPythonAsync(m.code);
 
-# ekstrak zip upload
-with zipfile.ZipFile('/in.zip') as z:
-    z.extractall('/work')
-
-# cari semua file .dff
-files = []
-for r, ds, fs in os.walk('/work'):
-    ds.sort()
-    for f in sorted(fs):
-        if f.lower().endswith('.dff'):
-            files.append(os.path.join(r, f))
-
-total = len(files)
-if not total:
-    raise Exception('No .dff file found in the zip')
-
-# kirim progres ke halaman setiap nilai progres berubah
-cur = {'i': 0, 'n': ''}
-
-class P(D.Progress):
-    @property
-    def frac(self):
-        return self.__dict__.get('_f')
-
-    @frac.setter
-    def frac(self, v):
-        self.__dict__['_f'] = v
-        if cur['n']:
-            try:
-                ov = self.overall()
-            except Exception:
-                return
-            post(t='p', i=cur['i'], n=total, name=cur['n'], stage=self.stage, p=(cur['i'] - 1 + ov) / total)
-
-D.PROG = P()
-
-# proses tiap file .dff
-used = set()
-ok = 0
-bad = []
-for i, f in enumerate(files, 1):
-    name = os.path.splitext(os.path.basename(f))[0]
-    o = os.path.join('/out', name + '.png')
-    k = 2
-    while o.lower() in used:
-        o = os.path.join('/out', '%s_%d.png' % (name, k))
-        k += 1
-    used.add(o.lower())
-    cur['i'] = i
-    cur['n'] = name
-    try:
-        D.make_icon(f, o, WIDTH, '', False, False, 208, True, 0.0, False, STYLE, False, False)
-        ok += 1
-    except Exception as e:
-        bad.append(name)
-    post(t='p', i=i, n=total, name=name, stage='menyimpan', p=i / total)
-
-# bungkus semua PNG jadi satu zip
-with zipfile.ZipFile('/out.zip', 'w', zipfile.ZIP_DEFLATED) as z:
-    for f in sorted(os.listdir('/out')):
-        z.write('/out/' + f, f)
-
-post(t='sum', ok=ok, bad=bad)
-\`;
-
-// ---------- terima perintah dari halaman ----------
-onmessage = async (e) => {
-  const m = e.data;
-  try {
-    // pertama kali: muat Pyodide, numpy, scipy, dan dff2icon.py
-    if (!py) {
-      postMessage(JSON.stringify({ t: 'load' }));
-      py = await loadPyodide();
-      await py.loadPackage(['numpy', 'scipy']);
-      py.FS.writeFile('/dff2icon.py', await (await fetch(m.script)).text());
+          const result = py.FS.readFile('/out.zip');
+          postMessage({ t: 'done', buf: result.buffer }, [result.buffer]);
+        } catch (err) {
+          postMessage(JSON.stringify({
+            t: 'err',
+            msg: String(err.message || err).split('\n').slice(-2).join(' ')
+          }));
+        }
+      };
     }
-
-    py.FS.writeFile('/in.zip', new Uint8Array(m.zip));
-    py.globals.set('STYLE', m.style);
-    py.globals.set('WIDTH', m.width);
-
-    await py.runPythonAsync(PY_CODE);
-
-    const result = py.FS.readFile('/out.zip');
-    postMessage({ t: 'done', buf: result.buffer }, [result.buffer]);
-  } catch (err) {
-    postMessage(JSON.stringify({
-      t: 'err',
-      msg: String(err.message || err).split('\\n').slice(-2).join(' ')
-    }));
-  }
-};`;
 
     // ================================================================
     //  MULAI PROSES
     // ================================================================
+    function resetRunState() {
+      shownProgress = 0;
+      targetProgress = 0;
+      resultBuffer = null;
+      prevSrc = '';
+      isFinished = false;
+      resultOk = 0;
+      resultBad = [];
+      resultWhy = '';
+      wire = null;
+    }
+
     function startBuild(index) {
       if (!zipData) {
         nudgeUpload();
         return;
       }
 
+      // kotak proses dibuat seukuran kotak style yang dipilih
+      const box = cards[index].querySelector('.img').getBoundingClientRect();
+      frame.style.width = box.width + 'px';
+      frame.style.height = box.height + 'px';
+
+      builtStyle = STYLES[index][0];
+      tier = 0;
       isBusy = true;
-      isFinished = false;
-      resultBuffer = null;
-      shownProgress = 0;
-      targetProgress = 0;
-
-      const styleName = STYLES[index][0];
-
-      cards[index].classList.add('sel');
-      document.body.classList.add('busy', 'wait');
-      backBtn.style.opacity = 0;
-
-      statusTitle.textContent = 'LOADING ENGINE';
-      statusInfo.textContent = 'FIRST RUN TAKES A WHILE';
+      resetRunState();
       actions.innerHTML = '';
+      resultImg.removeAttribute('src');
+      setPhase('load');
+      setLine('LOADING ENGINE');
+      document.body.classList.add('busy');
 
-      // worker dibuat sekali, dipakai ulang supaya Python tidak dimuat dua kali
+      runJob();
+      requestAnimationFrame(animate);
+    }
+
+    function runJob() {
       if (!worker) {
-        worker = new Worker(URL.createObjectURL(new Blob([WORKER_CODE])));
+        worker = new Worker(URL.createObjectURL(
+          new Blob(['(', workerMain.toString(), ')()'], { type: 'text/javascript' })
+        ));
         worker.onmessage = onWorkerMessage;
+        worker.onerror = (ev) => handleFail(ev && ev.message ? ev.message : 'worker crashed', true);
       }
 
       worker.postMessage({
         zip: zipData.slice(0),
-        style: styleName,
-        width: WIDTH,
+        style: builtStyle,
+        width: TIERS[tier].w,
+        ss: TIERS[tier].ss,
+        code: PY_SRC,
         script: new URL('dff2icon.py', location.href).href
       });
+    }
 
-      requestAnimationFrame(animate);
+    // kalau memori habis: ulangi dengan kualitas satu tingkat di bawahnya
+    function handleFail(text, crashed) {
+      if (!isBusy) return;
+      const memoryLike = /memory|alloc|bounds|unreachable|RangeError|crash/i.test(text);
+
+      if (crashed && worker) {
+        worker.terminate();
+        worker = null;
+      }
+
+      if (memoryLike && tier < TIERS.length - 1) {
+        tier++;
+        if (worker) { worker.terminate(); worker = null; }
+        resetRunState();
+        setPhase('load');
+        setLine('RETRYING \u00b7 LOWER QUALITY');
+        runJob();
+        return;
+      }
+
+      showError(text);
     }
 
     // ================================================================
@@ -648,14 +805,23 @@ onmessage = async (e) => {
         return;
       }
 
+      if (typeof data !== 'string') return;
       const msg = JSON.parse(data);
 
+      if (msg.t === 'poly') {
+        buildWire(msg);
+        shownProgress = 0;
+        targetProgress = 0;
+        if (!isFinished) setPhase('poly');
+      }
+
       if (msg.t === 'p') {
-        document.body.classList.remove('wait');
-        statusTitle.textContent = 'PROCESSING';
-        statusInfo.textContent =
-          (STAGE_NAMES[msg.stage] || '') + ' \u00b7 ' + msg.i + '/' + msg.n + ' \u00b7 ' + msg.name;
-        targetProgress = Math.min(msg.p, 1);
+        setLine(msg.n > 1 ? 'PROCESSING ' + msg.i + '/' + msg.n : 'PROCESSING');
+        targetProgress = Math.min(msg.f, 1);
+      }
+
+      if (msg.t === 'prev') {
+        prevSrc = msg.img;
       }
 
       if (msg.t === 'sum') {
@@ -663,32 +829,147 @@ onmessage = async (e) => {
         isFinished = true;
         resultBad = msg.bad;
         resultOk = msg.ok;
+        resultWhy = msg.why;
       }
 
       if (msg.t === 'err') {
-        showError(msg.msg);
+        handleFail(msg.msg, false);
       }
     }
 
     // ================================================================
-    //  ANIMASI GAMBAR TERBENTUK (dijalankan tiap frame)
+    //  POLYGON MODEL + EFEK SAPUAN CAHAYA
+    //  Garis model digambar redup, lalu menyala mengikuti pita cahaya
+    //  yang bergerak dari kiri ke kanan sesuai progres.
+    // ================================================================
+    const wireCtx = wireCv.getContext('2d');
+    const tmpCv = document.createElement('canvas');
+    const tmpCtx = tmpCv.getContext('2d');
+
+    function strokeLayer(W, H, segs, style, width, glow) {
+      const c = document.createElement('canvas');
+      c.width = W;
+      c.height = H;
+      const g = c.getContext('2d');
+      g.lineCap = 'round';
+      g.strokeStyle = style;
+      g.lineWidth = width;
+      if (glow) {
+        g.shadowColor = glow.color;
+        g.shadowBlur = glow.blur;
+      }
+      g.beginPath();
+      for (let i = 0; i < segs.length; i += 4) {
+        g.moveTo(segs[i], segs[i + 1]);
+        g.lineTo(segs[i + 2], segs[i + 3]);
+      }
+      g.stroke();
+      return c;
+    }
+
+    function buildWire(msg) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const W = Math.max(2, Math.round(wireCv.clientWidth * dpr));
+      const H = Math.max(2, Math.round(wireCv.clientHeight * dpr));
+      wireCv.width = W;
+      wireCv.height = H;
+      tmpCv.width = W;
+      tmpCv.height = H;
+
+      // muat model ke tengah kotak dengan bingkai kosong di sekelilingnya
+      const aspect = Math.max(0.05, Math.min(msg.aspect, 40));
+      let dw = W * 0.8;
+      let dh = dw / aspect;
+      if (dh > H * 0.68) {
+        dh = H * 0.68;
+        dw = dh * aspect;
+      }
+      const ox = (W - dw) / 2;
+      const oy = (H - dh) / 2;
+
+      const e = msg.e;
+      const segs = new Float32Array((e.length / 2) * 4);
+      for (let i = 0, j = 0; i < e.length; i += 2, j += 4) {
+        const a = e[i];
+        const b = e[i + 1];
+        segs[j]     = ox + msg.x[a] * dw;
+        segs[j + 1] = oy + msg.y[a] * dh;
+        segs[j + 2] = ox + msg.x[b] * dw;
+        segs[j + 3] = oy + msg.y[b] * dh;
+      }
+
+      wire = {
+        W, H, dpr, x0: ox, x1: ox + dw,
+        dim:    strokeLayer(W, H, segs, 'rgba(120,145,190,0.38)', dpr * 0.7),
+        bright: strokeLayer(W, H, segs, 'rgba(205,225,255,0.95)', dpr * 0.9,
+                            { color: 'rgba(110,150,230,0.9)', blur: 6 * dpr })
+      };
+    }
+
+    // p = 0..1, pita cahaya mulai dari sebelum kiri model sampai lewat kanan model
+    function drawWire(p) {
+      const w = wire;
+      const W = w.W;
+      const H = w.H;
+      const dpr = w.dpr;
+
+      const bw = (w.x1 - w.x0) * 0.2 + 10 * dpr;                 // panjang pita
+      const cx = (w.x0 - bw * 0.25) + ((w.x1 - w.x0) + bw * 1.4) * p;
+      const at = x => Math.min(1, Math.max(0, x / W));
+
+      wireCtx.globalCompositeOperation = 'source-over';
+      wireCtx.clearRect(0, 0, W, H);
+      wireCtx.drawImage(w.dim, 0, 0);
+
+      // garis terang hanya terlihat di belakang dan di dalam pita
+      const mask = tmpCtx.createLinearGradient(0, 0, W, 0);
+      mask.addColorStop(0, 'rgba(0,0,0,0.5)');
+      mask.addColorStop(at(cx - bw), 'rgba(0,0,0,0.5)');
+      mask.addColorStop(at(cx), 'rgba(0,0,0,1)');
+      mask.addColorStop(at(cx + bw * 0.3), 'rgba(0,0,0,0)');
+      mask.addColorStop(1, 'rgba(0,0,0,0)');
+
+      tmpCtx.globalCompositeOperation = 'source-over';
+      tmpCtx.clearRect(0, 0, W, H);
+      tmpCtx.drawImage(w.bright, 0, 0);
+      tmpCtx.globalCompositeOperation = 'destination-in';
+      tmpCtx.fillStyle = mask;
+      tmpCtx.fillRect(0, 0, W, H);
+      wireCtx.drawImage(tmpCv, 0, 0);
+
+      // cahaya lembut di ekor pita + garis tipis di ujung depan yang memudar di atas-bawah
+      wireCtx.globalCompositeOperation = 'lighter';
+
+      const glow = wireCtx.createLinearGradient(cx - bw, 0, cx + bw * 0.15, 0);
+      glow.addColorStop(0, 'rgba(120,160,235,0)');
+      glow.addColorStop(0.7, 'rgba(120,160,235,0.10)');
+      glow.addColorStop(1, 'rgba(180,215,255,0.26)');
+      wireCtx.fillStyle = glow;
+      wireCtx.fillRect(cx - bw, 0, bw * 1.15, H);
+
+      const edge = wireCtx.createLinearGradient(0, 0, 0, H);
+      edge.addColorStop(0, 'rgba(200,225,255,0)');
+      edge.addColorStop(0.5, 'rgba(220,238,255,0.9)');
+      edge.addColorStop(1, 'rgba(200,225,255,0)');
+      wireCtx.fillStyle = edge;
+      wireCtx.fillRect(cx + bw * 0.15 - dpr * 0.5, 0, dpr, H);
+
+      wireCtx.globalCompositeOperation = 'source-over';
+    }
+
+    // ================================================================
+    //  ANIMASI (dijalankan tiap frame selama proses)
     // ================================================================
     function animate() {
-      const card = cards.find(c => c.classList.contains('sel'));
-      if (!card || !isBusy) return;
+      if (!isBusy) return;
 
       // progres di layar mengejar progres asli pelan-pelan
-      shownProgress += (targetProgress - shownProgress) * 0.07;
+      shownProgress += (targetProgress - shownProgress) * 0.08;
       const p = Math.min(shownProgress, 1);
 
-      const lit = card.querySelector('.lit');
-      const scan = card.querySelector('.scan');
-      const width = card.querySelector('.img').clientWidth - 20;
+      if (wire && phase === 'poly') drawWire(p);
 
-      lit.style.clipPath = 'inset(0 ' + ((1 - p) * 100) + '% 0 0)';
-      scan.style.transform = 'translateX(' + (p * width) + 'px)';
-
-      if (isFinished && resultBuffer && p > 0.995) {
+      if (isFinished && resultBuffer && p > 0.992) {
         showDone();
         return;
       }
@@ -701,47 +982,60 @@ onmessage = async (e) => {
     // ================================================================
     function showDone() {
       isBusy = false;
-      document.body.classList.remove('wait');
-      statusTitle.textContent = 'DONE';
 
-      let info = resultOk + ' ICON' + (resultOk == 1 ? '' : 'S');
+      if (resultOk === 0) {
+        showError(resultWhy || 'No icon could be made');
+        return;
+      }
+
+      if (wire && phase === 'poly') drawWire(1); // pita sudah lewat, garis tinggal menyala
+      if (prevSrc) resultImg.src = prevSrc;
+      setPhase('done');
+
+      let info = 'DONE \u00b7 ' + resultOk + ' ICON' + (resultOk === 1 ? '' : 'S');
       if (resultBad.length) info += ' \u00b7 ' + resultBad.length + ' FAILED';
-      statusInfo.textContent = info;
+      setLine(info);
 
       actions.innerHTML =
         '<button id="downloadBtn">DOWNLOAD ZIP</button>' +
         '<button onclick="resetPage()">AGAIN</button>';
 
+      const buffer = resultBuffer;
       byId('downloadBtn').onclick = () => {
         const link = document.createElement('a');
-        link.href = URL.createObjectURL(new Blob([resultBuffer], { type: 'application/zip' }));
-        link.download = STYLES[currentIndex][0] + '_icons.zip';
+        link.href = URL.createObjectURL(new Blob([buffer], { type: 'application/zip' }));
+        link.download = builtStyle + '_icons.zip';
         link.click();
       };
     }
 
     function showError(text) {
       isBusy = false;
-      document.body.classList.remove('wait');
-      statusTitle.textContent = 'ERROR';
-      statusInfo.textContent = text;
+      setPhase('err');
+      setLine(text);
       actions.innerHTML = '<button onclick="resetPage()">TRY AGAIN</button>';
     }
 
-    // kembali ke tampilan awal (kotak style + kolom upload)
+    // kembali ke menu: layar proses fade out dulu, baru menu fade in
     function resetPage() {
+      if (resetting) return;
+      resetting = true;
       isBusy = false;
-      document.body.classList.remove('busy', 'wait');
+      document.body.classList.add('leaving');
 
-      cards.forEach(card => {
-        card.classList.remove('sel');
-        card.querySelector('.lit').style.clipPath = '';
-        card.querySelector('.scan').style.transform = '';
-      });
-
-      backBtn.style.opacity = 1;
-      fileName.textContent = zipName || '.DFF + .TXD';
-      updateActiveCard();
+      setTimeout(() => {
+        document.body.classList.remove('busy', 'leaving');
+        setPhase('idle');
+        actions.innerHTML = '';
+        setLine('');
+        resultImg.removeAttribute('src');
+        wireCtx.clearRect(0, 0, wireCv.width, wireCv.height);
+        wire = null;
+        resultBuffer = null;
+        fileName.textContent = fileLabel || '.DFF + .TXD';
+        updateActiveCard();
+        resetting = false;
+      }, 520);
     }
   </script>
 </body>
