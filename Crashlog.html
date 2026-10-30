@@ -52,6 +52,14 @@ button:active{transform:scale(.96);box-shadow:0 3px 8px rgba(37,99,235,.4);}
 .highlight-generic{color:rgb(167,139,250);font-weight:bold;}
 .spoiler{background-color:rgb(64,64,64);color:transparent;border-radius:5px;cursor:pointer;transition:color .2s ease,background-color .2s ease;padding:0 5px;}
 .spoiler.revealed{color:inherit;background-color:rgba(255,255,255,.1);}
+#warnScreen{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:5;pointer-events:none;}
+#warnScreen.show{display:flex;animation:fadeIn .6s forwards;}
+#warnScreen.leave{animation:fadeOut .5s forwards;}
+.warn-card{width:min(84vw,330px);padding:18px 18px 14px;border-radius:18px;background:rgba(9,8,24,.7);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(250,204,21,.35);box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 24px rgba(250,204,21,.12);text-align:center;}
+#warnTitle{font-family:'BebasNeue',sans-serif;font-size:22px;letter-spacing:3px;color:rgb(250,204,21);margin-bottom:8px;}
+#warnText{font-size:13px;line-height:1.6;color:#f3f4f6;}
+.warn-bar{height:3px;margin-top:14px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden;}
+.warn-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#facc15,#fb923c);}
 .credit{margin-top:16px;font-size:13px;letter-spacing:3px;color:#fff;font-family:'BebasNeue',sans-serif;text-shadow:2px 2px 5px rgba(0,0,0,.8);}
 </style>
 </head>
@@ -94,6 +102,7 @@ if(localStorage.getItem("audioOn")==="On"&&musicAudio.paused){musicAudio.play();
 <button id="backBtn"></button>
 </div>
 </div>
+<div id="warnScreen"><div class="warn-card"><div id="warnTitle"></div><div id="warnText"></div><div class="warn-bar"><span id="warnBar"></span></div></div></div>
 <script>
 let crashList={};
 let crashLogContent="";
@@ -251,6 +260,33 @@ nextLine();
 }
 nextLine();
 }
+const WARN_MS=7000;
+const warnTexts={
+id:{title:'PERINGATAN',text:'Jangan gunakan modpack, termasuk modpack dari YouTuber mana pun. Modder tidak bertanggung jawab atas crash yang disebabkan oleh modpack. Buatlah modpack sendiri, dengan begitu kamu bisa mencari tahu penyebab crash dengan teliti.'},
+en:{title:'WARNING',text:'Do not use modpacks, including modpacks from any YouTuber. Modders are not responsible for crashes caused by modpacks. Build your own modpack so you can track down the cause of a crash carefully.'}
+};
+function showWarning(done){
+const w=document.getElementById('warnScreen');
+const bar=document.getElementById('warnBar');
+const t=(navigator.language||'').startsWith('en')?warnTexts.en:warnTexts.id;
+document.getElementById('warnTitle').textContent=t.title;
+document.getElementById('warnText').textContent=t.text;
+bar.style.transition='none';
+bar.style.width='0';
+w.classList.remove('leave');
+w.classList.add('show');
+void bar.offsetWidth;
+bar.style.transition='width '+WARN_MS+'ms linear';
+bar.style.width='100%';
+setTimeout(()=>{
+w.classList.add('leave');
+setTimeout(()=>{
+w.classList.remove('show');
+w.classList.remove('leave');
+done();
+},500);
+},WARN_MS);
+}
 function setUIText(lang){
 let texts={
 uploadWarning:'Harap upload file aml_crashlog.txt terlebih dahulu.',
@@ -318,6 +354,7 @@ title.classList.add('fadeout');
 uploader.classList.add('fadeout');
 actions.classList.add('fadeout');
 setTimeout(()=>{
+showWarning(()=>{
 out.classList.add('show');
 let found=false;
 for(const code in crashList){
@@ -333,6 +370,7 @@ footer.classList.add('show');
 backBtn.textContent=currentTexts.backBtn;
 setTimeout(()=>backBtn.classList.add('show'),100);
 }
+});
 },1000);
 });
 document.getElementById('backBtn').addEventListener('click',()=>{
